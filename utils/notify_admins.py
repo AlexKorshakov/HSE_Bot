@@ -15,5 +15,4 @@ async def on_startup_notify(dp: Dispatcher):
             logger.debug(f"Сообщение отправлено {admin_id}")
         except ChatNotFound:
             logger.debug("Чат с админом не найден")
-
         await sleep(0.3)
