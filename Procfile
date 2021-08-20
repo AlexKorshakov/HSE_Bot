@@ -1,2 +1,2 @@
-worker: python bot.py
+worker: python app.py
 heroku ps:scale worker=1
