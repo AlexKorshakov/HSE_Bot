@@ -1,0 +1,14 @@
+ADMINS_ID:
+- '373084462'
+BAN_TIME: 30
+BOT_DATA_PATH: C:\Users\KDeusEx\PycharmProjects\HSE_Bot\utils\generate_report\user_data\
+BOT_TOKEN: 1382150746:AAFj-jxi_c916I2SIu9sb-oXJK9iG_lStQw
+ENTRY_TIME: 5
+JSON_DATA_PATH: C:\Users\KDeusEx\PycharmProjects\HSE_Bot\utils\generate_report\user_data\data_file\json\
+MAIN_MODULE_NAME: config
+NUM_BUTTONS: 2
+PHOTO_DATA_PATH: C:\Users\KDeusEx\PycharmProjects\HSE_Bot\utils\generate_report\user_data\data_file\photo\
+REPORT_NAME: report_data___
+ROOT_DIR: C:\Users\KDeusEx\PycharmProjects\HSE_Bot\utils\generate_report
+SKIP_UPDATES: true
+WORK_PATH: C:\Users\KDeusEx\PycharmProjects\HSE_Bot\utils\generate_report

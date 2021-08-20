@@ -17,8 +17,8 @@ from utils.secondary_functions.get_day_message import get_day_message
 from utils.secondary_functions.get_json_files import get_json_files
 from utils.secondary_functions.get_month_message import get_month_message
 
-STARTROW:int = 0
-STARTCOL:int = 1
+STARTROW: int = 0
+STARTCOL: int = 1
 
 
 async def get_file_list(message: types.Message) -> list:
@@ -115,8 +115,6 @@ async def _insert_img(json_data, worksheet):
 async def create_report(message: types.Message):
     """
     """
-    # report_file: str = f'{REPORTS_DATA_PATH}МИП Отчет за {date.today()}.xlsx'
-
     json_data: list = await create_xlsx(message, REPORT_FULL_NAME)
 
     wb: Workbook = openpyxl.load_workbook(REPORT_FULL_NAME)
@@ -136,12 +134,11 @@ async def send_report_from_user(message: types.Message):
     await bot.send_chat_action(user_id, ChatActions.UPLOAD_DOCUMENT)
     await asyncio.sleep(2)  # скачиваем файл и отправляем его пользователю
 
-    # document = f'{REPORTS_DATA_PATH}МИП Отчет за {date.today()}.xlsx'
-
     doc = open(REPORT_FULL_NAME, 'rb')
     await bot.send_document(user_id, document=doc,
                             caption='Отчет собран для тебя с помощью бота!')
 
 
 if __name__ == '__main__':
-    pass
+    await create_report()
+    await send_report_from_user()
