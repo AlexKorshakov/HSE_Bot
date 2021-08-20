@@ -14,6 +14,7 @@ async def process_help_command(message: types.Message):
         "/comment- Комментарий к нарушению",
         "/registration- Зарегистрировать и записать",
         "/cancel- Отмена регистрации",
+        "/generate - Формирование отчета"
         "/start- Начало работы",
         sep="\n"
     )

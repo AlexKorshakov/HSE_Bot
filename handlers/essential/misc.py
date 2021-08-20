@@ -3,6 +3,7 @@ from aiogram.dispatcher.filters import Command
 from aiogram.utils.markdown import hlink
 from loguru import logger
 
+from data.config import ADMINS_ID
 from loader import dp
 from utils.misc import rate_limit
 
@@ -11,4 +12,4 @@ from utils.misc import rate_limit
 @dp.message_handler(Command('developer'))
 async def developer(message: types.Message):
     logger.debug(f'User @{message.from_user.username}:{message.from_user.id} looking for a developer')
-    await message.answer(f'Меня создал {hlink(title="Forzend", url="tg://user?id=373084462")}')
+    await message.answer(f'Меня создал {hlink(title="Forzend", url=f"tg://user?id={ADMINS_ID}")}')

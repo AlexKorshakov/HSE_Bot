@@ -7,4 +7,7 @@ from . import comment
 from . import description
 from . import registration
 from . import cancel
+from . import generate_report
+from . import location
 from . import text
+

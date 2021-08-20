@@ -4,10 +4,18 @@ from pprint import pprint
 class Report(object):
     # all_potions = []
 
+    def __new__(cls, *args, **kwargs):
+        print("Hello from __new__")
+        return super().__new__(cls)
+
     def __init__(self):
         self.report_data: dict[str, str] = {}
         # Report.all_potions.append(self)
         # pprint(f"Report all_potions {Report.all_potions}")
+
+    # def add_data(self, key, data = None):
+    #     self.report_data[f'{key}'] = data
+    #     pprint(self._report_data)
 
     def _print(self):
         pprint(self._report_data)
@@ -19,10 +27,12 @@ class Report(object):
     @report_data.setter
     def report_data(self, value):
         self._report_data = value
+        if value == {}:
+            return
         self._print()
 
-    def __getattr__(self, attr):
-        return getattr(self.report_data, attr)
+    # def __getattr__(self, attr):
+    #     return getattr(self.report_data, attr)
 
     # def __setattr__(self, attr, val):
     #     if attr == 'report_data':
