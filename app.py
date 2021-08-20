@@ -1,4 +1,4 @@
-from heroku cliaiogram import Dispatcher
+from aiogram import Dispatcher
 from aiogram import executor
 
 from data.config import SKIP_UPDATES, NUM_BUTTONS
