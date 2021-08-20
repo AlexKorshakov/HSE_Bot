@@ -3,7 +3,8 @@ from aiogram import executor
 
 from data.config import SKIP_UPDATES, NUM_BUTTONS
 from loguru import logger
-from loader import dp
+from loader import dp, bot
+from utils.get_handled_updates_list import get_handled_updates_list
 
 from utils.notify_admins import on_startup_notify
 from utils.set_bot_commands import set_default_commands
@@ -16,9 +17,11 @@ async def on_startup(dispatcher: Dispatcher):
     setup_logger()
     logger.info("Установка обработчиков...")
     # Установка обработчиков производится посредством декораторов. Для этого достаточно просто импортировать модуль
+
     import filters
     import callbacks
     import handlers
+
     setup_middlewares(dispatcher)
 
     await on_startup_notify(dispatcher)
@@ -32,6 +35,18 @@ async def on_shutdown(dispatcher: Dispatcher):
 
 if __name__ == '__main__':
     if NUM_BUTTONS in range(2, 8):
-        executor.start_polling(dp, on_startup=on_startup, skip_updates=SKIP_UPDATES, on_shutdown=shutdown)
+        # try:
+        executor.start_polling(dispatcher=dp,
+                               on_startup=on_startup,
+                               skip_updates=SKIP_UPDATES,
+                               on_shutdown=shutdown)
+            # executor.start_polling(dispatcher=dp, on_startup=on_startup,
+            #                        skip_updates=SKIP_UPDATES,
+            #                        on_shutdown=shutdown,
+            #                        allowed_updates=get_handled_updates_list(dp))
+        # finally:
+        #     dp.storage.close()
+        #     dp.storage.wait_closed()
+        #     bot.session.close()
     else:
         raise AttributeError('количество кнопок не может быть меньше 2х или больше 7и')

@@ -139,6 +139,6 @@ async def send_report_from_user(message: types.Message):
                             caption='Отчет собран для тебя с помощью бота!')
 
 
-if __name__ == '__main__':
-    await create_report()
-    await send_report_from_user()
+# if __name__ == '__main__':
+#     await create_report()
+#     await send_report_from_user()
