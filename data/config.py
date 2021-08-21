@@ -15,10 +15,22 @@ except Exception as env_err:
     if not BOT_TOKEN:
         print('You have forgot to set BOT_TOKEN')
         quit()
+
+if not BOT_TOKEN:
+    raise ValueError("Не указан токен. Бот не может быть запущен.")
 try:
-    ADMINS_ID = env.list("ADMINS_ID")
+    ADMINS_IDS = env.list("ADMINS_ID")
 except Exception as env_err:
-    ADMINS_ID: str = os.getenv('ADMINS_ID')
+    ADMINS_IDS: str = os.getenv('ADMINS_ID')
+
+if not ADMINS_IDS:
+    raise ValueError("Не указан идентификатор чата для пересылки сообщений. Бот не может быть запущен.")
+
+for admin_id in ADMINS_IDS:
+    try:
+        admin_chat_id = int(admin_id)
+    except ValueError:
+        raise ValueError(f'Идентификатор "{str(admin_chat_id)}" не является числом. Бот не может быть запущен.')
 
 MAIN_MODULE_NAME = os.path.basename(__file__)[:-3]
 
@@ -29,6 +41,7 @@ BAN_TIME = env.int("BAN_TIME", 30)
 
 WORK_PATH = os.getcwd()
 ROOT_DIR = os.path.dirname(os.path.abspath(sys.modules['__main__'].__file__))
+print(ROOT_DIR)
 
 REPORT_NAME: str = "report_data___"
 BOT_DATA_PATH = WORK_PATH + "\\user_data\\"
