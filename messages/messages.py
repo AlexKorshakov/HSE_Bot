@@ -9,7 +9,8 @@ MESSAGES: dict = {"help_message": "Справка по командам бота
                                    f'\n'
                                    f'Для начала работы просто отправьте фото боту или воспользуйтесь командой /registration'
                                    f'\n',
-                  "ask_phone_number": "Send me your phone number with code (example: +7xxxxxxxxxx):",
+                  "ask_phone_number": "Отправь мне свой номер телефона с кодом (пример: +7xxxxxxxxxx):",
                   "invalid_input ":"Неправильный ввод данных",
-                  "Whats your name":"Введитк ваше ФИО полностью"
+                  "Whats your name":"Введите ваше ФИО полностью",
+                  "registration completed successfully":"регистрация прошла успешно"
                   }

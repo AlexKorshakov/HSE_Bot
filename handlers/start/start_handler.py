@@ -45,8 +45,8 @@ async def cancel(message: types.Message, state: FSMContext):
 @dp.message_handler(IsPrivate, state=RegisterState.name)
 async def enter_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data['name'] = message.text
-        await write_json_file(data=report_data, name=report_name_mod)
+        report_data['name'] = message.text
+        await write_json_file(message, data=report_data, name=report_name_mod)
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -60,8 +60,11 @@ async def enter_phone_number(message: types.Message, state: FSMContext):
         return await message.reply(MESSAGES["invalid_input"])
 
     async with state.proxy() as data:
-        report_data["name"] = data['name']
+        # report_data["name"] = message.text
         report_data["phone_number"] = int(message.text.strip("+"))
-        await write_json_file(data=report_data, name=report_name_mod)
+        await write_json_file(message, data=report_data, name=report_name_mod)
+
+        await message.reply(MESSAGES['registration completed successfully'])
+        await message.reply(MESSAGES["help_message"], reply_markup=ReplyKeyboardRemove())
 
     await state.finish()

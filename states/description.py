@@ -16,6 +16,6 @@ async def process_description(message: types.Message, state: FSMContext):
     """
     report_data["description"] = message.text
 
-    await write_json_file(data=report_data, name=REPORT_NAME + report_data["file_id"])
+    await write_json_file(message, data=report_data, name=REPORT_NAME + report_data["file_id"])
     await AnswerUserState.next()
     await message.answer("введите комментарий")

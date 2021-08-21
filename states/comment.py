@@ -15,7 +15,7 @@ async def process_comment(message: types.Message, state: FSMContext):
     """
     report_data["comment"] = message.text
 
-    await write_json_file(data=report_data, name=REPORT_NAME + report_data["file_id"])
+    await write_json_file(message, data=report_data, name=REPORT_NAME + report_data["file_id"])
 
     if report_data.get("comment"):
 

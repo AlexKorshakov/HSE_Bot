@@ -20,7 +20,7 @@ async def general_contractors_answer(call: types.CallbackQuery):
                 logger.debug(f"Выбрано: {i}")
                 report_data["general_contractor"] = i
 
-                await write_json_file(data=report_data, name=REPORT_NAME + report_data["file_id"])
+                await write_json_file(call.message, data=report_data, name=REPORT_NAME + report_data["file_id"])
                 await call.message.answer("введите описание")
                 await AnswerUserState.description.set()
                 break

@@ -10,20 +10,25 @@ from openpyxl.drawing.image import Image
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.worksheet import Worksheet
 
-from data.config import JSON_DATA_PATH, SEPARATOR, REPORT_FULL_NAME
+from data.config import SEPARATOR, REPORT_FULL_NAME, BOT_DATA_PATH
 from loader import bot
 from utils.json_handler.read_json_file import read_json_file
 from utils.secondary_functions.get_day_message import get_day_message
+from utils.secondary_functions.get_filepath import file_path
 from utils.secondary_functions.get_json_files import get_json_files
 from utils.secondary_functions.get_month_message import get_month_message
 
 STARTROW: int = 0
 STARTCOL: int = 1
-
+JSON_DATA_PATH = "\\data_file\\json\\"
+REPORTS_DATA_PATH = "\\data_file\\reports\\"
 
 async def get_file_list(message: types.Message) -> list:
     """
     """
+
+    JSON_DATA_PATH = BOT_DATA_PATH  + str(message.chat.id) + "\\data_file\\json\\"
+
     files = await get_json_files(JSON_DATA_PATH)
     global_data = []
 
@@ -115,16 +120,21 @@ async def _insert_img(json_data, worksheet):
 async def create_report(message: types.Message):
     """
     """
-    json_data: list = await create_xlsx(message, REPORT_FULL_NAME)
+    report_path = BOT_DATA_PATH + str(message.chat.id) + "\\data_file\\reports\\"
 
-    wb: Workbook = openpyxl.load_workbook(REPORT_FULL_NAME)
+    await file_path(report_path)
+    fill_report_path = report_path + REPORT_FULL_NAME
+
+    json_data: list = await create_xlsx(message, report_file=fill_report_path)
+
+    wb: Workbook = openpyxl.load_workbook(fill_report_path)
     worksheet: Worksheet = wb.worksheets[0]
 
     await _column_widths(worksheet)
     await _insert_img(json_data, worksheet)
     await _row_height(worksheet)
 
-    wb.save(REPORT_FULL_NAME)
+    wb.save(fill_report_path)
 
 
 async def send_report_from_user(message: types.Message):
@@ -134,10 +144,14 @@ async def send_report_from_user(message: types.Message):
     await bot.send_chat_action(user_id, ChatActions.UPLOAD_DOCUMENT)
     await asyncio.sleep(2)  # скачиваем файл и отправляем его пользователю
 
-    doc = open(REPORT_FULL_NAME, 'rb')
+    report_path = BOT_DATA_PATH + str(message.chat.id) + "\\data_file\\reports\\"
+    await file_path(report_path)
+    fill_report_path = report_path + REPORT_FULL_NAME
+
+
+    doc = open(fill_report_path, 'rb')
     await bot.send_document(user_id, document=doc,
                             caption='Отчет собран для тебя с помощью бота!')
-
 
 # if __name__ == '__main__':
 #     await create_report()
