@@ -19,7 +19,7 @@ async def main_category_answer(call: types.CallbackQuery):
             if call.data == i:
                 logger.debug(f"Выбрано: {i}")
                 report_data["main_category"] = i
-                await write_json_file(data=report_data, name=REPORT_NAME + report_data["file_id"])
+                await write_json_file(call.message, data=report_data, name=REPORT_NAME + report_data["file_id"])
                 await big_category(call, big_menu_list=CATEGORY_LIST)
                 break
 

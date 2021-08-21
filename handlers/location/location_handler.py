@@ -1,3 +1,4 @@
+from aiogram import types
 from loguru import logger
 
 from data.config import REPORT_NAME
@@ -17,9 +18,8 @@ from utils.secondary_functions.get_filename import get_filename
 #     await message.answer("Выберите действие:", reply_markup=keyboard)
 
 
-
 @dp.message_handler(content_types=['location'])
-async def handle_loc(message):
+async def handle_loc(message: types.Message):
     print(message.location)
     report_data["latitude"] = message.location.latitude
     report_data["longitude"] = message.location.longitude
@@ -32,8 +32,7 @@ async def handle_loc(message):
     global report_name_mod
     report_name_mod = REPORT_NAME + report_data["file_id"]
 
-
-    await write_json_file(data=report_data, name=report_name_mod)
+    await write_json_file(message, data=report_data, name=report_name_mod)
 
     # pprint(report_data)
 

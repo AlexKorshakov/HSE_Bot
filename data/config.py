@@ -10,14 +10,14 @@ env.read_env()
 
 try:
     BOT_TOKEN: str = env("BOT_TOKEN")
-except Exception as callback_err:
+except Exception as env_err:
     BOT_TOKEN: str = os.getenv('BOT_TOKEN')
     if not BOT_TOKEN:
         print('You have forgot to set BOT_TOKEN')
         quit()
 try:
     ADMINS_ID = env.list("ADMINS_ID")
-except Exception as callback_err:
+except Exception as env_err:
     ADMINS_ID: str = os.getenv('ADMINS_ID')
 
 MAIN_MODULE_NAME = os.path.basename(__file__)[:-3]
@@ -32,13 +32,10 @@ ROOT_DIR = os.path.dirname(os.path.abspath(sys.modules['__main__'].__file__))
 
 REPORT_NAME: str = "report_data___"
 BOT_DATA_PATH = WORK_PATH + "\\user_data\\"
-JSON_DATA_PATH = BOT_DATA_PATH + "data_file\\json\\"
-PHOTO_DATA_PATH = BOT_DATA_PATH + "data_file\\photo\\"
-REPORTS_DATA_PATH = BOT_DATA_PATH + "data_file\\reports\\"
 
 SEPARATOR = "___"
 
-REPORT_FULL_NAME = f'{REPORTS_DATA_PATH}МИП Отчет за {date.today()}.xlsx'
+REPORT_FULL_NAME = f'МИП Отчет за {date.today()}.xlsx'
 
 # Init config
 fastconf.config(__name__)

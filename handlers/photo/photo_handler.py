@@ -29,22 +29,22 @@ async def photo_handler(message: types.Message):
     global report_name_mod
     report_name_mod = REPORT_NAME + report_data["file_id"]
 
-    report_data["user_id"] =message.from_user.id
+    report_data["user_id"] = message.from_user.id
     report_data["user_fullname"] = message.from_user.full_name
 
     report_data["now"] = str(datetime.datetime.now())
-    report_data["filepath"] = await get_photo_filepath(report_name_mod)
+    report_data["filepath"] = await get_photo_filepath(message, report_name_mod)
     report_data["day"] = await get_day_message(message)
     report_data["month"] = await get_month_message(message)
     report_data["year"] = await get_year_message(message)
 
-    await write_json_file(data=report_data, name=report_name_mod)
+    await write_json_file(message, data=report_data, name=report_name_mod)
 
-    await message.photo[-1].download(destination=await get_photo_filepath(report_name_mod))
+    await message.photo[-1].download(destination=await get_photo_filepath(message, report_name_mod))
 
     # if DEBUGGING:
     #     await message.answer("DEBUGGING введите описание")
     #     await Form.description.set()
-        # await Form.next()
+    # await Form.next()
 
     await select_start_category(message)
