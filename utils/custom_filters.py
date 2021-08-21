@@ -1,6 +1,6 @@
 from aiogram.types import ChatType
 from aiogram.dispatcher.filters import ChatTypeFilter
-from data.config import ADMINS_ID
+from data.config import ADMINS_IDS
 
 
 def IsGroup(m):
@@ -16,4 +16,4 @@ def IsChannel(m):
 
 
 def IsSudo(m):
-    return (m.from_user.id in ADMINS_ID)
+    return (m.from_user.id in ADMINS_IDS)

@@ -4,7 +4,8 @@ from loguru import logger
 
 from loader import dp
 from messages.messages import MESSAGES
-from utils.generate_report.generator_report import create_report, send_report_from_user
+from utils.generate_report.generator_report import create_report
+from utils.generate_report.send_report_from_user import send_report_from_user
 from utils.misc import rate_limit
 
 
