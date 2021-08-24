@@ -10,9 +10,9 @@ async def get_file_list(message: types.Message) -> list:
     """
     """
 
-    JSON_DATA_PATH = BOT_DATA_PATH + str(message.chat.id) + "\\data_file\\json\\"
+    json_data_path = BOT_DATA_PATH + str(message.chat.id) + "\\data_file\\json\\"
 
-    files = await get_json_files(JSON_DATA_PATH)
+    files = await get_json_files(json_data_path)
     global_data = []
 
     for file in files:

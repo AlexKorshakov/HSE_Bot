@@ -1,8 +1,8 @@
+import datetime
 import os
 import sys
-from datetime import date
 
-import fastconf as fastconf
+import fastconf
 from environs import Env
 
 env = Env()
@@ -30,7 +30,11 @@ for admin_id in ADMINS_IDS:
     try:
         admin_chat_id = int(admin_id)
     except ValueError:
-        raise ValueError(f'Идентификатор "{str(admin_chat_id)}" не является числом. Бот не может быть запущен.')
+        raise ValueError(f'Идентификатор "{str(admin_id)}" не является числом. Бот не может быть запущен.')
+
+
+DEVELOPER_ID: str = os.getenv('DEVELOPER_ID')
+
 
 MAIN_MODULE_NAME = os.path.basename(__file__)[:-3]
 
@@ -48,9 +52,12 @@ BOT_DATA_PATH = WORK_PATH + "\\user_data\\"
 
 SEPARATOR = "___"
 
-REPORT_FULL_NAME = f'МИП Отчет за {date.today()}.xlsx'
+REPORT_FULL_NAME = f'МИП Отчет за {(datetime.datetime.now()).strftime("%d.%m.%Y")}.xlsx'
+
+
 
 # Init config
 fastconf.config(__name__)
 if 'init' in sys.argv:
+    print(f'sys.argv: {sys.argv}')
     sys.exit(0)

@@ -8,7 +8,7 @@ from loader import dp
 
 from utils.json_handler.writer_json_file import write_json_file
 from utils.secondary_functions.get_day_message import get_day_message
-from utils.secondary_functions.get_filename import get_filename
+from utils.secondary_functions.get_filename import get_filename_msg_with_photo
 from utils.secondary_functions.get_filepath import get_photo_filepath
 from utils.secondary_functions.get_month_message import get_month_message
 from utils.secondary_functions.get_year_message import get_year_message
@@ -24,7 +24,7 @@ async def photo_handler(message: types.Message):
     # if await photo_processing(message):
     #     return
 
-    report_data["file_id"] = await get_filename(message)
+    report_data["file_id"] = await get_filename_msg_with_photo(message)
 
     global report_name_mod
     report_name_mod = REPORT_NAME + report_data["file_id"]
