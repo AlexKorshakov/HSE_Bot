@@ -10,9 +10,10 @@ async def process_help_command(message: types.Message):
     """Обработка команды help
     """
     help_message = text(
-        "/description- Описание нарушения",
-        "/comment- Комментарий к нарушению",
-        "/registration- Зарегистрировать и записать",
+        # "/description- Описание нарушения",
+        # "/comment- Комментарий к нарушению",
+        # "/registration- Зарегистрировать и записать",
+        "/developer- написать разработчику",
         "/cancel- Отмена регистрации",
         "/generate - Формирование отчета"
         "/start- Начало работы",

@@ -3,7 +3,7 @@ from aiogram import types
 from callbacks.callback_action import cb_start
 
 
-def get_keyboard_fab():
+async def get_keyboard_fab():
     """Действия при начале регистрации нарушений.
     ВОзвращает кнопри Зарегистрировать и Отмена
     """

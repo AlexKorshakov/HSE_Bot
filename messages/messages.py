@@ -1,4 +1,6 @@
-MESSAGES: dict = {"help_message": "Справка по командам бота /help",
+MESSAGES: dict = {"help_message": f"Справка по командам бота /help" '\n'
+                                  f'для начала работы нажмите /start' "\n"
+                                  f'чтобы написать разработчику нажмите /developer',
                   "wait": "это может занять нескоторое время",
                   "report_done": "Отчет сформирован",
                   "report_start": "начинаю генерацию отчета",
@@ -10,7 +12,7 @@ MESSAGES: dict = {"help_message": "Справка по командам бота
                                    f'Для начала работы просто отправьте фото боту или воспользуйтесь командой /registration'
                                    f'\n',
                   "ask_phone_number": "Отправь мне свой номер телефона с кодом (пример: +7xxxxxxxxxx):",
-                  "invalid_input ":"Неправильный ввод данных",
-                  "Whats your name":"Введите ваше ФИО полностью",
-                  "registration completed successfully":"регистрация прошла успешно"
+                  "invalid_input ": "Неправильный ввод данных",
+                  "Whats your name": "Введите ваше ФИО полностью",
+                  "registration completed successfully": "регистрация прошла успешно"
                   }
