@@ -47,6 +47,7 @@ async def get_filename(message):
 
     filename = '.'.join([day, month, year]) + \
            SEPARATOR + \
-           str(message.values['from'].id)
+           str(message.from_user.id)
+
     logger.info(f"filename {filename}")
     return filename

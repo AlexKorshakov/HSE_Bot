@@ -15,14 +15,14 @@ from utils.generate_report.set_column_widths import set_column_widths
 from utils.generate_report.set_font import set_font
 from utils.generate_report.set_row_height import set_row_height
 from utils.img_processor.insert_img import insert_img
-from utils.secondary_functions.get_filepath import file_path
+from utils.secondary_functions.get_filepath import create_file_path
 
 
 async def create_report(message: types.Message):
     """
     """
     report_path = BOT_DATA_PATH + str(message.chat.id) + "\\data_file\\reports\\"
-    await file_path(report_path)
+    await create_file_path(report_path)
     fill_report_path = report_path + REPORT_FULL_NAME
 
     file_list: list[Any] = await get_file_list(message)
