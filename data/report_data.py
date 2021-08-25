@@ -5,7 +5,7 @@ class Report(object):
     # all_potions = []
 
     def __new__(cls, *args, **kwargs):
-        print("Hello from __new__")
+        print(f"Hello from {Report.__new__}")
         return super().__new__(cls)
 
     def __init__(self):
@@ -27,3 +27,5 @@ class Report(object):
 
 
 report_data = Report().report_data
+user_data = Report().report_data
+global_reg_form = Report().report_data

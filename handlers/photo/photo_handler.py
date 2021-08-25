@@ -3,8 +3,10 @@ import datetime
 from aiogram import types
 
 from data.report_data import report_data
-from data.config import REPORT_NAME
+from data.config import REPORT_NAME, BOT_DATA_PATH
 from loader import dp
+from messages.messages import MESSAGES
+from utils.json_handler.read_json_file import read_json_file
 
 from utils.json_handler.writer_json_file import write_json_file
 from utils.secondary_functions.get_day_message import get_day_message
@@ -14,7 +16,7 @@ from utils.secondary_functions.get_month_message import get_month_message
 from utils.secondary_functions.get_year_message import get_year_message
 from utils.select_start_category import select_start_category
 
-global report_name_mod
+global reg_user_file
 
 
 @dp.message_handler(content_types=["photo"])
@@ -23,10 +25,15 @@ async def photo_handler(message: types.Message):
     """
     # if await photo_processing(message):
     #     return
+    glob_db = await read_json_file(file=BOT_DATA_PATH + "registration_db.json")
+    if not glob_db.get(str(message.from_user.id)):
+        await dp.bot.send_message(chat_id=message.from_user.id, text="Вы не зерегестртрованы!")
+        await dp.bot.send_message(chat_id=message.from_user.id, text=MESSAGES["help_message"])
+        return
 
     report_data["file_id"] = await get_filename_msg_with_photo(message)
 
-    global report_name_mod
+    global reg_user_file
     report_name_mod = REPORT_NAME + report_data["file_id"]
 
     report_data["user_id"] = message.from_user.id

@@ -16,8 +16,6 @@ async def set_default_commands(dp):
     ])
     logger.info('Установка комманд бота...')
 
-
-
 # async def load_handlers():
 #     handlers = [m[:-3] for m in os.listdir(HANDLERS_DIR) if m.endswith(".py")]
 #     for handler in (HANDLERS or handlers):
