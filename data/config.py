@@ -16,7 +16,9 @@ except Exception as env_err:
         print('You have forgot to set BOT_TOKEN')
         quit()
 
-ADMINS_ID = env.list("ADMINS_ID")
+ADMINS_ID: str = env("ADMINS_ID")
+
+
 MAIN_MODULE_NAME = os.path.basename(__file__)[:-3]
 
 SKIP_UPDATES = env.bool("SKIP_UPDATES", False)
