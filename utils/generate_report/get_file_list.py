@@ -7,11 +7,9 @@ from utils.secondary_functions.get_month_message import get_month_message
 
 
 async def get_file_list(message: types.Message) -> list:
+    """Получение списка файлов из директории
     """
-    """
-
     json_data_path = BOT_DATA_PATH + str(message.chat.id) + "\\data_file\\json\\"
-
     files = await get_json_files(json_data_path)
     global_data = []
 

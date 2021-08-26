@@ -1,11 +1,11 @@
-import openpyxl
-
+import openpyxl.utils
 from utils.generate_report.xlsx_config import MAXIMUM_COLUMN_WIDTH
 
 
 async def set_column_widths(worksheet):
+    """Форматирование ячейки: ширина столбца
     """
-    """
+
     for column_cells in worksheet.columns:
         column_length = max(len(_as_text(cell.value)) for cell in column_cells)
 
@@ -16,11 +16,14 @@ async def set_column_widths(worksheet):
 
         new_column_letter = (openpyxl.utils.get_column_letter(column_cells[0].column))
         if new_column_length > 0:
-            worksheet.column_dimensions[new_column_letter].width = new_column_length + 1
+            try:
+                worksheet.column_dimensions[new_column_letter].width = new_column_length + 1
+            except Exception as err:
+                print(F"set_column_widths {repr(err)}")
 
 
 def _as_text(value) -> str:
-    """
+    """Приведение данных к str
     """
     if value is None:
         return ""

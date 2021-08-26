@@ -9,7 +9,7 @@ from utils.secondary_functions.get_filepath import create_file_path
 
 
 async def send_report_from_user(message: types.Message):
-    """
+    """Отправка пользователю сообщения с готовым отчетом
     """
     user_id = message.from_user.id
     await bot.send_chat_action(user_id, ChatActions.UPLOAD_DOCUMENT)
@@ -19,6 +19,11 @@ async def send_report_from_user(message: types.Message):
     await create_file_path(report_path)
     fill_report_path = report_path + REPORT_FULL_NAME
 
-    doc = open(fill_report_path, 'rb')
-    await bot.send_document(user_id, document=doc,
-                            caption='Отчет собран для тебя с помощью бота!')
+    try:
+        doc = open(fill_report_path, 'rb')
+        await bot.send_document(user_id, document=doc,
+                                caption='Отчет собран для тебя с помощью бота!')
+    except Exception as err:
+        print(F"send_report_from_user {repr(err)}")
+
+

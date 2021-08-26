@@ -1,13 +1,30 @@
 from aiogram import types
 from loguru import logger
 
+from  data.category import get_names_from_json
 from callbacks.sequential_action.big_category_creator import big_category
-from data.category import CATEGORY_LIST, VIOLATION_CATEGORY
+
 from data.config import REPORT_NAME
 from data.report_data import report_data
 
 from loader import dp
 from utils.json_handler.writer_json_file import write_json_file
+
+try:
+    CATEGORY_LIST =  get_names_from_json("CATEGORY_LIST")
+    if CATEGORY_LIST is None:
+        from data.category import CATEGORY_LIST
+except Exception as err:
+    print(f"{repr(err)}")
+    from data.category import CATEGORY_LIST
+
+try:
+    VIOLATION_CATEGORY =  get_names_from_json("VIOLATION_CATEGORY")
+    if CATEGORY_LIST is None:
+        from data.category import VIOLATION_CATEGORY
+except Exception as err:
+    print(f"{repr(err)}")
+    from data.category import VIOLATION_CATEGORY
 
 
 @dp.callback_query_handler(lambda call: call.data in CATEGORY_LIST)

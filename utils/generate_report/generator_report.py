@@ -1,44 +1,60 @@
-from typing import Any
-
-import openpyxl
 from aiogram import types
-from openpyxl import Workbook
-from openpyxl.worksheet.worksheet import Worksheet
+from loguru import logger
 
-from data.config import REPORT_FULL_NAME, BOT_DATA_PATH
+from loader import bot
+from messages.messages import MESSAGES
 from utils.generate_report.create_dataframe import create_dataframe
 from utils.generate_report.create_xlsx import create_xlsx
-from utils.generate_report.set_frame_border import set_border
 from utils.generate_report.get_file_list import get_file_list
-from utils.generate_report.set_alignment import set_alignment
-from utils.generate_report.set_column_widths import set_column_widths
-from utils.generate_report.set_font import set_font
-from utils.generate_report.set_row_height import set_row_height
-from utils.img_processor.insert_img import insert_img
-from utils.secondary_functions.get_filepath import create_file_path
+from utils.generate_report.get_report_path import get_report_path
+from utils.generate_report.get_workbook import get_workbook
+from utils.generate_report.get_worksheet import get_worksheet
+from utils.generate_report.sheet_formatting.sheet_formatting import format_sheets
+from utils.img_processor.insert_img import insert_images_too_sheet
 
 
 async def create_report(message: types.Message):
+    """Создание отчета xls из данных json
     """
-    """
-    report_path = BOT_DATA_PATH + str(message.chat.id) + "\\data_file\\reports\\"
-    await create_file_path(report_path)
-    fill_report_path = report_path + REPORT_FULL_NAME
 
-    file_list: list[Any] = await get_file_list(message)
+    fill_report_path = await get_report_path(message)
+    if fill_report_path is None:
+        logger.warning('error! fill_report_path not found!')
+        bot.send_message(message.from_user.id, MESSAGES["fill_report_path not found"])
+        return
 
-    df = await create_dataframe(file_list=file_list)
+    file_list = await get_file_list(message)
+    if file_list is None:
+        logger.warning('error! file_list not found!')
+        bot.send_message(message.from_user.id, MESSAGES["file_list not found"])
+        return
 
-    await create_xlsx(df, report_file=fill_report_path)
+    dataframe = await create_dataframe(file_list=file_list)
+    if dataframe is None:
+        logger.warning('error! dataframe not found!')
+        bot.send_message(message.from_user.id, MESSAGES["dataframe not found"])
+        return
 
-    wb: Workbook = openpyxl.load_workbook(fill_report_path)
-    worksheet: Worksheet = wb.worksheets[0]
+    is_created: bool = await create_xlsx(dataframe, report_file=fill_report_path)
+    if is_created is None:
+        logger.warning('error! Workbook not create!')
+        bot.send_message(message.from_user.id, MESSAGES["workbook not create"])
+        return
 
-    await set_border(worksheet)
-    await set_alignment(worksheet)
-    await set_font(worksheet)
-    await set_column_widths(worksheet)
-    await set_row_height(worksheet)
-    await insert_img(file_list, worksheet)
+    workbook = await get_workbook(fill_report_path)
+    if workbook is None:
+        logger.warning('error! Workbook not found!')
+        bot.send_message(message.from_user.id, MESSAGES["workbook not found"])
+        return
 
-    wb.save(fill_report_path)
+    worksheet = await get_worksheet(workbook, index=0)
+    if worksheet is None:
+        logger.warning('error! worksheet not found!')
+        bot.send_message(message.from_user.id, MESSAGES["worksheet not found"])
+        return
+
+    await format_sheets(worksheet)
+
+    await insert_images_too_sheet(file_list, worksheet)
+
+    workbook.save(fill_report_path)
