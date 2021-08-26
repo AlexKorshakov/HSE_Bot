@@ -1,3 +1,4 @@
+from aiogram import types
 from loguru import logger
 
 from data.config import REPORT_NAME

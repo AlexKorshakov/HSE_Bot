@@ -17,7 +17,7 @@ except Exception as env_err:
         quit()
 
 ADMINS_ID: str = env("ADMINS_ID")
-
+DEVELOPER_ID: str = env("DEVELOPER_ID")
 
 MAIN_MODULE_NAME = os.path.basename(__file__)[:-3]
 

@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher.filters import Command
 from loguru import logger
 
-from data.config import ADMINS_IDS, DEVELOPER_ID
+from data.config import DEVELOPER_ID
 from loader import dp, bot
 from utils.misc import rate_limit
 
