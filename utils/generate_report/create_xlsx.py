@@ -1,18 +1,12 @@
 from utils.generate_report.xlsx_config import STARTROW, STARTCOL
-import pandas as pd
+
 
 async def create_xlsx(df, report_file):
+    """Создание xlsx из dataframe
     """
-    """
-
-    df.to_excel(report_file, header=False, startrow=STARTROW, startcol=STARTCOL)
-    #
-    # writer = pd.ExcelWriter('pandas_conditional.xlsx', engine='xlsxwriter')
-    # df.to_excel(writer, sheet_name='Sheet1')
-    #
-    #
-    # workbook = writer.book
-    # worksheet = writer.sheets['Sheet1']
-    #
-    # pd.set_option()
-    return df
+    try:
+        df.to_excel(report_file, header=False, startrow=STARTROW, startcol=STARTCOL)
+        return True
+    except Exception as err:
+        print(F"set_border {repr(err)}")
+        return  None

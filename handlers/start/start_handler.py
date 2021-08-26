@@ -4,26 +4,30 @@ from aiogram.dispatcher.filters import Command, Text
 from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from loguru import logger
 
-from data.config import REPORT_NAME
-from data.report_data import report_data
+from data.config import BOT_DATA_PATH
+from data.report_data import user_data
+
+from database.entry_in_db import entry_in_db
 from loader import dp
 from messages.messages import MESSAGES
 from states import RegisterState
 from utils.custom_filters import IsPrivate
-from utils.json_handler.writer_json_file import write_json_file
+from utils.json_handler.writer_json_file import write_json_reg_user_file
 from utils.misc import rate_limit
-from utils.secondary_functions.get_filename import get_filename
+from utils.secondary_functions.get_filepath import create_file_path
 
 
 @rate_limit(limit=20)
 @dp.message_handler(Command('start'), IsPrivate)
 async def start(message: types.Message):
+    user_data["user_id"] = str(message.from_user.id)
 
-    report_data["file_id"] = await get_filename(message)
+    reg_user_file: str = BOT_DATA_PATH + user_data["user_id"]
+    user_data['reg_user_file'] = reg_user_file
 
-    global report_name_mod
-    report_name_mod = REPORT_NAME + report_data["file_id"]
+    await create_file_path(user_path=user_data['reg_user_file'])
 
+    await write_json_reg_user_file(data=user_data)
 
     logger.info(f'User @{message.from_user.username}:{message.from_user.id} start work')
     await message.answer(f'{MESSAGES["Hi"]}, {message.from_user.full_name}!')
@@ -31,9 +35,9 @@ async def start(message: types.Message):
                          f'{MESSAGES["help_message"]}')
 
     await RegisterState.name.set()
-    markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(MESSAGES["Cancel"])
-    return await message.reply(MESSAGES["Whats your name"], reply_markup=markup)
+    reply_markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    reply_markup.add(MESSAGES["Cancel"])
+    return await message.reply(MESSAGES["ask_name"], reply_markup=reply_markup)
 
 
 @dp.message_handler(IsPrivate, Text(equals=MESSAGES["Cancel"]), state=RegisterState.all_states)
@@ -44,9 +48,21 @@ async def cancel(message: types.Message, state: FSMContext):
 
 @dp.message_handler(IsPrivate, state=RegisterState.name)
 async def enter_name(message: types.Message, state: FSMContext):
-    async with state.proxy() as data:
-        report_data['name'] = message.text
-        await write_json_file(message, data=report_data, name=report_name_mod)
+    user_data['name'] = message.text
+
+    await write_json_reg_user_file(data=user_data)
+
+    await RegisterState.next()
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(MESSAGES["Cancel"])
+    return await message.reply(MESSAGES['ask_function'], reply_markup=markup)
+
+
+@dp.message_handler(IsPrivate, state=RegisterState.function)
+async def enter_function(message: types.Message, state: FSMContext):
+    user_data['function'] = message.text
+
+    await write_json_reg_user_file(data=user_data)
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -59,12 +75,14 @@ async def enter_phone_number(message: types.Message, state: FSMContext):
     if not message.text.startswith("+") or not message.text.strip("+").isnumeric():
         return await message.reply(MESSAGES["invalid_input"])
 
-    async with state.proxy() as data:
-        # report_data["name"] = message.text
-        report_data["phone_number"] = int(message.text.strip("+"))
-        await write_json_file(message, data=report_data, name=report_name_mod)
+    user_data["phone_number"] = int(message.text.strip("+"))
+    await write_json_reg_user_file(data=user_data)
 
-        await message.reply(MESSAGES['registration completed successfully'])
-        await message.reply(MESSAGES["help_message"], reply_markup=ReplyKeyboardRemove())
+    await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
+    await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES["help_message"],
+                              reply_markup=ReplyKeyboardRemove())
+
+
+    await entry_in_db(reg_data=user_data)
 
     await state.finish()

@@ -1,3 +1,11 @@
+import json
+from json import JSONDecodeError
+
+import inspect, os.path
+
+filename = inspect.getframeinfo(inspect.currentframe()).filename
+path = os.path.dirname(os.path.abspath(filename))
+
 MAIN_CATEGORY_LIST: list[str] = [
     "Охрана труда",
     "Промышленная безопасность",
@@ -47,3 +55,19 @@ GENERAL_CONTRACTORS: list[str] = [
     "ГорИнжПроект(?)",
     "Прочее(?)"
 ]
+
+
+def get_names_from_json(name=None):
+    """ Функция получения настроек из файла json.
+    """
+    if name:
+        try:
+            with open(path + "\\" + name + ".json", "r", encoding="UTF-8") as read_file:
+                return json.loads(read_file.read())
+
+        except FileNotFoundError as err:
+            print(f"{repr(err)}")
+        except JSONDecodeError as err:
+            print(f"{repr(err)}")
+        except Exception as err:
+            print(f"{repr(err)}")

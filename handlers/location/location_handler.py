@@ -1,11 +1,10 @@
-from aiogram import types
 from loguru import logger
 
 from data.config import REPORT_NAME
 from data.report_data import report_data
 from loader import dp
 from utils.json_handler.writer_json_file import write_json_file
-from utils.secondary_functions.get_filename import get_filename
+from utils.secondary_functions.get_filename import get_filename_msg_with_photo
 
 
 # @dp.message_handler(Command('map'))
@@ -27,16 +26,9 @@ async def handle_loc(message: types.Message):
     logger.info(f'latitude {report_data["latitude"]}')
     logger.info(f'latitude {report_data["longitude"]}')
 
-    report_data["file_id"] = await get_filename(message)
+    report_data["file_id"] = await get_filename_msg_with_photo(message)
 
-    global report_name_mod
+    # global report_name_mod
     report_name_mod = REPORT_NAME + report_data["file_id"]
 
     await write_json_file(message, data=report_data, name=report_name_mod)
-
-    # pprint(report_data)
-
-    # await bot.send_location(chat_id=message.chat.id,
-    #                         latitude=message.location.latitude,
-    #                         longitude=message.location.longitude,
-    #                         proximity_alert_radius = 50)

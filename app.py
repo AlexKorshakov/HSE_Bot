@@ -36,11 +36,6 @@ async def on_shutdown(dispatcher: Dispatcher):
 if __name__ == '__main__':
     if NUM_BUTTONS in range(2, 8):
         try:
-        # executor.start_polling(dispatcher=dp,
-        #                        on_startup=on_startup,
-        #                        skip_updates=SKIP_UPDATES,
-        #                        on_shutdown=shutdown)
-        #     dp.skip_updates()
             executor.start_polling(dispatcher=dp,
                                    on_startup=on_startup,
                                    skip_updates=SKIP_UPDATES,

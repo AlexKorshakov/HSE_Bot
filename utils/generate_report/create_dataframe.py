@@ -1,11 +1,12 @@
-
+from typing import Optional
 
 import pandas as pd
+from pandas import DataFrame
 
 from utils.json_handler.read_json_file import read_json_file
 
 
-async def create_dataframe(file_list):
+async def create_dataframe(file_list)-> Optional[DataFrame]:
 
 
     data = [{
@@ -33,6 +34,10 @@ async def create_dataframe(file_list):
         "longitude",
     ]
 
-    df = pd.DataFrame(data, columns=column_list)
+    try:
+        dataframe = pd.DataFrame(data, columns=column_list)
+        return dataframe
+    except Exception as err:
+        print(F"get_workbook {repr(err)}")
+        return None
 
-    return df

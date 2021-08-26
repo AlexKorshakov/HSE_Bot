@@ -3,8 +3,8 @@ from aiogram.dispatcher import FSMContext
 
 from data.config import REPORT_NAME
 from data.report_data import report_data
-from keyboards.replykeyboards.registration_finist_keybord import registration_finist_keybord
-from loader import dp, bot
+from keyboards.replykeyboards.registration_finist_keybord import registration_finish_keyboard
+from loader import dp
 from states import AnswerUserState
 from utils.json_handler.writer_json_file import write_json_file
 
@@ -19,7 +19,7 @@ async def process_comment(message: types.Message, state: FSMContext):
 
     if report_data.get("comment"):
 
-        keyboard = registration_finist_keybord()
+        keyboard = await registration_finish_keyboard()
         await message.answer(text="При завершении регистрации дальнейшее изменение невозможно!",
                              reply_markup=keyboard)
 
