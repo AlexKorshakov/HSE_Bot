@@ -1,13 +1,21 @@
 from aiogram import types
 from loguru import logger
 
-from data.category import GENERAL_CONTRACTORS
+from data.category import GENERAL_CONTRACTORS, get_names_from_json
 from data.config import REPORT_NAME
 from data.report_data import report_data
 
 from loader import dp
 from states import AnswerUserState
 from utils.json_handler.writer_json_file import write_json_file
+
+try:
+    GENERAL_CONTRACTORS = get_names_from_json("GENERAL_CONTRACTORS")
+    if GENERAL_CONTRACTORS is None:
+        from data.category import GENERAL_CONTRACTORS
+except Exception as err:
+    print(f"{repr(err)}")
+    from data.category import GENERAL_CONTRACTORS
 
 
 @dp.callback_query_handler(lambda call: call.data in GENERAL_CONTRACTORS)

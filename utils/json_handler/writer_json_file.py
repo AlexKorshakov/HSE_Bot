@@ -3,6 +3,7 @@ import json
 
 from aiogram import types
 
+# from data.category import CATEGORY_LIST, MAIN_CATEGORY_LIST, VIOLATION_CATEGORY, GENERAL_CONTRACTORS
 from data.config import BOT_DATA_PATH
 from utils.secondary_functions.get_filepath import get_json_filepath
 
@@ -44,3 +45,19 @@ async def write_global_json_file(*, data: dict = None) -> None:
     name = BOT_DATA_PATH + "registration_db"
 
     await write_json(name=name, data=data)
+
+
+def this_write_json(name, data):
+    try:
+        with io.open(name + '.json', 'w', encoding='utf8') as outfile:
+            str_ = json.dumps(data,
+                              indent=4,
+                              sort_keys=True,
+                              separators=(',', ': '),
+                              ensure_ascii=False)
+            outfile.write(str_)
+    except TypeError as err:
+        print(f" TypeError: {repr(err)}")
+
+# if __name__ == '__main__':
+#     this_write_json("GENERAL_CONTRACTORS", GENERAL_CONTRACTORS)
