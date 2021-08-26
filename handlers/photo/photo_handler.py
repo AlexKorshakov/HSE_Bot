@@ -25,11 +25,11 @@ async def photo_handler(message: types.Message):
     """
     # if await photo_processing(message):
     #     return
-    glob_db = await read_json_file(file=BOT_DATA_PATH + "registration_db.json")
-    if not glob_db.get(str(message.from_user.id)):
-        await dp.bot.send_message(chat_id=message.from_user.id, text="Вы не зерегестртрованы!")
-        await dp.bot.send_message(chat_id=message.from_user.id, text=MESSAGES["help_message"])
-        return
+    # glob_db = await read_json_file(file=BOT_DATA_PATH + "registration_db.json")
+    # if not glob_db.get(str(message.from_user.id)):
+    #     await dp.bot.send_message(chat_id=message.from_user.id, text="Вы не зерегестртрованы!")
+    #     await dp.bot.send_message(chat_id=message.from_user.id, text=MESSAGES["help_message"])
+    #     return
 
     report_data["file_id"] = await get_filename_msg_with_photo(message)
 
