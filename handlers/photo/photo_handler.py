@@ -34,6 +34,8 @@ async def photo_handler(message: types.Message):
 
     if WORK_ON_HEROKU:
         await write_data_on_google_drive(message)
+        return
+
 
     if WORK_ON_PC:
         # glob_db = await read_json_file(file=BOT_DATA_PATH + "registration_db.json")

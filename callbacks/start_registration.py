@@ -6,6 +6,7 @@ from keyboards.inline.select_category import bild_inlinekeyboar
 from loader import dp
 from loguru import logger
 
+
 @dp.callback_query_handler(cb_start.filter(action=["start_registration"]))
 async def callbacks_start_registration(call: types.CallbackQuery, callback_data: dict):
     """Обработка действия action из фабрики Callback cb_start

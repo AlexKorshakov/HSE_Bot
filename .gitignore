@@ -145,3 +145,5 @@ cython_debug/
 /Parser_ABC/FileSORTER Объединение в один файл.txt
 /Parser_ABC/Parser_Log.txt
 /JsonData/
+
+/user_data/*
