@@ -3,7 +3,6 @@ from loguru import logger
 
 from callbacks.sequential_action.big_category_creator import big_category
 from data.category import get_names_from_json
-from data.config import REPORT_NAME
 from data.report_data import report_data
 
 from loader import dp
@@ -35,7 +34,7 @@ async def violation_category_answer(call: types.CallbackQuery):
             if call.data == i:
                 logger.debug(f"Выбрано: {i}")
                 report_data["violation_category"] = i
-                await write_json_file(call.message, data=report_data, name=REPORT_NAME + report_data["file_id"])
+                await write_json_file(data=report_data, name=report_data["json_full_name"])
                 await big_category(call, big_menu_list=GENERAL_CONTRACTORS, num_col=1)
                 break
 
