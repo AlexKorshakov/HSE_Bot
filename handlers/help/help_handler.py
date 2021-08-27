@@ -15,7 +15,7 @@ async def process_help_command(message: types.Message):
         # "/registration- Зарегистрировать и записать",
         "/developer- написать разработчику",
         "/cancel- Отмена регистрации",
-        "/generate - Формирование отчета"
+        "/generate - Формирование отчета",
         "/start- Начало работы",
         sep="\n"
     )

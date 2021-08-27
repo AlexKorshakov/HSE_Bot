@@ -4,10 +4,10 @@ from loguru import logger
 from  data.category import get_names_from_json
 from callbacks.sequential_action.big_category_creator import big_category
 
-from data.config import REPORT_NAME
 from data.report_data import report_data
 
 from loader import dp
+from utils.del_messege import bot_delete_message
 from utils.json_handler.writer_json_file import write_json_file
 
 try:
@@ -36,8 +36,11 @@ async def category_answer(call: types.CallbackQuery):
             if call.data == i:
                 logger.debug(f"Выбрано: {i}")
                 report_data["category"] = i
-                await write_json_file(call.message, data=report_data, name=REPORT_NAME + report_data["file_id"])
+                await call.message.answer(text=f"Выбрано: {i}")
+                await write_json_file(data=report_data, name=report_data["json_full_name"])
                 await big_category(call, big_menu_list=VIOLATION_CATEGORY, num_col=1)
+                await bot_delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id+2,
+                                         sleep_time=20)
                 break
 
         except Exception as callback_err:

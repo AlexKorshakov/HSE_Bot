@@ -2,52 +2,63 @@ import os
 from os import makedirs
 
 from aiogram import types
+from loguru import logger
 
-from data.config import BOT_DATA_PATH
+from data.config import BOT_DATA_PATH, REPORT_NAME
+from data.report_data import report_data
+from utils.json_handler.writer_json_file import write_json_file
 
 
-JSON_DATA_PATH = "\\data_file\\json\\"
-PHOTO_DATA_PATH = "\\data_file\\photo\\"
-
-
-async def get_filepath(message: types.Message, name):
+async def get_photo_full_filepath(user_id):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    await create_file_path(BOT_DATA_PATH + str(message.from_user.id) + BOT_DATA_PATH + name)
-
-    name = name + ".jpg"
-    filepath = BOT_DATA_PATH + str(message.from_user.id) + BOT_DATA_PATH + name
-
-    return filepath
+    return f"{BOT_DATA_PATH}{user_id}\\data_file\\photo\\"
 
 
-async def get_json_filepath(message: types.Message, name):
+async def get_photo_full_filename(user_id, name):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    user_path = BOT_DATA_PATH + str(message.chat.id) + JSON_DATA_PATH
-
-    await create_file_path(user_path)
-
-    return user_path
+    return f"{BOT_DATA_PATH}{user_id}\\data_file\\photo\\{REPORT_NAME}{name}.jpg"
 
 
-async def get_photo_filepath(message: types.Message, name):
+async def get_json_full_filepath(user_id):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    user_path = BOT_DATA_PATH + str(message.from_user.id) + PHOTO_DATA_PATH
+    return f"{BOT_DATA_PATH}{user_id}\\data_file\\json\\"
 
-    await create_file_path(user_path)
 
-    name = name + ".jpg"
-    filepath = BOT_DATA_PATH + str(message.from_user.id) + PHOTO_DATA_PATH + name
-
-    return filepath
+async def get_json_full_filename(user_id, name):
+    """Обработчик сообщений с фото
+    Получение полного пути файла
+    """
+    return f"{BOT_DATA_PATH}{user_id}\\data_file\\json\\{REPORT_NAME}{name}.json"
 
 
 async def create_file_path(user_path: str):
-
+    """
+    :param user_path:
+    :return:
+    """
     if not os.path.isdir(user_path):
-        makedirs(user_path)
+        logger.info(f"user_path{user_path} is directory")
+        try:
+            makedirs(user_path)
+        except Exception as err:
+            logger.info(f"makedirs err {repr(err)}")
+
+
+async def preparation_paths_on_pc(message: types.Message):
+    report_data["photo_file_path"] = await get_photo_full_filepath(user_id=report_data["user_id"])
+    report_data["photo_full_name"] = await get_photo_full_filename(user_id=report_data["user_id"],
+                                                                   name=report_data["file_id"])
+    await create_file_path(report_data["photo_file_path"])
+    await message.photo[-1].download(destination=report_data["photo_full_name"])
+
+    report_data["json_file_path"] = await get_json_full_filepath(user_id=report_data["user_id"])
+    report_data["json_full_name"] = await get_json_full_filename(user_id=report_data["user_id"],
+                                                                 name=report_data["file_id"])
+    await create_file_path(report_data["json_file_path"])
+    await write_json_file(data=report_data, name=report_data["json_full_name"])

@@ -27,9 +27,6 @@ async def handle_loc(message: types.Message):
     logger.info(f'latitude {report_data["latitude"]}')
     logger.info(f'latitude {report_data["longitude"]}')
 
-    report_data["file_id"] = await get_filename_msg_with_photo(message)
+    # report_data["file_id"] = await get_filename_msg_with_photo(message)
 
-    # global report_name_mod
-    report_name_mod = REPORT_NAME + report_data["file_id"]
-
-    await write_json_file(message, data=report_data, name=report_name_mod)
+    await write_json_file(data=report_data, name=report_data["json_full_name"])

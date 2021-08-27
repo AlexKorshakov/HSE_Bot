@@ -1,3 +1,4 @@
+import merge_json as merge_json
 import openpyxl
 from openpyxl.drawing.image import Image
 from xlsxwriter.worksheet import Worksheet
@@ -6,13 +7,19 @@ from utils.generate_report.xlsx_config import COLUMN_SRT_INDEX
 from utils.json_handler.read_json_file import read_json_file
 
 
-async def insert_images_too_sheet(json_data, worksheet: Worksheet):
+async def insert_images_to_sheet(json_data, worksheet: Worksheet):
     """Вставка изображения в лист worksheet
     """
     for ind, j_data in enumerate(json_data, start=2):
         try:
             img_data = await read_json_file(j_data)
-            img: Image = openpyxl.drawing.image.Image(img_data['filepath'])
+            #TODO: check
+            # merge_json
+            # delete_fail
+            # delete_json
+            # delete_photo
+
+            img: Image = openpyxl.drawing.image.Image(img_data['photo_full_name'])
 
             await insert_images(img, ind, worksheet)
         except Exception as err:
