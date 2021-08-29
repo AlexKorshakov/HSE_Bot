@@ -2,7 +2,7 @@ import datetime
 
 from aiogram import types
 
-from data.config import WORK_ON_HEROKU, WORK_ON_PC
+# from data.config import WORK_ON_HEROKU, WORK_ON_PC
 from data.report_data import report_data
 from loader import dp
 from utils.goolgedrive.googledrive_worker import write_data_on_google_drive
@@ -13,6 +13,9 @@ from utils.secondary_functions.get_month_message import get_month_message
 from utils.secondary_functions.get_year_message import get_year_message
 from utils.select_start_category import select_start_category
 
+
+WORK_ON_HEROKU = True
+WORK_ON_PC = False
 
 @dp.message_handler(content_types=["photo"])
 async def photo_handler(message: types.Message):
@@ -35,7 +38,6 @@ async def photo_handler(message: types.Message):
     if WORK_ON_HEROKU:
         await write_data_on_google_drive(message)
         return
-
 
     if WORK_ON_PC:
         # glob_db = await read_json_file(file=BOT_DATA_PATH + "registration_db.json")

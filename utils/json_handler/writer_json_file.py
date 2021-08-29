@@ -3,6 +3,8 @@ import json
 
 from data.config import BOT_DATA_PATH
 
+SUFFIX = ".json"
+
 
 async def write_json(name, data):
     try:
@@ -20,13 +22,13 @@ async def write_json(name, data):
 async def write_json_file(*, data: object = None, name: str = "") -> None:
     """Запись данных в json
     """
-    await write_json(name=name, data=data)
+    await write_json(name=name + SUFFIX, data=data)
 
 
 async def write_json_reg_user_file(*, data: dict = None) -> None:
     """Запись данных в json
     """
-    name = data['reg_user_file'] + '\\' + data['user_id']
+    name = data['reg_user_file'] + '\\' + data['user_id'] + SUFFIX
 
     await write_json(name=name, data=data)
 
@@ -35,6 +37,6 @@ async def write_global_json_file(*, data: dict = None) -> None:
     """Запись данных в json
     """
 
-    name = BOT_DATA_PATH + "registration_db"
+    name = BOT_DATA_PATH + "registration_db" + SUFFIX
 
     await write_json(name=name, data=data)

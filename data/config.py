@@ -19,6 +19,8 @@ except Exception as env_err:
 ADMINS_ID: str = env("ADMINS_ID")
 DEVELOPER_ID: str = env("DEVELOPER_ID")
 
+ROOT_FOLDER_STAFF_ID: str = env("ROOT_FOLDER_STAFF_ID")
+
 WORK_ON_HEROKU: bool = env.bool("WORK_ON_HEROKU")
 WORK_ON_PC: bool = env.bool("WORK_ON_PC")
 
@@ -40,6 +42,9 @@ BOT_DATA_PATH = WORK_PATH + "\\user_data\\"
 
 SEPARATOR = "___"
 
+# Путь к файлу с данными сервисного аккаунта
+SERVICE_ACCOUNT_FILE: str = 'C:\\Users\\KDeusEx\\Desktop\\MyCTNG\\my_ctng-a4c11261dc82.json'
+
 REPORT_FULL_NAME = f'МИП Отчет за {(datetime.datetime.now()).strftime("%d.%m.%Y")}.xlsx'
 
 # Init config
@@ -47,3 +52,21 @@ fastconf.config(__name__)
 if 'init' in sys.argv:
     print(f'sys.argv: {sys.argv}')
     sys.exit(0)
+
+PRIVATE_KEY = env("PRIVATE_KEY")
+SERVICE_ACCOUNT_EMAIL = env("SERVICE_ACCOUNT_EMAIL")
+PRIVATE_KEY_ID = env("PRIVATE_KEY_ID")
+CLIENT_ID = env("CLIENT_ID")
+TOKEN_URI = env("TOKEN_URI")
+
+
+class config:
+    BOT_TOKEN = ""
+    APP_ID = ""
+    API_HASH = ""
+    DATABASE_URL = ""
+    SUDO_USERS = ""  # Sepearted by space.
+    SUPPORT_CHAT_LINK = ""
+    DOWNLOAD_DIRECTORY = "./downloads/"
+    G_DRIVE_CLIENT_ID = ""
+    G_DRIVE_CLIENT_SECRET = ""

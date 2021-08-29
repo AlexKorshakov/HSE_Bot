@@ -147,3 +147,4 @@ cython_debug/
 /JsonData/
 
 /user_data/*
+/utils/goolgedrive/token.pickle

@@ -32,3 +32,8 @@ XlsxWriter==3.0.1
 yarl==1.6.3
 
 aiogram~=2.14.3
+tqdm~=4.62.2
+google-api-python-client~=2.18.0
+httplib2~=0.19.1
+python-rest-client~=0.3
+oauth2client~=4.1.3
