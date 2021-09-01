@@ -1,5 +1,6 @@
 import io
 import json
+import os
 
 from data.config import BOT_DATA_PATH
 
@@ -25,12 +26,16 @@ async def write_json_file(*, data: object = None, name: str = "") -> None:
     await write_json(name=name + SUFFIX, data=data)
 
 
-async def write_json_reg_user_file(*, data: dict = None) -> None:
+async def write_json_reg_user_file(*, data: dict = None) -> bool:
     """Запись данных в json
     """
     name = data['reg_user_file'] + '\\' + data['user_id'] + SUFFIX
 
+    if not os.path.isfile(name):
+        return False
+
     await write_json(name=name, data=data)
+    return True
 
 
 async def write_global_json_file(*, data: dict = None) -> None:

@@ -148,3 +148,5 @@ cython_debug/
 
 /user_data/*
 /utils/goolgedrive/token.pickle
+/utils/goolgedrive/config.yml
+/config.yml

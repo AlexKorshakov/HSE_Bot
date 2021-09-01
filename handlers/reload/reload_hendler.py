@@ -18,7 +18,6 @@ async def reload_handler(message: types.Message):
 
     moduls = [str(mod.replace(WORK_PATH, '').split(".")[0][1:].replace("\\", '.')) for mod in modules_path]
 
-
     for modul, module_path in zip(moduls, modules_path):
 
         module_spec = check_module(modul)
@@ -28,8 +27,6 @@ async def reload_handler(message: types.Message):
         if module_spec:
             module = import_module_from_spec(module_spec)
             print(dir(module))
-
-
 
 
 def run_fast_scandir(dir, ext):
