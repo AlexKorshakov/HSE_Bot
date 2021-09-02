@@ -6,7 +6,7 @@ from loguru import logger
 
 from data.config import BOT_DATA_PATH, REPORT_NAME
 from data.report_data import report_data
-from utils.json_handler.writer_json_file import write_json_file
+from utils.json_handler.writer_json_file import write_json_file, write_json_violation_user_file
 
 
 async def get_photo_full_filepath(user_id):
@@ -51,6 +51,10 @@ async def create_file_path(user_path: str):
 
 
 async def preparation_paths_on_pc(message: types.Message):
+    """Создание путей сохранения файлов и запись в json
+    :param message:
+    :return:
+    """
     report_data["photo_file_path"] = await get_photo_full_filepath(user_id=report_data["user_id"])
     report_data["photo_full_name"] = await get_photo_full_filename(user_id=report_data["user_id"],
                                                                    name=report_data["file_id"])
@@ -61,4 +65,5 @@ async def preparation_paths_on_pc(message: types.Message):
     report_data["json_full_name"] = await get_json_full_filename(user_id=report_data["user_id"],
                                                                  name=report_data["file_id"])
     await create_file_path(report_data["json_file_path"])
-    await write_json_file(data=report_data, name=report_data["json_full_name"])
+
+    await write_json_violation_user_file(data=report_data)

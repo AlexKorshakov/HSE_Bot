@@ -16,10 +16,10 @@ async def get_filename_msg_with_photo(message):
 
     if len(message.photo) == 0:
         filename = '.'.join([day, month, year]) + \
-               SEPARATOR + \
-               str(message.values['from'].id) + \
-               SEPARATOR + \
-               str(message.message_id)
+                   SEPARATOR + \
+                   str(message.values['from'].id) + \
+                   SEPARATOR + \
+                   str(message.message_id)
         logger.info(f"filename {filename}")
         return filename
 
@@ -29,7 +29,7 @@ async def get_filename_msg_with_photo(message):
                SEPARATOR + \
                str(message.values['from'].id) + \
                SEPARATOR + \
-               str(message.photo[0].file_id[str_string-10:]) + \
+               str(message.photo[0].file_id[str_string - 10:]) + \
                SEPARATOR + \
                str(message.message_id)
 
@@ -46,8 +46,8 @@ async def get_filename(message):
     year = await get_year_message(message)
 
     filename = '.'.join([day, month, year]) + \
-           SEPARATOR + \
-           str(message.from_user.id)
+               SEPARATOR + \
+               str(message.from_user.id)
 
     logger.info(f"filename {filename}")
     return filename

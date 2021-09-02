@@ -44,11 +44,12 @@ async def create_directory(drive_service, directory_name, parent_id: str = "") -
         file_metadata["parents"] = [parent_id]
 
     try:
+
         file = drive_service.files().create(supportsTeamDrives=True, body=file_metadata).execute()
         return file.get("id")
+
     except Exception as err:
-        logger.error(f"")
-        f"get_workbook {repr(err)}"
+        logger.error(f"get_workbook {repr(err)}")
         return ''
 
 

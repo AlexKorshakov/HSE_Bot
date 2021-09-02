@@ -130,8 +130,7 @@ async def move_file(service: object, id: str, add_parents: str, remove_parents: 
     :param id:
     """
     try:
-        serv = service.files()
-        serv.update(fileId=id, addParents=add_parents, removeParents=remove_parents).execute()
+        service.files().update(fileId=id, addParents=add_parents, removeParents=remove_parents).execute()
     except Exception as err:
         pprint(f"move_folder err {id} to move in add_parents \n: {repr(err)}")
 

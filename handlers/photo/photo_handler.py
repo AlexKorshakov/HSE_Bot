@@ -13,9 +13,12 @@ from utils.secondary_functions.get_month_message import get_month_message
 from utils.secondary_functions.get_year_message import get_year_message
 from utils.select_start_category import select_start_category
 
+WORK_ON_HEROKU = False
+WORK_ON_PC = True
 
-WORK_ON_HEROKU = True
-WORK_ON_PC = False
+# WORK_ON_HEROKU = True
+# WORK_ON_PC = False
+
 
 @dp.message_handler(content_types=["photo"])
 async def photo_handler(message: types.Message):

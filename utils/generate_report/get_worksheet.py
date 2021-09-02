@@ -14,5 +14,5 @@ async def get_worksheet(wb: Workbook, index: int = 0)-> Optional[Worksheet]:
         worksheet: Worksheet = wb.worksheets[index]
         return worksheet
     except Exception as err:
-        print(F"get_workbook {repr(err)}")
+        print(f"get_workbook {repr(err)}")
         return None

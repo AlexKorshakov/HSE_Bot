@@ -83,7 +83,7 @@ async def enter_phone_number(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(IsPrivate, state=RegisterState.location)
-async def enter_phone_number(message: types.Message, state: FSMContext):
+async def enter_location(message: types.Message, state: FSMContext):
     """Окончание ввода данных.
     Завершение RegisterState
     Запись данных в базы различными способами registration_data
