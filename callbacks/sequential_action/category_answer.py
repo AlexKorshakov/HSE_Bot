@@ -8,7 +8,7 @@ from data.report_data import report_data
 
 from loader import dp
 from utils.del_messege import bot_delete_message
-from utils.json_handler.writer_json_file import write_json_file
+from utils.json_worker.writer_json_file import write_json_file
 
 try:
     CATEGORY_LIST =  get_names_from_json("CATEGORY_LIST")

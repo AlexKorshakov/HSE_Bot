@@ -9,4 +9,4 @@ async def create_xlsx(df, report_file):
         return True
     except Exception as err:
         print(F"set_border {repr(err)}")
-        return  None
+        return None

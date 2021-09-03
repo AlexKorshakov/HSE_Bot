@@ -7,8 +7,7 @@ from utils.secondary_functions.get_year_message import get_year_message
 
 
 async def get_filename_msg_with_photo(message):
-    """Обработчик сообщений с фото
-    Получение полного пути файла
+    """Формирование индентфикатора записи
     """
     day = await get_day_message(message)
     month = await get_month_message(message)
@@ -23,13 +22,9 @@ async def get_filename_msg_with_photo(message):
         logger.info(f"filename {filename}")
         return filename
 
-    str_string = len(message.photo[0].file_id)
-
     filename = '.'.join([day, month, year]) + \
                SEPARATOR + \
                str(message.values['from'].id) + \
-               SEPARATOR + \
-               str(message.photo[0].file_id[str_string - 10:]) + \
                SEPARATOR + \
                str(message.message_id)
 
@@ -38,8 +33,7 @@ async def get_filename_msg_with_photo(message):
 
 
 async def get_filename(message):
-    """Обработчик сообщений с фото
-    Получение полного пути файла
+    """Формирование индентфикатора записи
     """
     day = await get_day_message(message)
     month = await get_month_message(message)

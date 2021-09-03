@@ -6,7 +6,7 @@ from data.category import get_names_from_json
 from data.report_data import report_data
 
 from loader import dp
-from utils.json_handler.writer_json_file import write_json_file
+from utils.json_worker.writer_json_file import write_json_file
 
 try:
     VIOLATION_CATEGORY = get_names_from_json("VIOLATION_CATEGORY")

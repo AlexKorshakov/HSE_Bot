@@ -3,25 +3,17 @@ from aiogram.dispatcher.filters import Command
 from loguru import logger
 
 from loader import dp
-from messages.messages import MESSAGES
-from utils.generate_report.generator_report import create_report
-from utils.generate_report.send_report_from_user import send_report_from_user
 from utils.misc import rate_limit
+from utils.report_worker import create_and_send_report
 
 
 @rate_limit(limit=10)
 @dp.message_handler(Command('generate'))
-async def generate(message: types.Message):
-    logger.info(f'User @{message.from_user.username}:{message.from_user.id} generate a report')
-
-    await message.answer(f'{MESSAGES["report_start"]} \n'
-                         f'{MESSAGES["wait"]} \n'
-                         f'{MESSAGES["help_message"]}')
-
-    await create_report(message)
-
-    await message.answer(f'{MESSAGES["report_done"]} \n')
-
-    await send_report_from_user(message)
-
-    logger.info(f'Отчет успешно отправлен!')
+async def generate(message: types.Message) -> None:
+    """Формирование и отправка отчета пользователю
+    :param message:
+    :return: None
+    """
+    logger.info(f'User @{message.from_user.username}:{message.from_user.id} generate report')
+    if await create_and_send_report(message):
+        logger.info(f'Отчет успешно отправлен!')

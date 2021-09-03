@@ -4,7 +4,7 @@ from openpyxl.drawing.image import Image
 from xlsxwriter.worksheet import Worksheet
 
 from utils.generate_report.xlsx_config import COLUMN_SRT_INDEX
-from utils.json_handler.read_json_file import read_json_file
+from utils.json_worker.read_json_file import read_json_file
 
 
 async def insert_images_to_sheet(json_data, worksheet: Worksheet):
@@ -14,14 +14,12 @@ async def insert_images_to_sheet(json_data, worksheet: Worksheet):
         try:
             img_data = await read_json_file(j_data)
             #TODO: check
-            # merge_json
-            # delete_fail
             # delete_json
             # delete_photo
 
             img: Image = openpyxl.drawing.image.Image(img_data['photo_full_name'])
-
             await insert_images(img, ind, worksheet)
+
         except Exception as err:
             print(F"insert_img {repr(err)}")
             return None

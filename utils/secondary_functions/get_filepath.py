@@ -6,7 +6,14 @@ from loguru import logger
 
 from data.config import BOT_DATA_PATH, REPORT_NAME
 from data.report_data import report_data
-from utils.json_handler.writer_json_file import write_json_file, write_json_violation_user_file
+from utils.json_worker.writer_json_file import write_json_file, write_json_violation_user_file
+
+
+async def get_report_full_filepath(user_id):
+    """Обработчик сообщений с фото
+    Получение полного пути файла
+    """
+    return f"{BOT_DATA_PATH}{user_id}\\data_file\\reports\\"
 
 
 async def get_photo_full_filepath(user_id):

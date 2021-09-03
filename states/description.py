@@ -6,7 +6,7 @@ from data.config import REPORT_NAME
 from data.report_data import report_data
 from loader import dp
 from states import AnswerUserState
-from utils.json_handler.writer_json_file import write_json_file
+from utils.json_worker.writer_json_file import write_json_file
 
 
 # Сюда приходит ответ с description, state=состояние

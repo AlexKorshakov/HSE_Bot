@@ -16,4 +16,3 @@ async def registration_finish_handler(message: types.Message, state: FSMContext)
 
     await violation_data(message)
 
-    # await post_processing_report(repot_patch=report_name_mod)

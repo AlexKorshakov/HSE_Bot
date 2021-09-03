@@ -10,10 +10,9 @@ from loader import dp
 from messages.messages import MESSAGES
 from states import RegisterState
 from utils.custom_filters import IsPrivate
-# from utils.json_handler.writer_json_file import write_json_reg_user_file
 from utils.misc import rate_limit
 from utils.secondary_functions.get_filepath import create_file_path
-from utils.set_user_registration_data import set_user_registration_data, registration_data
+from utils.set_user_registration_data import registration_data
 
 
 @rate_limit(limit=20)
@@ -25,8 +24,6 @@ async def start(message: types.Message):
     user_data['reg_user_file'] = reg_user_file
 
     await create_file_path(user_path=user_data['reg_user_file'])
-
-    # await write_json_reg_user_file(data=user_data)
 
     logger.info(f'User @{message.from_user.username}:{message.from_user.id} start work')
     await message.answer(f'{MESSAGES["Hi"]}, {message.from_user.full_name}!')
@@ -49,8 +46,6 @@ async def cancel(message: types.Message, state: FSMContext):
 async def enter_name(message: types.Message, state: FSMContext):
     user_data['name'] = message.text
 
-    # await write_json_reg_user_file(data=user_data)
-
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(MESSAGES["Cancel"])
@@ -60,8 +55,6 @@ async def enter_name(message: types.Message, state: FSMContext):
 @dp.message_handler(IsPrivate, state=RegisterState.function)
 async def enter_function(message: types.Message, state: FSMContext):
     user_data['function'] = message.text
-
-    # await write_json_reg_user_file(data=user_data)
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -92,4 +85,3 @@ async def enter_location(message: types.Message, state: FSMContext):
     await state.finish()
 
     await registration_data(message, user_data)
-

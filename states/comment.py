@@ -6,7 +6,7 @@ from data.report_data import report_data
 from keyboards.replykeyboards.registration_finist_keybord import registration_finish_keyboard
 from loader import dp
 from states import AnswerUserState
-from utils.json_handler.writer_json_file import write_json_file
+from utils.json_worker.writer_json_file import write_json_file
 
 
 @dp.message_handler(state=AnswerUserState.comment)

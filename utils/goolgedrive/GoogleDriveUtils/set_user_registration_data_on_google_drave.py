@@ -1,6 +1,3 @@
-import asyncio
-from pprint import pprint
-
 from aiogram import types
 from loguru import logger
 
@@ -11,7 +8,7 @@ from utils.goolgedrive.GoogleDriveUtils.folders_deleter import del_old_data_goog
 from utils.goolgedrive.GoogleDriveUtils.get_root_folder_id import get_root_folder_id, get_user_folder_id
 from utils.goolgedrive.GoogleDriveUtils.upload_data_on_gdrive import upload_file_on_gdrave
 from utils.goolgedrive.googledrive_worker import ROOT_REPORT_FOLDER_NAME
-from utils.json_handler.writer_json_file import write_json_reg_user_file
+from utils.json_worker.writer_json_file import write_json_reg_user_file
 
 
 async def set_user_registration_data_on_google_drive(message: types.Message, user_data):
@@ -41,11 +38,6 @@ async def set_user_registration_data_on_google_drive(message: types.Message, use
     await del_old_data_google_drive(message, drive_service, parent=user_data["parent_id"])
 
     file_id = await upload_file_on_gdrave(message, drive_service, user_data)
-
-    # top = drive_service.files().get(fileId=folder_id).execute()
-    # await asyncio.sleep(2)
-    # stack = [((top['name'],), [top])]
-    # pprint(stack)
 
     await get_user_permissions(drive_service, file_id=file_id)
     await move_file(drive_service, file_id, add_parents=folder_id, remove_parents=root_folder_id)

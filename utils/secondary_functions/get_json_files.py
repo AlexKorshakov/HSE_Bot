@@ -2,7 +2,7 @@ import os
 
 
 async def get_json_files(main_path) -> list:
-    """
+    """Получение списка json файлов из файловой системы
     """
     json_files = []
     for subdir, dirs, files in os.walk(main_path):

@@ -2,7 +2,6 @@ import datetime
 
 from aiogram import types
 
-# from data.config import WORK_ON_HEROKU, WORK_ON_PC
 from data.report_data import report_data
 from loader import dp
 from utils.goolgedrive.googledrive_worker import write_data_on_google_drive
@@ -15,6 +14,7 @@ from utils.select_start_category import select_start_category
 
 WORK_ON_HEROKU = False
 WORK_ON_PC = True
+
 
 # WORK_ON_HEROKU = True
 # WORK_ON_PC = False
@@ -38,16 +38,13 @@ async def photo_handler(message: types.Message):
     report_data["month"] = await get_month_message(message)
     report_data["year"] = await get_year_message(message)
 
+    report_data["data"] = report_data["day"] + ":" + report_data["month"] + ":" + report_data["year"]
+
     if WORK_ON_HEROKU:
         await write_data_on_google_drive(message)
         return
 
     if WORK_ON_PC:
-        # glob_db = await read_json_file(file=BOT_DATA_PATH + "registration_db.json")
-        # if not glob_db.get(str(message.from_user.id)):
-        #     await dp.bot.send_message(chat_id=message.from_user.id, text="Вы не зерегестртрованы!")
-        #     await dp.bot.send_message(chat_id=message.from_user.id, text=MESSAGES["help_message"])
-        #     return
         await preparation_paths_on_pc(message)
 
     await select_start_category(message)

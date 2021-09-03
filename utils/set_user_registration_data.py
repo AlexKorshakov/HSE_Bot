@@ -2,13 +2,12 @@ from aiogram.types import ReplyKeyboardRemove
 from loguru import logger
 
 from database.entry_in_db import entry_in_db
-# from loader import dp
-# from messages.messages import MESSAGES
+
 from loader import dp
 from messages.messages import MESSAGES
 from utils.goolgedrive.GoogleDriveUtils.set_user_registration_data_on_google_drave import \
     set_user_registration_data_on_google_drive
-from utils.json_handler.writer_json_file import write_json_reg_user_file
+from utils.json_worker.writer_json_file import write_json_reg_user_file
 
 
 async def registration_data(message, user_data):
@@ -33,5 +32,6 @@ async def set_user_registration_data(message, user_data):
     if await set_user_registration_data_on_google_drive(message, user_data):
         # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
         logger.info(f"Данные сохранены в Google Drive в файл {user_data['reg_user_file']}")
+
 
 

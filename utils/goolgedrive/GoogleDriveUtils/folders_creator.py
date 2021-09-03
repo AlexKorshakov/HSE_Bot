@@ -3,6 +3,8 @@ from pprint import pprint
 from apiclient import errors
 from loguru import logger
 
+from utils.goolgedrive.GoogleDriveUtils.google_drive_api_worker import drive_service_files_create
+
 G_DRIVE_DIR_MIME_TYPE = "application/vnd.google-apps.folder"
 
 
@@ -44,8 +46,7 @@ async def create_directory(drive_service, directory_name, parent_id: str = "") -
         file_metadata["parents"] = [parent_id]
 
     try:
-
-        file = drive_service.files().create(supportsTeamDrives=True, body=file_metadata).execute()
+        file = await drive_service_files_create(drive_service, file_metadata)
         return file.get("id")
 
     except Exception as err:

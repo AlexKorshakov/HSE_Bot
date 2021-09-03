@@ -1,13 +1,13 @@
 from aiogram.types import ReplyKeyboardRemove
 from loguru import logger
 
-from data.report_data import user_data, report_data
+from data.report_data import report_data
 from database.entry_in_db import entry_in_db
 from loader import dp
 from messages.messages import MESSAGES
 from utils.goolgedrive.GoogleDriveUtils.set_user_violation_data_on_google_drave import \
     set_user_violation_data_on_google_drive
-from utils.json_handler.writer_json_file import write_json_violation_user_file
+from utils.json_worker.writer_json_file import write_json_violation_user_file
 
 
 async def violation_data(message):
