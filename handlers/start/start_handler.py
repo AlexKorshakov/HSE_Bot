@@ -7,7 +7,7 @@ from loguru import logger
 from data.config import BOT_DATA_PATH
 from data.report_data import user_data
 from loader import dp
-from messages.messages import MESSAGES
+from messages.messages import Messages
 from states import RegisterState
 from utils.custom_filters import IsPrivate
 from utils.misc import rate_limit
@@ -26,20 +26,20 @@ async def start(message: types.Message):
     await create_file_path(user_path=user_data['reg_user_file'])
 
     logger.info(f'User @{message.from_user.username}:{message.from_user.id} start work')
-    await message.answer(f'{MESSAGES["Hi"]}, {message.from_user.full_name}!')
-    await message.answer(f'{MESSAGES["User_greeting"]} \n'
-                         f'{MESSAGES["help_message"]}')
+    await message.answer(f'{Messages.hi}, {message.from_user.full_name}!')
+    await message.answer(f'{Messages.user_greeting} \n'
+                         f'{Messages.help_message}')
 
     await RegisterState.name.set()
     reply_markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    reply_markup.add(MESSAGES["Cancel"])
-    return await message.reply(MESSAGES["ask_name"], reply_markup=reply_markup)
+    reply_markup.add(Messages.cancel)
+    return await message.reply(Messages.ask_name, reply_markup=reply_markup)
 
 
-@dp.message_handler(IsPrivate, Text(equals=MESSAGES["Cancel"]), state=RegisterState.all_states)
+@dp.message_handler(IsPrivate, Text(equals=Messages.cancel), state=RegisterState.all_states)
 async def cancel(message: types.Message, state: FSMContext):
     await state.finish()
-    return await message.reply(MESSAGES["register_canceled"], reply_markup=ReplyKeyboardRemove())
+    return await message.reply(Messages.register_canceled, reply_markup=ReplyKeyboardRemove())
 
 
 @dp.message_handler(IsPrivate, state=RegisterState.name)
@@ -48,8 +48,8 @@ async def enter_name(message: types.Message, state: FSMContext):
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(MESSAGES["Cancel"])
-    return await message.reply(MESSAGES['ask_function'], reply_markup=markup)
+    markup.add(Messages.cancel)
+    return await message.reply(Messages.ask_function, reply_markup=markup)
 
 
 @dp.message_handler(IsPrivate, state=RegisterState.function)
@@ -58,21 +58,21 @@ async def enter_function(message: types.Message, state: FSMContext):
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(MESSAGES["Cancel"])
-    return await message.reply(MESSAGES['ask_phone_number'], reply_markup=markup)
+    markup.add(Messages.cancel)
+    return await message.reply(Messages.ask_phone_number, reply_markup=markup)
 
 
 @dp.message_handler(IsPrivate, state=RegisterState.phone_number)
 async def enter_phone_number(message: types.Message, state: FSMContext):
     if not message.text.startswith("+") or not message.text.strip("+").isnumeric():
-        return await message.reply(MESSAGES["invalid_input"])
+        return await message.reply(Messages.invalid_input)
 
     user_data["phone_number"] = int(message.text.strip("+"))
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(MESSAGES["Cancel"])
-    return await message.reply(MESSAGES['ask_location'], reply_markup=markup)
+    markup.add(Messages.cancel)
+    return await message.reply(Messages.ask_location, reply_markup=markup)
 
 
 @dp.message_handler(IsPrivate, state=RegisterState.location)

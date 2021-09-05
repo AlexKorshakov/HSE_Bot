@@ -6,7 +6,7 @@ from aiogram import types
 from loguru import logger
 
 from data.report_data import report_data
-from messages.messages import MESSAGES
+from messages.messages import Messages
 from utils.goolgedrive.GoogleDriveUtils.GoogleDriveWorker import drive_account_auth_with_oauth2client, \
     drive_account_credentials
 from utils.goolgedrive.GoogleDriveUtils.get_root_folder_id import get_root_folder_id, get_user_folder_id
@@ -24,7 +24,7 @@ ROOT_REPORT_FOLDER_ID: str = '1n4M_LHDG_QQ4EFuDYxQLe_MaK-k3wv96'
 async def write_data_on_google_drive(message: types.Message):
     await message.answer(text="Данный раздел находится в разработке\n"
                               "\n"
-                              + MESSAGES["help_message"])
+                              + Messages.help_message)
 
     drive_service = None
 

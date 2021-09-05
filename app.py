@@ -4,6 +4,8 @@ from aiogram import executor
 from data.config import SKIP_UPDATES, NUM_BUTTONS
 from loguru import logger
 from loader import dp, bot
+from messages.messages import Messages
+
 from utils.get_handled_updates_list import get_handled_updates_list
 
 from utils.notify_admins import on_startup_notify
@@ -26,7 +28,7 @@ async def on_startup(dispatcher: Dispatcher):
 
     await on_startup_notify(dispatcher)
     await set_default_commands(dispatcher)
-    logger.info(f"Бот успешно запущен...")
+    logger.info(Messages.bot_start)
 
 
 async def on_shutdown(dispatcher: Dispatcher):

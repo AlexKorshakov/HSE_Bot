@@ -2,19 +2,24 @@ from __future__ import print_function
 
 import os
 import pickle
-from pprint import pprint
 
-import apiclient
 import httplib2
+
+try:
+    import apiclient
+except:
+    import googleapiclient.discovery
+    import apiclient
+
 import oauth2client.service_account
 from oauth2client import crypt
 from aiogram import types
 from loguru import logger
 
-from data.config import SERVICE_ACCOUNT_FILE, WORK_PATH, PRIVATE_KEY, SERVICE_ACCOUNT_EMAIL, PRIVATE_KEY_ID, CLIENT_ID, \
-    TOKEN_URI
+from data.config import SERVICE_ACCOUNT_FILE, WORK_PATH, PRIVATE_KEY, SERVICE_ACCOUNT_EMAIL, PRIVATE_KEY_ID, \
+    CLIENT_ID, TOKEN_URI
 from loader import bot
-from messages.messages import MESSAGES
+from messages.messages import Messages
 
 SCOPE_DRIVE = "https://www.googleapis.com/auth/drive"
 # Просмотр и управление собственными конфигурационными данными на вашем Google Диске
@@ -65,7 +70,7 @@ async def drive_account_credentials(message: types.Message) -> object:
 
     except Exception as err:
         logger.info(f"авторизация успешно провалена! : {repr(err)} ")
-        await bot.send_message(message.from_user.id, text=MESSAGES['ERR authorized Google Drive'])
+        await bot.send_message(message.from_user.id, text=Messages.err_authorized_google_drive)
         assert "Не удалось авторизоваться в системе"
 
 
@@ -124,37 +129,35 @@ async def drive_account_auth_with_oauth2client(message):
 
 async def move_file(service: object, id: str, add_parents: str, remove_parents: str) -> None:
     """Перемещение файла/папки из одной папки в другую
-    @param remove_parents:
-    @param add_parents:
-    @param service:
-    :param id:
     """
     try:
         service.files().update(fileId=id, addParents=add_parents, removeParents=remove_parents).execute()
     except Exception as err:
-        pprint(f"move_folder err {id} to move in add_parents \n: {repr(err)}")
+        print(f"move_folder err {id} to move in add_parents \n: {repr(err)}")
 
-# async def delete_folder(service, folder_id):
-#     """Permanently delete a file, skipping the trash.
-#       Args:
-#         service: Drive API service instance.
-#         folder_id: ID of the file to delete.
-#       """
-#     try:
-#         service.files().delete(fileId=folder_id).execute()
-#
-#     except googleapiclient.errors.HttpError as err:
-#         print(f'An error occurred:{err}')
 
-# async def delete_folders_for_id(drive_service, folder_id_list):
-#     """
-#     :param drive_service:
-#     :param folder_id_list:
-#     :return:
-#     """
-#     for item, f_id in enumerate(folder_id_list):
-#         await delete_folder(service=drive_service, folder_id=f_id["id"])
-#         print(f'Item {item}: delete file/folder name {f_id["name"]} id {f_id["id"]} mimeType {f_id["mimeType"]}')
+async def delete_folder(service, folder_id):
+    """Permanently delete a file, skipping the trash.
+      Args:
+        service: Drive API service instance.
+        folder_id: ID of the file to delete.
+      """
+    try:
+        service.files().delete(fileId=folder_id).execute()
+
+    except googleapiclient.errors.HttpError as err:
+        print(f'An error occurred:{err}')
+
+
+async def delete_folders_for_id(drive_service, folder_id_list):
+    """
+    :param drive_service:
+    :param folder_id_list:
+    :return:
+    """
+    for item, f_id in enumerate(folder_id_list):
+        await delete_folder(service=drive_service, folder_id=f_id["id"])
+        print(f'Item {item}: delete file/folder name {f_id["name"]} id {f_id["id"]} mimeType {f_id["mimeType"]}')
 #
 #
 # async def test_run():

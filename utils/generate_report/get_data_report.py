@@ -2,7 +2,7 @@ from aiogram import types
 from loguru import logger
 
 from loader import bot
-from messages.messages import MESSAGES
+from messages.messages import Messages
 from utils.generate_report.create_dataframe import create_dataframe, create_dataframe_from_data
 from utils.generate_report.create_heders import create_heders
 from utils.generate_report.get_file_list import get_json_file_list
@@ -22,7 +22,7 @@ async def get_data_report(message: types.Message, file_list=None):
     # await save_merged_file_on_pc(merge_file_list)
     if not file_list:
         logger.warning('error! file_list not found!')
-        await bot.send_message(message.from_user.id, MESSAGES["file_list not found"])
+        await bot.send_message(message.from_user.id, Messages.file_list_not_found)
 
         photo_full_filepath = await get_photo_full_filepath(user_id=message.from_user.id)
         json_full_filepath = await get_json_full_filepath(user_id=message.from_user.id)
