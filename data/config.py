@@ -19,7 +19,7 @@ except Exception as env_err:
 ADMINS_ID: str = env("ADMINS_ID")
 DEVELOPER_ID: str = env("DEVELOPER_ID")
 
-ROOT_FOLDER_STAFF_ID: str = env("ROOT_FOLDER_STAFF_ID")
+# ROOT_FOLDER_STAFF_ID: str = env("ROOT_FOLDER_STAFF_ID")
 
 WORK_ON_HEROKU: bool = env.bool("WORK_ON_HEROKU")
 WORK_ON_PC: bool = env.bool("WORK_ON_PC")

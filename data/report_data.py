@@ -2,7 +2,6 @@ from pprint import pprint
 
 
 class Report(object):
-    # all_potions = []
 
     def __new__(cls, *args, **kwargs):
         print(f"Hello from {Report.__new__}")
