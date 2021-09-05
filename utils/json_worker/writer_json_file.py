@@ -16,10 +16,12 @@ async def write_json_file(*, data: object = None, name: str = "") -> None:
 async def write_json_reg_user_file(*, data: dict = None) -> bool:
     """Запись данных в json
     """
-    name = data['reg_user_file'] + '\\' + data['user_id'] + SUFFIX
+    name = data['reg_json_full_name']
 
-    if not os.path.isfile(name):
-        return False
+    # if not os.path.isfile(name):
+    # Todo: check
+
+    # return False
 
     await write_json(name=name, data=data)
     return True
@@ -30,9 +32,6 @@ async def write_json_violation_user_file(*, data: dict = None) -> bool:
     """
     name = str(data["json_full_name"])
 
-    # if not os.path.isfile(name):
-    #     return False
-
     await write_json(name=name, data=data)
     return True
 
@@ -40,7 +39,6 @@ async def write_json_violation_user_file(*, data: dict = None) -> bool:
 async def write_global_json_file(*, data: dict = None) -> None:
     """Запись данных в json
     """
-
     name = BOT_DATA_PATH + "registration_db" + SUFFIX
 
     await write_json(name=name, data=data)
