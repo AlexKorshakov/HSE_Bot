@@ -5,7 +5,7 @@ import os
 from aiogram import types
 from aiogram.utils import json
 
-from googleapiclient.http import MediaFileUpload
+import apiclient.http
 from loguru import logger
 from mimetypes import guess_type
 
