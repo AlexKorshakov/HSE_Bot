@@ -31,6 +31,15 @@ async def registration_data(message, user_data):
 
 
 async def set_user_registration_data(message, user_data):
+    """
+     :param message:
+     :param user_data:
+     :return:
+     """
+    user_data["reg_json_full_name"] = f"{BOT_DATA_PATH}{message.from_user.id}\\{message.from_user.id}.json"
+    user_data["json_full_name"] = f"{BOT_DATA_PATH}{message.from_user.id}\\{message.from_user.id}.json"
+    user_data["reg_user_path"] = f"{BOT_DATA_PATH}{message.from_user.id}\\"
+
     if await write_json_reg_user_file(data=user_data):
         # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
         logger.info(f"Данные сохранены на pc в файл {user_data['reg_user_file']}")
