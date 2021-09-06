@@ -3,7 +3,7 @@ import asyncio
 from pprint import pprint
 
 from aiogram import types
-# from data.config import WORK_ON_HEROKU, WORK_ON_PC
+
 from loguru import logger
 
 from data.report_data import report_data
