@@ -1,8 +1,10 @@
+from __future__ import print_function
+
 import os
 
 from aiogram import types
 from aiogram.utils import json
-from googleapiclient.errors import HttpError
+
 from googleapiclient.http import MediaFileUpload
 from loguru import logger
 from mimetypes import guess_type
@@ -11,7 +13,7 @@ from loader import dp
 from utils.goolgedrive.GoogleDriveUtils.google_drive_api_worker import driveservice_files_create
 
 
-async def upload_file_on_gdrave(message: types.Message, drive_service, report_data, parent=None, file_path= None):
+async def upload_file_on_gdrave(message: types.Message, drive_service, report_data, parent=None, file_path=None):
     """Загрузка файла на Google Drive
 
     :param file_path:
@@ -62,7 +64,7 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, report_da
         file_id = uploaded_file.get('id')
         return file_id
 
-    except HttpError as err:
+    except Exception as err:
         if err.resp.get('content-type', '').startswith('application/json'):
             reason = json.loads(err.content).get('error').get('errors')[0].get('reason')
 
@@ -126,7 +128,7 @@ async def upload_photo_file_on_gdrave(message: types.Message, drive_service, rep
         file_id = uploaded_file.get('id')
         return file_id
 
-    except HttpError as err:
+    except Exception as err:
         if err.resp.get('content-type', '').startswith('application/json'):
             reason = json.loads(err.content).get('error').get('errors')[0].get('reason')
 

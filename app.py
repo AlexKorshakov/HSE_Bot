@@ -45,8 +45,8 @@ if __name__ == '__main__':
                                    on_shutdown=shutdown,
                                    allowed_updates=get_handled_updates_list(dp))
         finally:
-            dp.storage.close()
-            dp.storage.wait_closed()
-            bot.session.close()
+            await dp.storage.close()
+            await dp.storage.wait_closed()
+            await bot.session.close()
     else:
         raise AttributeError('количество кнопок не может быть меньше 2х или больше 7и')
