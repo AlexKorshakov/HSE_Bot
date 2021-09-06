@@ -1,21 +1,13 @@
 {
     "373084462": {
-        "category": "Курение в неположенном месте_",
-        "comment": "й",
-        "day": "02",
-        "description": "й",
-        "file_id": "02.09.2021___373084462___gADcwADIAQ___6124",
-        "general_contractor": "ГорИнжПроект(?)",
-        "json_file_path": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\data_file\\json\\",
-        "json_full_name": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\data_file\\json\\report_data___02.09.2021___373084462___gADcwADIAQ___6124.json",
-        "main_category": "Экология",
-        "month": "09",
-        "now": "2021-09-02 03:16:04.309091",
-        "photo_file_path": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\data_file\\photo\\",
-        "photo_full_name": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\data_file\\photo\\report_data___02.09.2021___373084462___gADcwADIAQ___6124.jpg",
-        "user_fullname": "Alex Kor",
-        "user_id": 373084462,
-        "violation_category": "Акт-предписание*",
-        "year": "2021"
+        "function": "Специалист 1й категории",
+        "json_full_name": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\373084462.json",
+        "name": "Коршаков Алексей Сергеевич",
+        "name_location": "Аминьевское шоссе",
+        "phone_number": 79186787566,
+        "reg_json_full_name": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\373084462.json",
+        "reg_user_file": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462",
+        "reg_user_path": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\",
+        "user_id": "373084462"
     }
 }

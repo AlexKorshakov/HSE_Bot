@@ -40,7 +40,7 @@ async def set_user_registration_data_on_google_drive(message: types.Message, use
 
     await del_old_data_google_drive(message, drive_service, parent=user_data["parent_id"])
 
-    file_id = await upload_file_on_gdrave(message, drive_service, user_data)
+    file_id = await upload_file_on_gdrave(message, drive_service, user_data, file_path=user_data["reg_json_full_name"])
 
     # top = drive_service.files().get(fileId=folder_id).execute()
     # await asyncio.sleep(2)

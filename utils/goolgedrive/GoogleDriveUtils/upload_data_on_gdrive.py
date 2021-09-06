@@ -10,7 +10,7 @@ from mimetypes import guess_type
 from loader import dp
 
 
-async def upload_file_on_gdrave(message: types.Message, drive_service, report_data, parent= None):
+async def upload_file_on_gdrave(message: types.Message, drive_service, report_data, parent= None, file_path=None):
     """Загрузка файла на Google Drive
 
     :param message:
@@ -18,7 +18,8 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, report_da
     :param report_data:
     :return:
     """
-    file_path = report_data['json_full_name']
+    if not file_path:
+        file_path = report_data['json_full_name']
 
     if not os.path.isfile(file_path):
         logger.info(f"File {report_data['json_full_name']} not found")
