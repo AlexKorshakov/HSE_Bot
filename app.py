@@ -1,3 +1,4 @@
+from __future__ import print_function
 from aiogram import Dispatcher
 from aiogram import executor
 

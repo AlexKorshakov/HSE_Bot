@@ -1,3 +1,4 @@
+from __future__ import print_function
 import asyncio
 from pprint import pprint
 
@@ -7,8 +8,8 @@ from loguru import logger
 
 from data.report_data import report_data
 from messages.messages import Messages
-from utils.goolgedrive.GoogleDriveUtils.GoogleDriveWorker import drive_account_auth_with_oauth2client, \
-    drive_account_credentials
+from utils.goolgedrive.GoogleDriveUtils.GoogleDriveWorker import drive_account_auth_with_oauth2client
+    # drive_account_credentials
 from utils.goolgedrive.GoogleDriveUtils.get_root_folder_id import get_root_folder_id, get_user_folder_id
 
 WORK_ON_HEROKU: bool = False
