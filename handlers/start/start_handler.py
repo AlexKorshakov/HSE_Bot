@@ -6,7 +6,7 @@ from loguru import logger
 
 from data.config import BOT_DATA_PATH
 from data.report_data import user_data
-from loader import dp
+from loader import dp, bot
 from messages.messages import Messages
 from states import RegisterState
 from utils.custom_filters import IsPrivate
@@ -33,7 +33,7 @@ async def start(message: types.Message):
     await RegisterState.name.set()
     reply_markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     reply_markup.add(Messages.cancel)
-    return await message.reply(Messages.ask_name, reply_markup=reply_markup)
+    bot.send_message(message.from_user.id, Messages.ask_name, reply_markup=reply_markup)
 
 
 @dp.message_handler(IsPrivate, Text(equals=Messages.cancel), state=RegisterState.all_states)
