@@ -12,6 +12,7 @@ build/
 develop-eggs/
 dist/
 downloads/
+user_data/
 eggs/
 .eggs/
 lib/
@@ -151,3 +152,4 @@ cython_debug/
 /utils/goolgedrive/config.yml
 /config.yml
 /utils/goolgedrive/GoogleDriveUtils/config.yml
+/user_data/

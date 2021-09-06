@@ -3,13 +3,17 @@ from __future__ import print_function
 import os
 import pickle
 
-import httplib2
+from googleapiclient import errors
+from googleapiclient.discovery import build
 
 try:
-    import apiclient
+    from apiclient import discovery
+    from httplib2 import Http
 except:
-    import googleapiclient.discovery
-    import apiclient
+    os.system('pip install httplib2')
+    os.system('pip install apiclient')
+    from apiclient import discovery
+    from httplib2 import Http
 
 import oauth2client.service_account
 from oauth2client import crypt
@@ -59,11 +63,11 @@ async def drive_account_credentials(message: types.Message) -> object:
             pickle.dump(credentials, token)
 
     # Авторизуемся в системе
-    http_auth = credentials.authorize(httplib2.Http())
+    http_auth = credentials.authorize(Http())
 
     try:
         # Выбираем работу с Google Drive и 3 версию API
-        google_drive_service = apiclient.discovery.build('drive', 'v3', http=http_auth)
+        google_drive_service = build('drive', 'v3', http=http_auth)
         print("авторизация пройдена")
         logger.info("🔒 **Already authorized your Google Drive Account.**")
         return google_drive_service
@@ -103,7 +107,7 @@ async def drive_account_auth_with_oauth2client(message):
             user_agent=None,
             token_uri=TOKEN_URI,
             revoke_uri=oauth2client.GOOGLE_REVOKE_URI)
-        http_auth = credentials.authorize(httplib2.Http())
+        http_auth = credentials.authorize(Http())
 
     except Exception as err:
         await bot.send_message(chat_id, f"Не удалось авторизоваться на Google Drive! "
@@ -117,7 +121,7 @@ async def drive_account_auth_with_oauth2client(message):
     try:
         logger.info(f'AuthURL:{user_id}')
         # Выбираем работу с Google Drive и 3 версию API
-        google_drive_service = apiclient.discovery.build('drive', 'v3', http=http_auth)
+        google_drive_service = discovery.build('drive', 'v3', http=http_auth)
         logger.info(f"🔒 **User {user_id} Authorized Google Drive Account.**")
         return google_drive_service
     except Exception as err:
@@ -145,7 +149,7 @@ async def delete_folder(service, folder_id):
     try:
         service.files().delete(fileId=folder_id).execute()
 
-    except googleapiclient.errors.HttpError as err:
+    except errors.HttpError as err:
         print(f'An error occurred:{err}')
 
 
