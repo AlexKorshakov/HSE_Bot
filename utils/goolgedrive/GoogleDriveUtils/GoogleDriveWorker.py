@@ -3,17 +3,18 @@ from __future__ import print_function
 import os
 import pickle
 
-from googleapiclient import errors
-from googleapiclient.discovery import build
-
+# import googleapiclient
+# from googleapiclient import errors
+from apiclient import discovery
 try:
-    from apiclient import discovery
     from httplib2 import Http
+    # from googleapiclient.discovery import build
 except:
     os.system('pip install httplib2')
-    os.system('pip install apiclient')
-    from apiclient import discovery
+    os.system('pip install google-api-python-client')
+
     from httplib2 import Http
+    # from googleapiclient.discovery import build
 
 import oauth2client.service_account
 from oauth2client import crypt
@@ -38,44 +39,44 @@ SCOPES = [SCOPE_DRIVE,
 PICKLE_PATH = '.\\utils\\goolgedrive\\token.pickle'
 
 
-async def drive_account_credentials(message: types.Message) -> object:
-    """Авторизация на Google
-    :param delegate_user: - аккаунт которому делегируется авторизация
-    :param service_account_file: - файл с ключами и данными аккаунта
-    :return:
-    @rtype: object
-    """
-    credentials = None
-    # Файл token.pickle хранит токены доступа и обновления пользователя
-    # и создается автоматически при первом завершении процесса авторизации.
-
-    if os.path.exists(WORK_PATH + PICKLE_PATH):
-        with open(WORK_PATH + PICKLE_PATH, 'rb') as token:
-            credentials = pickle.load(token)
-
-    if not credentials:
-        # Читаем ключи из файла
-        credentials = oauth2client.service_account.ServiceAccountCredentials.from_json_keyfile_name(
-            filename=SERVICE_ACCOUNT_FILE,
-            scopes=SCOPES)
-
-        with open(WORK_PATH + PICKLE_PATH, 'wb') as token:
-            pickle.dump(credentials, token)
-
-    # Авторизуемся в системе
-    http_auth = credentials.authorize(Http())
-
-    try:
-        # Выбираем работу с Google Drive и 3 версию API
-        google_drive_service = build('drive', 'v3', http=http_auth)
-        print("авторизация пройдена")
-        logger.info("🔒 **Already authorized your Google Drive Account.**")
-        return google_drive_service
-
-    except Exception as err:
-        logger.info(f"авторизация успешно провалена! : {repr(err)} ")
-        await bot.send_message(message.from_user.id, text=Messages.err_authorized_google_drive)
-        assert "Не удалось авторизоваться в системе"
+# async def drive_account_credentials(message: types.Message) -> object:
+#     """Авторизация на Google
+#     :param delegate_user: - аккаунт которому делегируется авторизация
+#     :param service_account_file: - файл с ключами и данными аккаунта
+#     :return:
+#     @rtype: object
+#     """
+#     credentials = None
+#     # Файл token.pickle хранит токены доступа и обновления пользователя
+#     # и создается автоматически при первом завершении процесса авторизации.
+#
+#     if os.path.exists(WORK_PATH + PICKLE_PATH):
+#         with open(WORK_PATH + PICKLE_PATH, 'rb') as token:
+#             credentials = pickle.load(token)
+#
+#     if not credentials:
+#         # Читаем ключи из файла
+#         credentials = oauth2client.service_account.ServiceAccountCredentials.from_json_keyfile_name(
+#             filename=SERVICE_ACCOUNT_FILE,
+#             scopes=SCOPES)
+#
+#         with open(WORK_PATH + PICKLE_PATH, 'wb') as token:
+#             pickle.dump(credentials, token)
+#
+#     # Авторизуемся в системе
+#     http_auth = credentials.authorize(Http())
+#
+#     try:
+#         # Выбираем работу с Google Drive и 3 версию API
+#         google_drive_service = build('drive', 'v3', http=http_auth)
+#         print("авторизация пройдена")
+#         logger.info("🔒 **Already authorized your Google Drive Account.**")
+#         return google_drive_service
+#
+#     except Exception as err:
+#         logger.info(f"авторизация успешно провалена! : {repr(err)} ")
+#         await bot.send_message(message.from_user.id, text=Messages.err_authorized_google_drive)
+#         assert "Не удалось авторизоваться в системе"
 
 
 async def drive_account_auth_with_oauth2client(message):
@@ -148,8 +149,7 @@ async def delete_folder(service, folder_id):
       """
     try:
         service.files().delete(fileId=folder_id).execute()
-
-    except errors.HttpError as err:
+    except Exception as err:
         print(f'An error occurred:{err}')
 
 

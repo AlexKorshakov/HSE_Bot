@@ -31,8 +31,8 @@ async def write_data_on_google_drive(message: types.Message):
     if WORK_ON_HEROKU:
         drive_service = await drive_account_auth_with_oauth2client(message)
 
-    if WORK_ON_PC:
-        drive_service = await drive_account_credentials(message)
+    # if WORK_ON_PC:
+    #     drive_service = await drive_account_credentials(message)
 
     if not drive_service:
         logger.info(f"**drive_service {drive_service} in Google Drive.**")
