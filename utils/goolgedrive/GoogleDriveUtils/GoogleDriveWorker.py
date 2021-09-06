@@ -139,8 +139,10 @@ async def drive_account_auth_with_oauth2client(message):
 
     try:
         logger.info(f'AuthURL:{user_id}')
+
         # Выбираем работу с Google Drive и 3 версию API
         google_drive_service = apiclient.discovery.build('drive', 'v3', http=http_auth)
+
         logger.info(f"🔒 **User {user_id} Authorized Google Drive Account.**")
         return google_drive_service
     except Exception as err:

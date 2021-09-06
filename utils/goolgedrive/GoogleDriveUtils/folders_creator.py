@@ -1,6 +1,5 @@
 from pprint import pprint
 
-from apiclient import errors
 from loguru import logger
 
 from utils.goolgedrive.GoogleDriveUtils.google_drive_api_worker import drive_service_files_create
@@ -24,7 +23,7 @@ def create_folder(service, folder_name, parent_id=None):
                                              supportsTeamDrives=True,
                                              fields='id').execute()
         pprint(root_folder)
-    except errors.HttpError as err:
+    except Exception as err:
         print(f'An error occurred:{err}')
 
     return root_folder['id']
