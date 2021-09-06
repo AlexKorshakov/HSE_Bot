@@ -2,12 +2,40 @@ from __future__ import print_function
 
 import os
 import pickle
-# from pprint import pprint
-from pprint import pprint
+import subprocess
+
+INSTALL_REQUIRES = ['google-api-core==2.0.0',
+                    'google-api-python-client==2.18.0',
+                    'google-auth==2.0.1',
+                    'google-auth-httplib2==0.1.0',
+                    'google-auth-oauthlib==0.4.5',
+                    'googleapis-common-protos==1.53.0',
+                    'httplib2==0.19.1',
+                    ]
+
+
+def prepare_venv():
+    """ принудительное обновление / создание / подготовка виртуального окружения и venv с помощью subprocess.call
+        установка зацисимостей из requirements.txt
+    """
+    app_venv_name = "venv"
+
+    if not os.path.exists(app_venv_name):
+        os.makedirs(f"{app_venv_name}")
+    # upgrade pip
+    subprocess.call(['pip', 'install', '--upgrade'])
+    # update requirements.txt and upgrade venv
+    subprocess.call(['pip', 'install', '--upgrade'] + INSTALL_REQUIRES)
+
 
 import apiclient
-import httplib2
-import oauth2client.service_account
+
+try:
+    import httplib2
+    import oauth2client.service_account
+except Exception:
+    prepare_venv()
+
 from oauth2client import crypt
 from aiogram import types
 from loguru import logger
@@ -135,7 +163,6 @@ async def move_file(service: object, id: str, add_parents: str, remove_parents: 
         serv.update(fileId=id, addParents=add_parents, removeParents=remove_parents).execute()
     except Exception as err:
         print(f"move_folder err {id} to move in add_parents \n: {repr(err)}")
-
 
 # async def delete_folder(service, folder_id):
 #     """Permanently delete a file, skipping the trash.

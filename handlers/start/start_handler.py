@@ -33,7 +33,7 @@ async def start(message: types.Message):
     await RegisterState.name.set()
     reply_markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     reply_markup.add(Messages.cancel)
-    bot.send_message(message.from_user.id, Messages.ask_name, reply_markup=reply_markup)
+    await bot.send_message(message.from_user.id, Messages.ask_name, reply_markup=reply_markup)
 
 
 @dp.message_handler(IsPrivate, Text(equals=Messages.cancel), state=RegisterState.all_states)

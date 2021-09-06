@@ -1,25 +1,13 @@
 {
     "373084462": {
-        "category": "Обучения и инструктажи_",
-        "comment": "Оп",
-        "data": "05:09:2021",
-        "day": "05",
-        "description": "Лм",
-        "file_id": "05.09.2021___373084462___7261",
-        "general_contractor": "ГорИнжПроект(?)",
-        "json_file_path": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\data_file\\json\\",
-        "json_folder_id": "1F0veHLGWg0cVNUUu9XEXG1IGSzbUYzfb",
-        "json_full_name": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\data_file\\json\\report_data___05.09.2021___373084462___7261.json",
-        "main_category": "Экология",
-        "month": "09",
-        "now": "2021-09-05 09:35:19.845637",
-        "photo_file_path": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\data_file\\photo\\",
-        "photo_folder_id": "1F0veHLGWg0cVNUUu9XEXG1IGSzbUYzfb",
-        "photo_full_name": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\data_file\\photo\\report_data___05.09.2021___373084462___7261.jpg",
-        "report_folder_id": "1jqPlTNt2S0sjj4Rjq0-tIqSG36DTsRJR",
-        "user_fullname": "Alex Kor",
-        "user_id": 373084462,
-        "violation_category": "LTI*",
-        "year": "2021"
+        "function": "Специалист 1й категории",
+        "json_full_name": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\373084462.json",
+        "name": "Коршаков Алексей Сергеевич",
+        "name_location": "Аминьевское шоссе",
+        "phone_number": 79186787566,
+        "reg_json_full_name": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\373084462.json",
+        "reg_user_file": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462",
+        "reg_user_path": "C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot\\user_data\\373084462\\",
+        "user_id": "373084462"
     }
 }
