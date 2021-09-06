@@ -28,9 +28,8 @@ def prepare_venv():
     subprocess.call(['pip', 'install', '--upgrade'] + INSTALL_REQUIRES)
 
 
-import apiclient
-
 try:
+    import apiclient
     import httplib2
     import oauth2client.service_account
 except Exception:
