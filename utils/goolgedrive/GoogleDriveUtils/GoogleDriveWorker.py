@@ -3,6 +3,7 @@ from __future__ import print_function
 import os
 import pickle
 # from pprint import pprint
+from pprint import pprint
 
 import apiclient
 import httplib2
@@ -135,17 +136,15 @@ async def move_file(service: object, id: str, add_parents: str, remove_parents: 
     except Exception as err:
         print(f"move_folder err {id} to move in add_parents \n: {repr(err)}")
 
+
 # async def delete_folder(service, folder_id):
 #     """Permanently delete a file, skipping the trash.
 #       Args:
 #         service: Drive API service instance.
 #         folder_id: ID of the file to delete.
 #       """
-#     try:
-#         service.files().delete(fileId=folder_id).execute()
 #
-#     except googleapiclient.errors.HttpError as err:
-#         print(f'An error occurred:{err}')
+#     service.files().delete(fileId=folder_id).execute()
 
 # async def delete_folders_for_id(drive_service, folder_id_list):
 #     """
