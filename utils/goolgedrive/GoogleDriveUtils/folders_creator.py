@@ -1,6 +1,5 @@
 from pprint import pprint
 
-from apiclient import errors
 from loguru import logger
 
 G_DRIVE_DIR_MIME_TYPE = "application/vnd.google-apps.folder"
@@ -22,7 +21,7 @@ def create_folder(service, folder_name, parent_id=None):
                                              supportsTeamDrives=True,
                                              fields='id').execute()
         pprint(root_folder)
-    except errors.HttpError as err:
+    except Exception as err:
         print(f'An error occurred:{err}')
 
     return root_folder['id']
