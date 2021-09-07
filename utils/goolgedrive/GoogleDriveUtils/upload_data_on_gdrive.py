@@ -1,16 +1,47 @@
+from __future__ import print_function
 import os
+import subprocess
 
 from aiogram import types
 from aiogram.utils import json
-from googleapiclient.errors import HttpError
-from googleapiclient.http import MediaFileUpload
+
+INSTALL_REQUIRES = ['google-api-core',
+                    'google-api-python-client',
+                    'google-auth-httplib2',
+                    'google-auth-oauthlib',
+                    'googleapis-common-protos',
+                    'httplib2',
+                    ]
+
+
+def prepare_venv():
+    """ принудительное обновление / создание / подготовка виртуального окружения и venv с помощью subprocess.call
+        установка зацисимостей из requirements.txt
+    """
+    app_venv_name = "venv"
+
+    if not os.path.exists(app_venv_name):
+        os.makedirs(f"{app_venv_name}")
+    # upgrade pip
+    subprocess.call(['pip', 'install', '--upgrade'])
+    # update requirements.txt and upgrade venv
+    subprocess.call(['pip', 'install', '--upgrade'] + INSTALL_REQUIRES)
+
+
+try:
+    from googleapiclient.errors import HttpError
+    from googleapiclient.http import MediaFileUpload
+except Exception as err:
+    print(f"googleapiclient error {err}")
+    prepare_venv()
+
 from loguru import logger
 from mimetypes import guess_type
 
 from loader import dp
 
 
-async def upload_file_on_gdrave(message: types.Message, drive_service, report_data, parent= None, file_path=None):
+async def upload_file_on_gdrave(message: types.Message, drive_service, report_data, parent=None, file_path=None):
     """Загрузка файла на Google Drive
 
     :param message:

@@ -2,11 +2,41 @@ from __future__ import print_function
 
 import os
 import pickle
+import subprocess
 from pprint import pprint
-
-import apiclient
+# import apiclient
 import httplib2
 import oauth2client.service_account
+
+INSTALL_REQUIRES = ['google-api-core',
+                    'google-api-python-client',
+                    'google-auth-httplib2',
+                    'google-auth-oauthlib',
+                    'googleapis-common-protos',
+                    'httplib2',
+                    ]
+
+
+def prepare_venv():
+    """ принудительное обновление / создание / подготовка виртуального окружения и venv с помощью subprocess.call
+        установка зацисимостей из requirements.txt
+    """
+    app_venv_name = "venv"
+
+    if not os.path.exists(app_venv_name):
+        os.makedirs(f"{app_venv_name}")
+    # upgrade pip
+    subprocess.call(['pip', 'install', '--upgrade'])
+    # update requirements.txt and upgrade venv
+    subprocess.call(['pip', 'install', '--upgrade'] + INSTALL_REQUIRES)
+
+
+try:
+    from googleapiclient.discovery import build
+except Exception as err:
+    print(f"googleapiclient error {err}")
+    prepare_venv()
+
 from oauth2client import crypt
 from aiogram import types
 from loguru import logger
@@ -17,7 +47,7 @@ from loader import bot
 from messages.messages import MESSAGES
 
 SCOPE_DRIVE = "https://www.googleapis.com/auth/drive"
-# Просмотр и управление собственными конфигурационными данными на вашем Google Диске
+
 SCOPE_DRIVE_APPDATA = "https://www.googleapis.com/auth/drive.appdata"
 # Просмотр и управление файлами и папками Google Drive, которые вы открыли или создали с помощью этого приложения
 SCOPE_DRIVE_FILE = "https://www.googleapis.com/auth/drive.file"
@@ -58,7 +88,7 @@ async def drive_account_credentials(message: types.Message) -> object:
 
     try:
         # Выбираем работу с Google Drive и 3 версию API
-        google_drive_service = apiclient.discovery.build('drive', 'v3', http=http_auth)
+        google_drive_service = build('drive', 'v3', http=http_auth)
         print("авторизация пройдена")
         logger.info("🔒 **Already authorized your Google Drive Account.**")
         return google_drive_service
@@ -112,7 +142,7 @@ async def drive_account_auth_with_oauth2client(message):
     try:
         logger.info(f'AuthURL:{user_id}')
         # Выбираем работу с Google Drive и 3 версию API
-        google_drive_service = apiclient.discovery.build('drive', 'v3', http=http_auth)
+        google_drive_service = build('drive', 'v3', http=http_auth)
         logger.info(f"🔒 **User {user_id} Authorized Google Drive Account.**")
         return google_drive_service
     except Exception as err:
@@ -127,7 +157,7 @@ async def move_file(service: object, id: str, add_parents: str, remove_parents: 
     @param remove_parents:
     @param add_parents:
     @param service:
-    :param id:
+    @param id:
     """
     try:
         service.files().update(fileId=id, addParents=add_parents, removeParents=remove_parents).execute()
