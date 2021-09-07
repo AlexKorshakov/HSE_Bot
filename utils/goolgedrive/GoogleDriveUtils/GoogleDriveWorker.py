@@ -1,5 +1,7 @@
 from __future__ import print_function
 
+print("V 0.035 Heroku_Test")
+
 import os
 import pickle
 import subprocess
