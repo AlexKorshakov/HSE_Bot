@@ -12,7 +12,7 @@ build/
 develop-eggs/
 dist/
 downloads/
-user_data/
+
 eggs/
 .eggs/
 lib/
@@ -147,9 +147,9 @@ cython_debug/
 /Parser_ABC/Parser_Log.txt
 /JsonData/
 
-/user_data/*
+
 /utils/goolgedrive/token.pickle
 /utils/goolgedrive/config.yml
 /config.yml
 /utils/goolgedrive/GoogleDriveUtils/config.yml
-/user_data/
+
