@@ -9,39 +9,44 @@ from data.report_data import report_data
 from utils.json_worker.writer_json_file import write_json_file, write_json_violation_user_file
 
 
-async def get_report_full_filepath(user_id):
+async def get_report_full_filepath(user_id=None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    return f"{BOT_DATA_PATH}{user_id}\\data_file\\reports\\"
+    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\reports\\"
+    return f"{BOT_DATA_PATH}reports\\"
 
 
-async def get_photo_full_filepath(user_id):
+async def get_photo_full_filepath(user_id=None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    return f"{BOT_DATA_PATH}{user_id}\\data_file\\photo\\"
+    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\photo\\"
+    return f"{BOT_DATA_PATH}photo\\"
 
 
-async def get_photo_full_filename(user_id, name):
+async def get_photo_full_filename(user_id=None, name=None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    return f"{BOT_DATA_PATH}{user_id}\\data_file\\photo\\{REPORT_NAME}{name}.jpg"
+    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\photo\\{REPORT_NAME}{name}.jpg"
+    return f"{BOT_DATA_PATH}photo\\{REPORT_NAME}{name}.jpg"
 
 
-async def get_json_full_filepath(user_id):
+async def get_json_full_filepath(user_id=None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    return f"{BOT_DATA_PATH}{user_id}\\data_file\\json\\"
+    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\json\\"
+    return f"{BOT_DATA_PATH}json\\"
 
 
-async def get_json_full_filename(user_id, name):
+async def get_json_full_filename(user_id=None, name= None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    return f"{BOT_DATA_PATH}{user_id}\\data_file\\json\\{REPORT_NAME}{name}.json"
+    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\json\\{REPORT_NAME}{name}.json"
+    return f"{BOT_DATA_PATH}json\\{REPORT_NAME}{name}.json"
 
 
 async def create_file_path(user_path: str):
