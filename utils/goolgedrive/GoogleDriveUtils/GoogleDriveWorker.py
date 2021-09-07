@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-print("V 0.034 Heroku_Test")
+print("V 0.035 Heroku_Test")
 
 import os
 import pickle
@@ -20,8 +20,8 @@ INSTALL_REQUIRES = ['google-api-core',
                     'google-auth-httplib2',
                     'google-auth-oauthlib',
                     'googleapis-common-protos',
+                    'oauth2client',
                     'httplib2',
-                    'oauth2client'
                     ]
 
 
@@ -34,7 +34,7 @@ def prepare_venv():
     if not os.path.exists(app_venv_name):
         os.makedirs(f"{app_venv_name}")
     # upgrade pip
-    subprocess.call(['pip', 'install', '--upgrade'])
+    subprocess.call(['pip install --upgrade pip'])
     # update requirements.txt and upgrade venv
     subprocess.call(['pip', 'install', '--upgrade'] + INSTALL_REQUIRES)
 
@@ -45,7 +45,7 @@ try:
     import oauth2client.service_account
     import oauth2client.crypt as Crypt
 except Exception as err:
-    print(f"googleapiclient error {err}")
+    print(f"*** googleapiclient error {err} ***")
     prepare_venv()
 
 SCOPE_DRIVE = "https://www.googleapis.com/auth/drive"
