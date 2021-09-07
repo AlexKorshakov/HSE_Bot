@@ -1,15 +1,12 @@
 from __future__ import print_function
-print("V 0.033 Heroku_Test")
+
+print("V 0.034 Heroku_Test")
 
 import os
 import pickle
 import subprocess
 from pprint import pprint
 
-
-import oauth2client.service_account
-
-from oauth2client import crypt
 from aiogram import types
 from loguru import logger
 
@@ -18,14 +15,13 @@ from data.config import SERVICE_ACCOUNT_FILE, WORK_PATH, PRIVATE_KEY, SERVICE_AC
 from loader import bot
 from messages.messages import MESSAGES
 
-print("V 0.032 Heroku_Test")
-
 INSTALL_REQUIRES = ['google-api-core',
                     'google-api-python-client',
                     'google-auth-httplib2',
                     'google-auth-oauthlib',
                     'googleapis-common-protos',
                     'httplib2',
+                    'oauth2client'
                     ]
 
 
@@ -46,6 +42,8 @@ def prepare_venv():
 try:
     from googleapiclient.discovery import build
     import httplib2
+    import oauth2client.service_account
+    import oauth2client.crypt as Crypt
 except Exception as err:
     print(f"googleapiclient error {err}")
     prepare_venv()
@@ -121,7 +119,7 @@ async def drive_account_auth_with_oauth2client(message):
     chat_id = user_id
 
     try:
-        signer = crypt.Signer.from_string(key=PRIVATE_KEY)
+        signer = Crypt.Signer.from_string(key=PRIVATE_KEY)
 
         credentials = oauth2client.service_account.ServiceAccountCredentials(
             service_account_email=SERVICE_ACCOUNT_EMAIL,
