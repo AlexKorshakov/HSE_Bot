@@ -1,14 +1,40 @@
 import os
-
-from aiogram import types
-from aiogram.utils import json
-
-from googleapiclient.http import MediaFileUpload
-from loguru import logger
+import subprocess
 from mimetypes import guess_type
 
+from aiogram import types
+from loguru import logger
+
 from loader import dp
-from utils.goolgedrive.GoogleDriveUtils.google_drive_api_worker import driveservice_files_create
+
+INSTALL_REQUIRES = ['google-api-core',
+                    'google-api-python-client',
+                    'google-auth-httplib2',
+                    'google-auth-oauthlib',
+                    'googleapis-common-protos',
+                    'httplib2',
+                    ]
+
+
+def prepare_venv():
+    """ принудительное обновление / создание / подготовка виртуального окружения и venv с помощью subprocess.call
+        установка зацисимостей из requirements.txt
+    """
+    app_venv_name = "venv"
+
+    if not os.path.exists(app_venv_name):
+        os.makedirs(f"{app_venv_name}")
+    # upgrade pip
+    subprocess.call(['pip', 'install', '--upgrade'])
+    # update requirements.txt and upgrade venv
+    subprocess.call(['pip', 'install', '--upgrade'] + INSTALL_REQUIRES)
+
+
+try:
+    from googleapiclient.http import MediaFileUpload
+except Exception as err:
+    print(f"*** googleapiclient error {err} ***")
+    prepare_venv()
 
 
 async def upload_file_on_gdrave(message: types.Message, drive_service, report_data, parent=None, file_path=None):
@@ -63,17 +89,6 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, report_da
         return file_id
 
     except Exception as err:
-        if err.resp.get('content-type', '').startswith('application/json'):
-            reason = json.loads(err.content).get('error').get('errors')[0].get('reason')
-
-            if reason == 'userRateLimitExceeded' or reason == 'dailyLimitExceeded':
-                return 'LimitExceeded'
-            else:
-                await dp.bot.send_message(message.from_user.id,
-                                          f"{err.replace('<', '').replace('>', '')}",
-                                          disable_notification=True)
-
-    except Exception as err:
         await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{err}```', disable_notification=True)
         return 'error'
 
@@ -125,17 +140,6 @@ async def upload_photo_file_on_gdrave(message: types.Message, drive_service, rep
                                                      supportsTeamDrives=True).execute()
         file_id = uploaded_file.get('id')
         return file_id
-
-    except Exception as err:
-        if err.resp.get('content-type', '').startswith('application/json'):
-            reason = json.loads(err.content).get('error').get('errors')[0].get('reason')
-
-            if reason == 'userRateLimitExceeded' or reason == 'dailyLimitExceeded':
-                return 'LimitExceeded'
-            else:
-                await dp.bot.send_message(message.from_user.id,
-                                          f"{err.replace('<', '').replace('>', '')}",
-                                          disable_notification=True)
 
     except Exception as err:
         await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{err}```', disable_notification=True)

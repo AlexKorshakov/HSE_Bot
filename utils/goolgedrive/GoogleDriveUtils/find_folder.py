@@ -41,8 +41,8 @@ async def find_folder_with_drive_id(drive_service, drive_id, recursively=True):
 
 
 async def find_all(service: object) -> list:
-    """Получение id папки по имени"""
-
+    """Получение id папки по имени
+    """
     while True:
         get_folder = service.files().list().execute()
 
@@ -60,7 +60,6 @@ async def find_all(service: object) -> list:
 async def find_all_folders(drive_service) -> List[Dict[str, str]]:
     """Получение id папки по имени
     """
-
     page_token = None
     while True:
         get_folder = drive_service.files().list(q="mimeType='application/vnd.google-apps.folder'",

@@ -1,7 +1,9 @@
 import io
+import os
+import subprocess
 
 from aiogram import types
-from googleapiclient.http import MediaIoBaseDownload
+
 from loguru import logger
 
 from data.config import SEPARATOR
@@ -13,6 +15,36 @@ from utils.goolgedrive.GoogleDriveUtils.set_user_violation_data_on_google_drave 
 from utils.goolgedrive.googledrive_worker import ROOT_REPORT_FOLDER_NAME
 from utils.secondary_functions.get_day_message import get_day_message
 from utils.secondary_functions.get_month_message import get_month_message
+
+INSTALL_REQUIRES = ['google-api-core',
+                    'google-api-python-client',
+                    'google-auth-httplib2',
+                    'google-auth-oauthlib',
+                    'googleapis-common-protos',
+                    # 'oauth2client',
+                    'httplib2',
+                    ]
+
+
+def prepare_venv():
+    """ принудительное обновление / создание / подготовка виртуального окружения и venv с помощью subprocess.call
+        установка зацисимостей из requirements.txt
+    """
+    app_venv_name = "venv"
+
+    if not os.path.exists(app_venv_name):
+        os.makedirs(f"{app_venv_name}")
+    # upgrade pip
+    subprocess.call(['pip', 'install', '--upgrade'])
+    # update requirements.txt and upgrade venv
+    subprocess.call(['pip', 'install', '--upgrade'] + INSTALL_REQUIRES)
+
+
+try:
+    from googleapiclient.http import MediaIoBaseDownload
+except Exception as err:
+    print(f"*** googleapiclient error {err} ***")
+    prepare_venv()
 
 
 async def download_files_for_google_drive(message: types.Message, file_path, photo_path):
