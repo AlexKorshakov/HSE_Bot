@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-print("V 0.036 Heroku_Test")
+print("V 0.037 Heroku_Test")
 
 import os
 import pickle
@@ -20,7 +20,7 @@ INSTALL_REQUIRES = ['google-api-core',
                     'google-auth-httplib2',
                     'google-auth-oauthlib',
                     'googleapis-common-protos',
-                    'oauth2client',
+                    # 'oauth2client',
                     'httplib2',
                     ]
 
@@ -42,8 +42,10 @@ def prepare_venv():
 try:
     from googleapiclient.discovery import build
     import httplib2
-    import oauth2client.service_account
-    import oauth2client.crypt as Crypt
+
+    from google.oauth2 import service_account
+    # import oauth2client.service_account
+    # import oauth2client.crypt as Crypt
 except Exception as err:
     print(f"*** googleapiclient error {err} ***")
     prepare_venv()
@@ -78,7 +80,7 @@ async def drive_account_credentials(message: types.Message) -> object:
 
     if not credentials:
         # Читаем ключи из файла
-        credentials = oauth2client.service_account.ServiceAccountCredentials.from_json_keyfile_name(
+        credentials = service_account.Credentials.from_service_account_file(
             filename=SERVICE_ACCOUNT_FILE,
             scopes=SCOPES)
 
@@ -108,50 +110,52 @@ async def drive_account_auth_with_oauth2client(message):
     :return:
     @rtype: object
     """
+    google_drive_service = await drive_account_credentials(message)
+    return google_drive_service
 
-    http_auth = None
-
-    if isinstance(message, str):
-        user_id = message
-    else:
-        user_id = message.from_user.id
-
-    chat_id = user_id
-
-    try:
-        signer = Crypt.Signer.from_string(key=PRIVATE_KEY)
-
-        credentials = oauth2client.service_account.ServiceAccountCredentials(
-            service_account_email=SERVICE_ACCOUNT_EMAIL,
-            signer=signer,
-            scopes=SCOPES,
-            private_key_id=PRIVATE_KEY_ID,
-            client_id=CLIENT_ID,
-            user_agent=None,
-            token_uri=TOKEN_URI,
-            revoke_uri=oauth2client.GOOGLE_REVOKE_URI)
-        http_auth = credentials.authorize(httplib2.Http())
-
-    except Exception as err:
-        await bot.send_message(chat_id, f"Не удалось авторизоваться на Google Drive! "
-                                        f"**ERROR:** ```{err}```")
-        logger.info(f"**ERROR:** Не удалось авторизоваться на Google Drive!```{err}```")
-
-    if http_auth is None:
-        logger.info(f"**ERROR http_auth :** ```{http_auth}```")
-        assert "Не удалось авторизоваться на Google Drive!"
-
-    try:
-        logger.info(f'AuthURL:{user_id}')
-        # Выбираем работу с Google Drive и 3 версию API
-        google_drive_service = build('drive', 'v3', http=http_auth)
-        logger.info(f"🔒 **User {user_id} Authorized Google Drive Account.**")
-        return google_drive_service
-    except Exception as err:
-        logger.info(f"авторизация успешно провалена! : {repr(err)} ")
-        await bot.send_message(chat_id, "Не удалось авторизоваться на Google Drive!")
-        logger.info(f"**ERROR:** ```{err}```")
-        assert "Не удалось авторизоваться в системе"
+    # http_auth = None
+    #
+    # if isinstance(message, str):
+    #     user_id = message
+    # else:
+    #     user_id = message.from_user.id
+    #
+    # chat_id = user_id
+    #
+    # try:
+    #     signer = Crypt.Signer.from_string(key=PRIVATE_KEY)
+    #
+    #     credentials = oauth2client.service_account.ServiceAccountCredentials(
+    #         service_account_email=SERVICE_ACCOUNT_EMAIL,
+    #         signer=signer,
+    #         scopes=SCOPES,
+    #         private_key_id=PRIVATE_KEY_ID,
+    #         client_id=CLIENT_ID,
+    #         user_agent=None,
+    #         token_uri=TOKEN_URI,
+    #         revoke_uri=oauth2client.GOOGLE_REVOKE_URI)
+    #     http_auth = credentials.authorize(httplib2.Http())
+    #
+    # except Exception as err:
+    #     await bot.send_message(chat_id, f"Не удалось авторизоваться на Google Drive! "
+    #                                     f"**ERROR:** ```{err}```")
+    #     logger.info(f"**ERROR:** Не удалось авторизоваться на Google Drive!```{err}```")
+    #
+    # if http_auth is None:
+    #     logger.info(f"**ERROR http_auth :** ```{http_auth}```")
+    #     assert "Не удалось авторизоваться на Google Drive!"
+    #
+    # try:
+    #     logger.info(f'AuthURL:{user_id}')
+    #     # Выбираем работу с Google Drive и 3 версию API
+    #     google_drive_service = build('drive', 'v3', http=http_auth)
+    #     logger.info(f"🔒 **User {user_id} Authorized Google Drive Account.**")
+    #     return google_drive_service
+    # except Exception as err:
+    #     logger.info(f"авторизация успешно провалена! : {repr(err)} ")
+    #     await bot.send_message(chat_id, "Не удалось авторизоваться на Google Drive!")
+    #     logger.info(f"**ERROR:** ```{err}```")
+    #     assert "Не удалось авторизоваться в системе"
 
 
 async def move_file(service: object, id: str, add_parents: str, remove_parents: str) -> None:
