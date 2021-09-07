@@ -4,9 +4,20 @@ import os
 import pickle
 import subprocess
 from pprint import pprint
-# import apiclient
+
 import httplib2
 import oauth2client.service_account
+
+from oauth2client import crypt
+from aiogram import types
+from loguru import logger
+
+from data.config import SERVICE_ACCOUNT_FILE, WORK_PATH, PRIVATE_KEY, SERVICE_ACCOUNT_EMAIL, \
+    PRIVATE_KEY_ID, CLIENT_ID, TOKEN_URI
+from loader import bot
+from messages.messages import MESSAGES
+
+print("V 0.032 Heroku_Test")
 
 INSTALL_REQUIRES = ['google-api-core',
                     'google-api-python-client',
@@ -36,15 +47,6 @@ try:
 except Exception as err:
     print(f"googleapiclient error {err}")
     prepare_venv()
-
-from oauth2client import crypt
-from aiogram import types
-from loguru import logger
-
-from data.config import SERVICE_ACCOUNT_FILE, WORK_PATH, PRIVATE_KEY, SERVICE_ACCOUNT_EMAIL, PRIVATE_KEY_ID, CLIENT_ID, \
-    TOKEN_URI
-from loader import bot
-from messages.messages import MESSAGES
 
 SCOPE_DRIVE = "https://www.googleapis.com/auth/drive"
 
@@ -163,43 +165,3 @@ async def move_file(service: object, id: str, add_parents: str, remove_parents: 
         service.files().update(fileId=id, addParents=add_parents, removeParents=remove_parents).execute()
     except Exception as err:
         pprint(f"move_folder err {id} to move in add_parents \n: {repr(err)}")
-
-# async def delete_folder(service, folder_id):
-#     """Permanently delete a file, skipping the trash.
-#       Args:
-#         service: Drive API service instance.
-#         folder_id: ID of the file to delete.
-#       """
-#     try:
-#         service.files().delete(fileId=folder_id).execute()
-#
-#     except googleapiclient.errors.HttpError as err:
-#         print(f'An error occurred:{err}')
-
-# async def delete_folders_for_id(drive_service, folder_id_list):
-#     """
-#     :param drive_service:
-#     :param folder_id_list:
-#     :return:
-#     """
-#     for item, f_id in enumerate(folder_id_list):
-#         await delete_folder(service=drive_service, folder_id=f_id["id"])
-#         print(f'Item {item}: delete file/folder name {f_id["name"]} id {f_id["id"]} mimeType {f_id["mimeType"]}')
-#
-#
-# async def test_run():
-#     message = "373084462"
-#
-#     drive_service: object = await drive_account_auth_with_oauth2client(message)
-#
-#     found_files = await find_file_by_name(drive_service, name="373084462")
-#     pprint(found_files)
-#
-#     if not found_files:
-#         return
-#
-#     await delete_folders_for_id(drive_service, folder_id_list=found_files)
-#
-#
-# if __name__ == '__main__':
-#     asyncio.run(test_run())
