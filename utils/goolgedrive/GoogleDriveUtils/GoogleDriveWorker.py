@@ -1,11 +1,12 @@
 from __future__ import print_function
+print("V 0.033 Heroku_Test")
 
 import os
 import pickle
 import subprocess
 from pprint import pprint
 
-import httplib2
+
 import oauth2client.service_account
 
 from oauth2client import crypt
@@ -44,6 +45,7 @@ def prepare_venv():
 
 try:
     from googleapiclient.discovery import build
+    import httplib2
 except Exception as err:
     print(f"googleapiclient error {err}")
     prepare_venv()
