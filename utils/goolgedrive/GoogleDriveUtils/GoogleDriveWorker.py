@@ -45,7 +45,7 @@ from loader import bot
 from messages.messages import Messages
 
 SCOPE_DRIVE = "https://www.googleapis.com/auth/drive"
-# Просмотр и управление собственными конфигурационными данными на вашем Google Диске
+
 SCOPE_DRIVE_APPDATA = "https://www.googleapis.com/auth/drive.appdata"
 # Просмотр и управление файлами и папками Google Drive, которые вы открыли или создали с помощью этого приложения
 SCOPE_DRIVE_FILE = "https://www.googleapis.com/auth/drive.file"

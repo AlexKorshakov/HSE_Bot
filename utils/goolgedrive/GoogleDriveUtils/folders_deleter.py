@@ -1,7 +1,5 @@
-import googleapiclient
 from loguru import logger
 
-from utils.goolgedrive.GoogleDriveUtils.GoogleDriveWorker import drive_account_auth_with_oauth2client
 from utils.goolgedrive.GoogleDriveUtils.find_folder import find_file_by_name
 from utils.goolgedrive.googledrive_worker import ROOT_REPORT_FOLDER_ID
 
@@ -34,7 +32,7 @@ async def delete_folder(service, folder_id):
       """
     try:
         service.files().delete(fileId=folder_id).execute()
-    except googleapiclient.errors.HttpError as err:
+    except Exception as err:
         print(f'An error occurred:{err}')
 
 
@@ -72,20 +70,20 @@ async def del_old_data_google_drive(message, drive_service, name=None, parent=No
     await delete_folders_for_id(drive_service, folder_id_list=found_files)
 
 
-if __name__ == '__main__':
-    """
-    """
-    message: str = "373084462"
-    drive_service = drive_account_auth_with_oauth2client(message)
-
-    # folders_name = find_all_folder(service=drive_service)
-    # folder_id_list = [folder["id"] for folder in folders_name]
-
-    folder_id_list = ['1gAh--W8NkzFpUJVfesEDjWLm_UQ4uO-U',
-                      '1qQ-KI9oPHqYpysdSEJn1escc7NhdAIZV'
-                      ]
-
-    delete_folders_for_id(drive_service=drive_service, folder_id_list=folder_id_list)
+# if __name__ == '__main__':
+#     """
+#     """
+#     message: str = "373084462"
+#     drive_service = drive_account_auth_with_oauth2client(message)
+#
+#     # folders_name = find_all_folder(service=drive_service)
+#     # folder_id_list = [folder["id"] for folder in folders_name]
+#
+#     folder_id_list = ['1gAh--W8NkzFpUJVfesEDjWLm_UQ4uO-U',
+#                       '1qQ-KI9oPHqYpysdSEJn1escc7NhdAIZV'
+#                       ]
+#
+#     delete_folders_for_id(drive_service=drive_service, folder_id_list=folder_id_list)
 
     # folders = find_all_folders(service=drive_service)
     # js.write_json_file(data=folders, name=PATH_TO_JSON + "all_folder")
