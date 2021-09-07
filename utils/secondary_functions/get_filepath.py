@@ -71,7 +71,7 @@ async def preparation_paths_on_pc(message: types.Message):
     report_data["photo_full_name"] = await get_photo_full_filename(user_id=report_data["user_id"],
                                                                    name=report_data["file_id"])
     await create_file_path(report_data["photo_file_path"])
-    await message.photo[-1].download(destination=report_data["photo_full_name"])
+    await message.photo[-1].download(destination=report_data["photo_full_name"], make_dirs=False)
 
     report_data["json_file_path"] = await get_json_full_filepath(user_id=report_data["user_id"])
     report_data["json_full_name"] = await get_json_full_filename(user_id=report_data["user_id"],
