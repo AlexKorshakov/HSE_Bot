@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-print("V 0.035 Heroku_Test")
+print("V 0.036 Heroku_Test")
 
 import os
 import pickle
@@ -34,7 +34,7 @@ def prepare_venv():
     if not os.path.exists(app_venv_name):
         os.makedirs(f"{app_venv_name}")
     # upgrade pip
-    subprocess.call(['pip install --upgrade pip'])
+    subprocess.call(['pip', 'install', '--upgrade', 'pip'])
     # update requirements.txt and upgrade venv
     subprocess.call(['pip', 'install', '--upgrade'] + INSTALL_REQUIRES)
 
