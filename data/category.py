@@ -1,21 +1,21 @@
+import inspect
 import json
+import os.path
 from json import JSONDecodeError
-
-import inspect, os.path
 
 filename = inspect.getframeinfo(inspect.currentframe()).filename
 path = os.path.dirname(os.path.abspath(filename))
 
-MAIN_CATEGORY_LIST: list[str] = [
+MAIN_CATEGORY_LIST: list = [
     "Охрана труда",
     "Промышленная безопасность",
     "Пожарная безопасность",
     "Экология",
     "БДД",
-    "ГО и ЧС"
+    "ГО и ЧС",
 ]
 
-CATEGORY_LIST: list[str] = [
+CATEGORY_LIST: list = [
     'Охрана труда_',
     'Промышленная безопасность_',
     'Экология_',
@@ -37,7 +37,7 @@ CATEGORY_LIST: list[str] = [
     'Сокрытие обстоятельств НС_',
 ]
 
-VIOLATION_CATEGORY: list[str] = [
+VIOLATION_CATEGORY: list = [
     "Происшествие без последствий*",
     "Опасные действия*",
     "Травма*",
@@ -48,7 +48,7 @@ VIOLATION_CATEGORY: list[str] = [
     "акт 2го уровня*"
 ]
 
-GENERAL_CONTRACTORS: list[str] = [
+GENERAL_CONTRACTORS: list = [
     "Строй-Монтаж 2002(?)",
     "МИП - Строй 1(?)",
     "СиАрСиСи Рус(?)",

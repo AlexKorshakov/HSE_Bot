@@ -43,7 +43,7 @@ BOT_DATA_PATH = WORK_PATH + "\\user_data\\"
 SEPARATOR = "___"
 
 # Путь к файлу с данными сервисного аккаунта
-SERVICE_ACCOUNT_FILE: str = 'C:\\Users\\KDeusEx\\Desktop\\MyCTNG\\my_ctng-a4c11261dc82.json'
+SERVICE_ACCOUNT_FILE: str = 'C:\\Users\\DeusEx\\Desktop\\MyCTNG\\my_ctng-a4c11261dc82.json'
 
 REPORT_FULL_NAME = f'МИП Отчет за {(datetime.datetime.now()).strftime("%d.%m.%Y")}.xlsx'
 

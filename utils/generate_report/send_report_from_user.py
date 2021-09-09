@@ -6,7 +6,7 @@ from aiogram.types import ChatActions
 
 from data.config import BOT_DATA_PATH, REPORT_FULL_NAME
 from loader import bot
-from utils.secondary_functions.get_filepath import create_file_path
+from utils.secondary_functions.get_filepath import create_file_path, get_report_full_filepath
 
 
 async def send_report_from_user(message: types.Message):
@@ -18,7 +18,7 @@ async def send_report_from_user(message: types.Message):
     await bot.send_chat_action(user_id, ChatActions.UPLOAD_DOCUMENT)
     await asyncio.sleep(2)  # скачиваем файл и отправляем его пользователю
 
-    report_path = BOT_DATA_PATH + str(message.chat.id) + "\\data_file\\reports\\"
+    report_path = await get_report_full_filepath()
     await create_file_path(report_path)
     fill_report_path = report_path + report_full_name
 
