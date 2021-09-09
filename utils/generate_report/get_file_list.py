@@ -1,6 +1,6 @@
 from aiogram import types
 
-from data.config import BOT_DATA_PATH, SEPARATOR
+from data.config import SEPARATOR
 from utils.secondary_functions.get_day_message import get_day_message
 from utils.secondary_functions.get_filepath import get_json_full_filepath
 from utils.secondary_functions.get_json_files import get_json_files
@@ -10,9 +10,7 @@ from utils.secondary_functions.get_month_message import get_month_message
 async def get_json_file_list(message: types.Message) -> list:
     """Получение списка файлов из директории
     """
-
     json_data_path = await get_json_full_filepath(str(message.chat.id))
-    # json_data_path = BOT_DATA_PATH + str(message.chat.id) + "\\data_file\\json\\"
     files = await get_json_files(json_data_path)
     global_data = []
 

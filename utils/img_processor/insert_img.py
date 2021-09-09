@@ -1,4 +1,3 @@
-
 import openpyxl
 from openpyxl.drawing.image import Image
 from xlsxwriter.worksheet import Worksheet
@@ -13,7 +12,7 @@ async def insert_images_to_sheet(json_data, worksheet: Worksheet):
     for ind, j_data in enumerate(json_data, start=2):
         try:
             img_data = await read_json_file(j_data)
-            #TODO: check
+            # TODO: check
             # delete_json
             # delete_photo
 
@@ -21,11 +20,11 @@ async def insert_images_to_sheet(json_data, worksheet: Worksheet):
             await insert_images(img, ind, worksheet)
 
         except Exception as err:
-            print(F"insert_img {repr(err)}")
+            print(f"insert_img {repr(err)}")
             return None
 
 
-async def insert_images(img: Image, ind:int, worksheet: Worksheet):
+async def insert_images(img: Image, ind: int, worksheet: Worksheet):
     """Вставка изображения на лист worksheet
     :param img: файл изображения
     :param ind: int индекс строки для вставки изображения

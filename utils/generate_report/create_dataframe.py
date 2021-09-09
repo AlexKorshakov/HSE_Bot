@@ -18,6 +18,7 @@ async def create_dataframe_from_data(data) -> Optional[DataFrame]:
                    "general_contractor",
                    "description",
                    "comment",
+                   "report",
                    "coordinates",
                    ]
     try:
@@ -36,8 +37,8 @@ async def create_dataframe(file_list) -> Optional[DataFrame]:
         "general_contractor": "Подрядная организация",
         "description": "Описание нарушения",
         "comment": "Комментарий",
-        "latitude": "Широта",
-        "longitude": "Долгота"
+        "report": "Акт?",
+        "coordinates": "Координаты",
     }]
 
     for index, file in enumerate(file_list):
@@ -50,8 +51,8 @@ async def create_dataframe(file_list) -> Optional[DataFrame]:
         "general_contractor",
         "description",
         "comment",
-        "latitude",
-        "longitude",
+        "report",
+        "coordinates",
     ]
 
     try:

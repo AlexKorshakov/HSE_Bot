@@ -7,9 +7,9 @@ from . import help
 # from . import description
 # from . import registration
 # from . import reload
+# from . import location
 from . import cancel
 from . import generate_report
-from . import location
 from . import developer
 from . import text
 

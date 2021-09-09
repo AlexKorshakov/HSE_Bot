@@ -1,5 +1,6 @@
 from aiogram import types
 from loguru import logger
+from pandas import DataFrame
 
 from loader import bot
 from messages.messages import Messages
@@ -14,7 +15,7 @@ from utils.secondary_functions.get_filepath import create_file_path, get_photo_f
 
 
 async def get_data_report(message: types.Message, file_list=None):
-    """
+    """Подготовка путей сохранения путей файлов и скачивание файлов из google_drive
     :param file_list:
     :param message:
     :return:
@@ -24,9 +25,9 @@ async def get_data_report(message: types.Message, file_list=None):
         logger.warning('error! file_list not found!')
         await bot.send_message(message.from_user.id, Messages.file_list_not_found)
 
-        photo_full_filepath = await get_photo_full_filepath(user_id=message.from_user.id)
-        json_full_filepath = await get_json_full_filepath(user_id=message.from_user.id)
-        report_full_filepath = await get_report_full_filepath(user_id=message.from_user.id)
+        photo_full_filepath: str = await get_photo_full_filepath(user_id=str(message.from_user.id))
+        json_full_filepath: str = await get_json_full_filepath(user_id=str(message.from_user.id))
+        report_full_filepath: str = await get_report_full_filepath(user_id=str(message.from_user.id))
 
         await create_file_path(user_path=photo_full_filepath)
         await create_file_path(user_path=json_full_filepath)
@@ -34,14 +35,18 @@ async def get_data_report(message: types.Message, file_list=None):
 
         await download_files_for_google_drive(message, file_path=json_full_filepath, photo_path=photo_full_filepath)
 
-    file_list = await get_json_file_list(message)
+    # file_list = await get_json_file_list(message)
 
     dataframe = await create_dataframe(file_list=file_list)
 
     return dataframe
 
 
-async def create_dataframe(file_list):
+async def create_dataframe(file_list) -> DataFrame:
+    """Подготовка и создание dataframe для записи в отчет
+    :param file_list:
+    :return:
+    """
     merge_file_list = await merge_json(file_list)
 
     heders = await create_heders(merge_file_list)

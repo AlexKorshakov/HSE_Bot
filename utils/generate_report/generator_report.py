@@ -13,24 +13,26 @@ from utils.generate_report.sheet_formatting.sheet_formatting import format_sheet
 from utils.img_processor.insert_img import insert_images_to_sheet
 
 
-async def create_report_from_other_method(message: types.Message, dataframe=None, images_file_list=None):
+async def create_report_from_other_method(message: types.Message, dataframe=None, full_report_path=None,
+                                          file_list=None):
     """Создание отчета xls из данных json
-    :param images_file_list:
+    :param file_list:
+    :param full_report_path:
     :param dataframe:
     :type message: object
     :param message:
     :return:
     """
+    if full_report_path is None:
+        full_report_path = await get_full_report_name(message)
 
-    fill_report_path = await get_full_report_name(message)
-
-    is_created: bool = await create_xlsx(dataframe, report_file=fill_report_path)
+    is_created: bool = await create_xlsx(dataframe, report_file=full_report_path)
     if is_created is None:
         logger.warning('error! Workbook not create!')
         await bot.send_message(message.from_user.id, Messages.workbook_not_create)
         return
 
-    workbook = await get_workbook(fill_report_path)
+    workbook = await get_workbook(full_report_path)
     if workbook is None:
         logger.warning('error! Workbook not found!')
         await bot.send_message(message.from_user.id, Messages.workbook_not_found)
@@ -44,11 +46,12 @@ async def create_report_from_other_method(message: types.Message, dataframe=None
 
     await format_sheets(worksheet)
 
-    file_list = await get_json_file_list(message)
+    if not file_list:
+        file_list = await get_json_file_list(message)
 
     await insert_images_to_sheet(file_list, worksheet)
 
-    workbook.save(fill_report_path)
+    workbook.save(full_report_path)
 
 
 async def create_report(message: types.Message):

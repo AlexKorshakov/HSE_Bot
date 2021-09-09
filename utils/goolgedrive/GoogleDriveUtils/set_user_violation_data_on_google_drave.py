@@ -59,11 +59,14 @@ async def set_user_violation_data_on_google_drive(message: types.Message, report
     # await write_photo_violation_user_file(data=report_data)
 
     violation_file_id = await upload_file_on_gdrave(message, drive_service,
-                                                    report_data,
-                                                    parent=report_data["json_folder_id"])
+                                                    report_data=report_data,
+                                                    parent=report_data["json_folder_id"],
+                                                    file_path=report_data['json_full_name'])
+
     photo_file_id = await upload_photo_file_on_gdrave(message, drive_service,
-                                                      report_data,
-                                                      parent=report_data["photo_folder_id"])
+                                                      report_data=report_data,
+                                                      parent=report_data["photo_folder_id"],
+                                                      file_path=report_data['photo_full_name'])
 
     # await del_old_data_google_drive(message, drive_service, parent=user_data["parent_id"])
 

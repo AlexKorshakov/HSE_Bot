@@ -39,10 +39,10 @@ try:
     import httplib2
     from google.oauth2 import service_account
 except Exception as err:
-    print(f"*** googleapiclient error {err} ***")
+    print(f"*** google api client error {err} ***")
     prepare_venv()
 
-print("V 0.039 master")
+print("V 0.043 master GoogleDriveWorker")
 
 SCOPE_DRIVE = "https://www.googleapis.com/auth/drive"
 

@@ -7,6 +7,8 @@ class AnswerUserState(StatesGroup):
     # ответ пользователя Состояние
     comment = State()
 
+    location = State()
+
 
 
 
