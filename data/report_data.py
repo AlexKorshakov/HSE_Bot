@@ -25,6 +25,6 @@ class Report(object):
         self._print()
 
 
-report_data = Report().report_data
+violation_data = Report().report_data
 user_data = Report().report_data
 global_reg_form = Report().report_data

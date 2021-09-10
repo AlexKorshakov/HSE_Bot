@@ -37,7 +37,7 @@ except Exception as err:
     prepare_venv()
 
 
-async def upload_file_on_gdrave(message: types.Message, drive_service, report_data, parent=None, file_path=None):
+async def upload_file_on_gdrave(message: types.Message, drive_service, report_data=None, parent=None, file_path=None):
     """Загрузка файла на Google Drive
 
     :param file_path:
@@ -153,9 +153,9 @@ async def upload_photo_file_on_gdrave(message: types.Message, drive_service, rep
         return 'error'
 
 
-async def upload_report_file_on_gdrave(message: types.Message, drive_service, report_data, parent=None, file_path=None):
+async def upload_report_file_on_gdrave(message: types.Message, drive_service, report_data=None, parent=None,
+                                       file_path=None):
     """Загрузка файла на Google Drive
-
     :param file_path:
     :param parent:
     :param message:
@@ -168,7 +168,7 @@ async def upload_report_file_on_gdrave(message: types.Message, drive_service, re
                                   disable_notification=True)
 
     if not os.path.isfile(file_path):
-        logger.info(f"File {report_data['photo_full_name']} not found")
+        logger.info(f"File {file_path} not found")
         return
 
     mime_type = guess_type(file_path)[0]

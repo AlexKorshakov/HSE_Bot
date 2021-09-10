@@ -151,3 +151,4 @@ cython_debug/
 #/user_data/json/report_data*
 #/user_data/photo/report_data*
 #/user_data/reports/*
+/data/service_account_myctng.json

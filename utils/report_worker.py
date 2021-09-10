@@ -1,6 +1,7 @@
 from aiogram import types
 from loguru import logger
 
+
 from loader import bot
 from messages.messages import Messages
 from utils.generate_report.generator_report import create_report, create_report_from_other_method
@@ -9,6 +10,7 @@ from utils.generate_report.get_file_list import get_json_file_list
 from utils.generate_report.get_report_path import get_full_report_name
 
 from utils.generate_report.send_report_from_user import send_report_from_user
+from utils.json_worker.merge_json import merge_json_day_report
 from utils.set_user_report_data import set_report_data
 
 
@@ -38,10 +40,13 @@ async def create_and_send_report(message: types.Message):
                                           file_list=file_list)
 
     # await create_report(message)
+    # merge_json_report_data = await merge_json_day_report(file_list)
+    # merge_json_report_data.append({"full_report_path": full_report_path})
+    # json_report_data["full_report_path": full_report_path]
 
     await message.answer(f'{Messages.report_done} \n')
 
-    # await set_report_data(message)
+    await set_report_data(message, full_report_path)
 
     await send_report_from_user(message, full_report_path=full_report_path)
 

@@ -2,7 +2,7 @@ import datetime
 
 from aiogram import types
 
-from data.report_data import report_data
+from data.report_data import violation_data
 from loader import dp
 from utils.goolgedrive.googledrive_worker import write_data_on_google_drive
 from utils.secondary_functions.get_day_message import get_day_message
@@ -27,18 +27,18 @@ async def photo_handler(message: types.Message):
     # if await photo_processing(message):
     #     return
 
-    report_data["file_id"] = await get_filename_msg_with_photo(message)
+    violation_data["file_id"] = await get_filename_msg_with_photo(message)
 
-    report_data["user_id"] = message.from_user.id
-    report_data["user_fullname"] = message.from_user.full_name
+    violation_data["user_id"] = message.from_user.id
+    violation_data["user_fullname"] = message.from_user.full_name
 
-    report_data["now"] = str(datetime.datetime.now())
+    violation_data["now"] = str(datetime.datetime.now())
 
-    report_data["day"] = await get_day_message(message)
-    report_data["month"] = await get_month_message(message)
-    report_data["year"] = await get_year_message(message)
+    violation_data["day"] = await get_day_message(message)
+    violation_data["month"] = await get_month_message(message)
+    violation_data["year"] = await get_year_message(message)
 
-    report_data["data"] = report_data["day"] + ":" + report_data["month"] + ":" + report_data["year"]
+    violation_data["data"] = violation_data["day"] + ":" + violation_data["month"] + ":" + violation_data["year"]
 
     if WORK_ON_HEROKU:
         await write_data_on_google_drive(message)

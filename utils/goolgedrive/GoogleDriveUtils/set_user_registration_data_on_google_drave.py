@@ -4,7 +4,7 @@ from loguru import logger
 from utils.goolgedrive.GoogleDriveUtils.GoogleDriveWorker import drive_account_auth_with_oauth2client, \
     move_file
 from utils.goolgedrive.GoogleDriveUtils.set_permissions import get_user_permissions
-from utils.goolgedrive.GoogleDriveUtils.folders_deleter import del_old_data_google_drive
+from utils.goolgedrive.GoogleDriveUtils.folders_deleter import del_by_name_old_data_google_drive
 from utils.goolgedrive.GoogleDriveUtils.get_root_folder_id import get_root_folder_id, get_user_folder_id
 from utils.goolgedrive.GoogleDriveUtils.upload_data_on_gdrive import upload_file_on_gdrave
 from utils.goolgedrive.googledrive_worker import ROOT_REPORT_FOLDER_NAME
@@ -35,7 +35,7 @@ async def set_user_registration_data_on_google_drive(message: types.Message, use
 
     await write_json_reg_user_file(data=user_data)
 
-    await del_old_data_google_drive(message, drive_service, parent=user_data["parent_id"])
+    await del_by_name_old_data_google_drive(message, drive_service, parent=user_data["parent_id"])
 
     file_id = await upload_file_on_gdrave(message, drive_service, user_data, file_path=user_data["reg_json_full_name"])
 

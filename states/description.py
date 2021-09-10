@@ -3,7 +3,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 from data.config import REPORT_NAME
-from data.report_data import report_data
+from data.report_data import violation_data
 from loader import dp
 from states import AnswerUserState
 from utils.json_worker.writer_json_file import write_json_file
@@ -14,8 +14,8 @@ from utils.json_worker.writer_json_file import write_json_file
 async def process_description(message: types.Message, state: FSMContext):
     """Обработчик состояния description
     """
-    report_data["description"] = message.text
+    violation_data["description"] = message.text
 
-    await write_json_file(data=report_data, name=report_data["json_full_name"])
+    await write_json_file(data=violation_data, name=violation_data["json_full_name"])
     await AnswerUserState.next()
     await message.answer("введите комментарий")

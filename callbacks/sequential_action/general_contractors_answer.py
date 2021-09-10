@@ -2,7 +2,7 @@ from aiogram import types
 from loguru import logger
 
 from data.category import get_names_from_json
-from data.report_data import report_data
+from data.report_data import violation_data
 from loader import dp
 from states import AnswerUserState
 from utils.del_messege import bot_delete_message
@@ -25,9 +25,9 @@ async def general_contractors_answer(call: types.CallbackQuery):
         try:
             if call.data == i:
                 logger.debug(f"Выбрано: {i}")
-                report_data["general_contractor"] = i
+                violation_data["general_contractor"] = i
                 await call.message.answer(text=f"Выбрано: {i}")
-                await write_json_file(data=report_data, name=report_data["json_full_name"])
+                await write_json_file(data=violation_data, name=violation_data["json_full_name"])
                 await bot_delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id+2,
                                          sleep_time=20)
                 await call.message.answer("введите описание нарушения")

@@ -107,7 +107,7 @@ async def find_file_by_name(service: object, name: str = None, is_folder: str = 
     if is_folder is not None:
         q.append("mimeType %s '%s'" % ('=' if is_folder else '!=', mime_type))
 
-    q.append("mimeType='application/json'")
+    # q.append("mimeType='application/json'")
 
     if parent is not None:
         q.append(f"'{parent}' in parents")

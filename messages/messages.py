@@ -19,6 +19,8 @@ class Messages:
                          f"Отправь номер телефона в формате (без пробелов)(пример +7xxxxxxxxxx)"
     registration_completed_successfully: str = "регистрация прошла успешно"
     registration_begin: str = f"Начинаю процедуру регистрации"
+    registration_report_begin: str = f"Начинаю процедуру регистрации отчета"
+
     workbook_not_found: str = f"Файл с отчетом не найден! Обратитесь к разработчику! \n" \
                               f'чтобы написать разработчику нажмите /developer'
     worksheet_not_found: str = f"Страница с отчетом не найден! Обратитесь к разработчику! \n" \

@@ -15,10 +15,10 @@ PHOTO_FOLDER_NAME = "violation_photo"
 REPORT_FOLDER_NAME = "reports"
 
 
-async def set_user_violation_data_on_google_drive(message: types.Message, report_data):
+async def set_user_violation_data_on_google_drive(message: types.Message, violation_data):
     """ Загрузка данных на Google Drive
     :param message:
-    :param report_data: данные для записи
+    :param violation_data: данные для записи
     :return:
     """
     drive_service = await drive_account_auth_with_oauth2client(message)
@@ -50,23 +50,23 @@ async def set_user_violation_data_on_google_drive(message: types.Message, report
     if not json_folder_id:
         return
 
-    report_data["json_folder_id"] = json_folder_id
-    report_data["photo_folder_id"] = json_folder_id
-    report_data["report_folder_id"] = report_folder_id
+    violation_data["json_folder_id"] = json_folder_id
+    violation_data["photo_folder_id"] = json_folder_id
+    violation_data["report_folder_id"] = report_folder_id
 
-    await write_json_violation_user_file(data=report_data)
+    await write_json_violation_user_file(data=violation_data)
 
     # await write_photo_violation_user_file(data=report_data)
 
     violation_file_id = await upload_file_on_gdrave(message, drive_service,
-                                                    report_data=report_data,
-                                                    parent=report_data["json_folder_id"],
-                                                    file_path=report_data['json_full_name'])
+                                                    report_data=violation_data,
+                                                    parent=violation_data["json_folder_id"],
+                                                    file_path=violation_data['json_full_name'])
 
     photo_file_id = await upload_photo_file_on_gdrave(message, drive_service,
-                                                      report_data=report_data,
-                                                      parent=report_data["photo_folder_id"],
-                                                      file_path=report_data['photo_full_name'])
+                                                      report_data=violation_data,
+                                                      parent=violation_data["photo_folder_id"],
+                                                      file_path=violation_data['photo_full_name'])
 
     # await del_old_data_google_drive(message, drive_service, parent=user_data["parent_id"])
 

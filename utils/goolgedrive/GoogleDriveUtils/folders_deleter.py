@@ -8,12 +8,6 @@ async def delete_folders(drive_service, folder_names: list):
     """Удаление папок GoogleDrive
     :return:
     """
-    # if folder_names is None or folder_names == []:
-    #     folder_names = js.read_json_file(file="JsonData/all_folder.json")
-    #
-    # if drive_service is None:
-    #     drive_service = drive_account_credentials(service_account_file=SERVICE_ACCOUNT_FILE,
-    #                                               delegate_user=DELEGATE_USER)
 
     for item, f_name in enumerate(folder_names):
 
@@ -51,8 +45,10 @@ async def delete_folders_for_id(drive_service, folder_id_list: list):
         logger.info(f'Item {item}: delete file/folder {f_id["name"]} id {f_id["id"]}')
 
 
-async def del_old_data_google_drive(message, drive_service, name=None, parent=None):
+async def del_by_name_old_data_google_drive(message, drive_service, name=None, parent=None):
     """Удаление старых данных по имени file_name  из папки folder_id
+    :param parent:
+    :param name:
     :param message:
     :param drive_service:
     :return:
@@ -62,7 +58,6 @@ async def del_old_data_google_drive(message, drive_service, name=None, parent=No
         name = str(message.from_user.id)
 
     found_files = await find_file_by_name(drive_service, name=name, parent=parent)
-    # pprint(found_files)
 
     if not found_files:
         return

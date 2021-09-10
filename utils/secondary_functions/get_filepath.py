@@ -7,7 +7,7 @@ from aiogram import types
 from loguru import logger
 
 from data.config import BOT_DATA_PATH, REPORT_NAME
-from data.report_data import report_data
+from data.report_data import violation_data
 from utils.json_worker.writer_json_file import write_json_violation_user_file
 
 
@@ -81,18 +81,18 @@ async def preparation_paths_on_pc(message: types.Message):
     :param message:
     :return:
     """
-    report_data["photo_file_path"] = await get_photo_full_filepath(user_id=report_data["user_id"])
-    report_data["photo_full_name"] = await get_photo_full_filename(user_id=report_data["user_id"],
-                                                                   name=report_data["file_id"])
-    await create_file_path(report_data["photo_file_path"])
-    await message.photo[-1].download(destination=report_data["photo_full_name"], make_dirs=False)
+    violation_data["photo_file_path"] = await get_photo_full_filepath(user_id=violation_data["user_id"])
+    violation_data["photo_full_name"] = await get_photo_full_filename(user_id=violation_data["user_id"],
+                                                                      name=violation_data["file_id"])
+    await create_file_path(violation_data["photo_file_path"])
+    await message.photo[-1].download(destination=violation_data["photo_full_name"], make_dirs=False)
 
-    report_data["json_file_path"] = await get_json_full_filepath(user_id=report_data["user_id"])
-    report_data["json_full_name"] = await get_json_full_filename(user_id=report_data["user_id"],
-                                                                 name=report_data["file_id"])
-    await create_file_path(report_data["json_file_path"])
+    violation_data["json_file_path"] = await get_json_full_filepath(user_id=violation_data["user_id"])
+    violation_data["json_full_name"] = await get_json_full_filename(user_id=violation_data["user_id"],
+                                                                    name=violation_data["file_id"])
+    await create_file_path(violation_data["json_file_path"])
 
-    await write_json_violation_user_file(data=report_data)
+    await write_json_violation_user_file(data=violation_data)
 
 
 async def test():

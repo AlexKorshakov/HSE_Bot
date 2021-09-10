@@ -6,7 +6,7 @@ from aiogram import types
 
 from loguru import logger
 
-from data.report_data import report_data
+from data.report_data import violation_data
 from messages.messages import Messages
 from utils.goolgedrive.GoogleDriveUtils.GoogleDriveWorker import drive_account_auth_with_oauth2client, \
     drive_account_credentials
@@ -47,7 +47,7 @@ async def write_data_on_google_drive(message: types.Message):
                                          root_folder_name=str(message.from_user.id),
                                          parent_id=root_folder_id)
 
-    report_data["folder_id"] = folder_id
+    violation_data["folder_id"] = folder_id
 
     top = drive_service.files().get(fileId=folder_id).execute()
     await asyncio.sleep(2)
