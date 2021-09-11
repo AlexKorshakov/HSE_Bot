@@ -4,7 +4,7 @@ from pprint import pprint
 class Report(object):
 
     def __new__(cls, *args, **kwargs):
-        print(f"Hello from {Report.__new__}")
+        # print(f"Hello from {Report.__new__}")
         return super().__new__(cls)
 
     def __init__(self):

@@ -5,7 +5,7 @@ from callbacks.callback_action import cb_start
 
 async def get_keyboard_fab():
     """Действия при начале регистрации нарушений.
-    ВОзвращает кнопри Зарегистрировать и Отмена
+    Возвращает кнопри Зарегистрировать и Отмена
     """
     buttons = [
         types.InlineKeyboardButton(text="Зарегистрировать", callback_data=cb_start.new(action="start_registration")),

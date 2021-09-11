@@ -1,7 +1,7 @@
 import os
 import sys
 
-import fastconf
+# import fastconf
 from environs import Env
 
 env = Env()
@@ -43,26 +43,26 @@ SEPARATOR = "___"
 SERVICE_ACCOUNT_FILE: str = './data/service_account_myctng.json'
 
 # Init config
-fastconf.config(__name__)
+# fastconf.config(__name__)
 if 'init' in sys.argv:
     print(f'sys.argv: {sys.argv}')
     sys.exit(0)
 
 
-class Config:
-    BOT_TOKEN: str = env("BOT_TOKEN")
-    APP_ID = ""
-    API_HASH = ""
-    DATABASE_URL = ""
-    SUDO_USERS = ""  # Sepearted by space.
-    SUPPORT_CHAT_LINK = ""
-    DOWNLOAD_DIRECTORY = "./downloads/"
-    G_DRIVE_CLIENT_ID = ""
-    G_DRIVE_CLIENT_SECRET = ""
-    PRIVATE_KEY = env("PRIVATE_KEY")
-    SERVICE_ACCOUNT_EMAIL = env("SERVICE_ACCOUNT_EMAIL")
-    PRIVATE_KEY_ID = env("PRIVATE_KEY_ID")
-    CLIENT_ID = env("CLIENT_ID")
-    TOKEN_URI = env("TOKEN_URI")
-    WORK_ON_HEROKU: bool = env.bool("WORK_ON_HEROKU")
-    WORK_ON_PC: bool = env.bool("WORK_ON_PC")
+# class Config:
+#     BOT_TOKEN: str = env("BOT_TOKEN")
+#     APP_ID = ""
+#     API_HASH = ""
+#     DATABASE_URL = ""
+#     SUDO_USERS = ""  # Sepearted by space.
+#     SUPPORT_CHAT_LINK = ""
+#     DOWNLOAD_DIRECTORY = "./downloads/"
+#     G_DRIVE_CLIENT_ID = ""
+#     G_DRIVE_CLIENT_SECRET = ""
+#     PRIVATE_KEY = env("PRIVATE_KEY")
+#     SERVICE_ACCOUNT_EMAIL = env("SERVICE_ACCOUNT_EMAIL")
+#     PRIVATE_KEY_ID = env("PRIVATE_KEY_ID")
+#     CLIENT_ID = env("CLIENT_ID")
+#     TOKEN_URI = env("TOKEN_URI")
+#     WORK_ON_HEROKU: bool = env.bool("WORK_ON_HEROKU")
+#     WORK_ON_PC: bool = env.bool("WORK_ON_PC")

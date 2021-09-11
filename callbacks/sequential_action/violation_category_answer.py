@@ -2,8 +2,10 @@ from aiogram import types
 from loguru import logger
 
 from callbacks.sequential_action.big_category_creator import big_category
+from data import board_config
 from data.category import get_names_from_json
 from data.report_data import violation_data
+from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 
 from loader import dp
 from utils.json_worker.writer_json_file import write_json_file
@@ -35,7 +37,14 @@ async def violation_category_answer(call: types.CallbackQuery):
                 logger.debug(f"Выбрано: {i}")
                 violation_data["violation_category"] = i
                 await write_json_file(data=violation_data, name=violation_data["json_full_name"])
-                await big_category(call, big_menu_list=GENERAL_CONTRACTORS, num_col=1)
+
+                menu_level = board_config.menu_level = 1
+                menu_list = board_config.menu_list = GENERAL_CONTRACTORS
+
+                reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
+                await call.message.answer(text="Выберите ответ", reply_markup=reply_markup)
+                # await big_category(call, big_menu_list=GENERAL_CONTRACTORS, num_col=1)
+
                 break
 
         except Exception as callback_err:

@@ -18,6 +18,10 @@ from utils.set_user_registration_data import registration_data
 @rate_limit(limit=20)
 @dp.message_handler(Command('start'), IsPrivate)
 async def start(message: types.Message):
+    """Начало регистрации пользователя
+    :param message:
+    :return:
+    """
     user_data["user_id"] = str(message.from_user.id)
 
     reg_user_file: str = BOT_DATA_PATH + user_data["user_id"]
@@ -38,12 +42,22 @@ async def start(message: types.Message):
 
 @dp.message_handler(IsPrivate, Text(equals=Messages.cancel), state=RegisterState.all_states)
 async def cancel(message: types.Message, state: FSMContext):
+    """Отмена регистрации
+    :param message:
+    :param state:
+    :return:
+    """
     await state.finish()
     return await message.reply(Messages.register_canceled, reply_markup=ReplyKeyboardRemove())
 
 
 @dp.message_handler(IsPrivate, state=RegisterState.name)
 async def enter_name(message: types.Message, state: FSMContext):
+    """Обработка ввода имени пользователя
+    :param message:
+    :param state:
+    :return:
+    """
     user_data['name'] = message.text
 
     await RegisterState.next()
@@ -54,6 +68,11 @@ async def enter_name(message: types.Message, state: FSMContext):
 
 @dp.message_handler(IsPrivate, state=RegisterState.function)
 async def enter_function(message: types.Message, state: FSMContext):
+    """Обработка ввода должности пользователя
+    :param message:
+    :param state:
+    :return:
+    """
     user_data['function'] = message.text
 
     await RegisterState.next()
@@ -64,6 +83,11 @@ async def enter_function(message: types.Message, state: FSMContext):
 
 @dp.message_handler(IsPrivate, state=RegisterState.phone_number)
 async def enter_phone_number(message: types.Message, state: FSMContext):
+    """Обработка ввода номера телефона пользователя
+    :param message:
+    :param state:
+    :return:
+    """
     if not message.text.startswith("+") or not message.text.strip("+").isnumeric():
         return await message.reply(Messages.invalid_input)
 
