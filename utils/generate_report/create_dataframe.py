@@ -18,14 +18,14 @@ async def create_dataframe_from_data(data) -> Optional[DataFrame]:
                    "general_contractor",
                    "description",
                    "comment",
-                   "report",
+                   "act_required",
                    "coordinates",
                    ]
     try:
         dataframe = pd.DataFrame(data, columns=column_list)
         return dataframe
     except Exception as err:
-        print(F"get_workbook {repr(err)}")
+        print(f"get_workbook {repr(err)}")
         return None
 
 
@@ -37,7 +37,7 @@ async def create_dataframe(file_list) -> Optional[DataFrame]:
         "general_contractor": "Подрядная организация",
         "description": "Описание нарушения",
         "comment": "Комментарий",
-        "report": "Акт?",
+        "act_required": "Оформление акта",
         "coordinates": "Координаты",
     }]
 
@@ -51,7 +51,7 @@ async def create_dataframe(file_list) -> Optional[DataFrame]:
         "general_contractor",
         "description",
         "comment",
-        "report",
+        "act_required",
         "coordinates",
     ]
 

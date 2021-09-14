@@ -49,9 +49,9 @@ async def create_dataframe(file_list) -> DataFrame:
     """
     merge_file_list = await merge_json(file_list)
 
-    heders = await create_heders(merge_file_list)
+    headers = await create_heders(merge_file_list)
 
-    data_list = await read_json_files(merge_file_list, heders)
+    data_list = await read_json_files(merge_file_list, headers)
 
     dataframe = await create_dataframe_from_data(data_list)
 

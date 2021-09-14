@@ -2,6 +2,7 @@ import datetime
 
 from aiogram import types
 
+from data import messege_config
 from data.report_data import violation_data
 from loader import dp
 from utils.goolgedrive.googledrive_worker import write_data_on_google_drive
@@ -11,6 +12,8 @@ from utils.secondary_functions.get_filepath import preparation_paths_on_pc
 from utils.secondary_functions.get_month_message import get_month_message
 from utils.secondary_functions.get_year_message import get_year_message
 from utils.select_start_category import select_start_category
+
+from data.messege_config import start_violation_mes_id
 
 WORK_ON_HEROKU = False
 WORK_ON_PC = True
@@ -26,6 +29,9 @@ async def photo_handler(message: types.Message):
     """
     # if await photo_processing(message):
     #     return
+
+    start_violation = messege_config.start_violation_mes_id = message.message_id
+    print(f"start_violation message.from_user.id {start_violation}")
 
     violation_data["file_id"] = await get_filename_msg_with_photo(message)
 

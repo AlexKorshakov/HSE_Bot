@@ -1,7 +1,6 @@
 from aiogram import types
 from loguru import logger
 
-from callbacks.sequential_action.big_category_creator import big_category
 from data import board_config
 from data.category import get_names_from_json
 from data.report_data import violation_data
@@ -43,8 +42,8 @@ async def violation_category_answer(call: types.CallbackQuery):
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
                 await call.message.answer(text="Выберите ответ", reply_markup=reply_markup)
-                # await big_category(call, big_menu_list=GENERAL_CONTRACTORS, num_col=1)
-
+                # await bot_delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id,
+                #                          sleep_time=5)
                 break
 
         except Exception as callback_err:

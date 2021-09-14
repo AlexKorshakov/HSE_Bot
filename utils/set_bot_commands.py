@@ -9,11 +9,7 @@ async def set_default_commands(dp):
         types.BotCommand(command="/help", description="Вызов справки"),
         types.BotCommand(command="/cancel", description="Отмена регистрации"),
         types.BotCommand(command="/generate", description="Формирование отчета"),
-        types.BotCommand(command="/test", description="Формирование отчета"),
-        # types.BotCommand(command="/description", description="Описание нарушения"),
-        # types.BotCommand(command="/comment", description="Комментарий к нарушению"),
-        # types.BotCommand(command="/registration", description="Зарегистрировать и записать"),
-        # types.BotCommand(command="/map", description="Получить карту"),
+        types.BotCommand(command="/test", description="Тестовые команды"),
     ])
     logger.info('Установка комманд бота...')
 

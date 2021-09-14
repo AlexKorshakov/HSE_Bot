@@ -47,10 +47,9 @@ async def main_category_answer(call: types.CallbackQuery):
 
                 # await big_category(call, big_menu_list=CATEGORY_LIST, num_col=2)
 
-                await bot_delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id+2,
-                                         sleep_time=20)
-                await bot_delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id+3,
-                                         sleep_time=20)
+                # await bot_delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id,
+                #                          sleep_time=5)
+
                 break
 
         except Exception as callback_err:

@@ -56,6 +56,11 @@ GENERAL_CONTRACTORS: list = [
     "Прочее(?)"
 ]
 
+ACT_REQUIRED_ACTION: list = [
+    "Требуется*",
+    "Не требуется",
+]
+
 
 def get_names_from_json(name=None):
     """ Функция получения настроек из файла json.

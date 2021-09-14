@@ -22,6 +22,7 @@ async def text_message_handler(message: types.Message):
     if "@dev" in message.text.strip().lower():
         logger.info(f'message from developer user {message.from_user.id} name {message.from_user.full_name}')
 
-        text = f"Message from user {message.from_user.id} name {message.from_user.full_name} \n" \
+        text = f"Message from user {message.from_user.id} name {message.chat.full_name} \n" \
+               f"{message.chat.user_url} \n" \
                f"message: {message.text}"
         await bot.send_message(chat_id=DEVELOPER_ID, text=text)

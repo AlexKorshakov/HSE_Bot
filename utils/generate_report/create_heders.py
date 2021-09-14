@@ -8,6 +8,7 @@ async def create_heders(file_list=None):
              "general_contractor": "Подрядная организация",
              "description": "Описание нарушения",
              "comment": "Комментарий",
+             "act_required": "Оформление акта",
              "coordinates": "Координаты",
              }]
 

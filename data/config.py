@@ -24,7 +24,7 @@ WORK_ON_PC: bool = env.bool("WORK_ON_PC")
 MAIN_MODULE_NAME = os.path.basename(__file__)[:-3]
 
 SKIP_UPDATES = env.bool("SKIP_UPDATES", False)
-BOT_DELETE_MESSAGE = False
+BOT_DELETE_MESSAGE = True
 
 NUM_BUTTONS = env.int("NUM_BUTTONS", 5)
 ENTRY_TIME = env.int("ENTRY_TIME", 300)

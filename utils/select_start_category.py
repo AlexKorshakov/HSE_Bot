@@ -10,5 +10,5 @@ async def select_start_category(message: types.Message) -> None:
     markup = await get_keyboard_fab()
 
     await message.answer(text="Зарегистрировать нарушение?", reply_markup=markup)
-    await bot_delete_message(chat_id=message.chat.id, message_id=message.message_id, sleep_time=20)
-    await bot_delete_message(chat_id=message.chat.id, message_id=message.message_id + 1, sleep_time=20)
+    # await bot_delete_message(chat_id=message.chat.id, message_id=message.message_id, sleep_time=20)
+    # await bot_delete_message(chat_id=message.chat.id, message_id=message.message_id + 1, sleep_time=20)
