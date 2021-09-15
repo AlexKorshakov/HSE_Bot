@@ -1,3 +1,4 @@
+from loguru import logger
 from utils.generate_report.xlsx_config import MAXIMUM_ROW_HEIGHT
 
 
@@ -10,4 +11,4 @@ async def set_row_height(worksheet):
         try:
             worksheet.row_dimensions[ind + 1].height = MAXIMUM_ROW_HEIGHT
         except Exception as err:
-            print(F"set_row_height {repr(err)}")
+            logger.error(F"set_row_height {repr(err)}")

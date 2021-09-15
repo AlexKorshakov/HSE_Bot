@@ -15,7 +15,7 @@ try:
     if MAIN_CATEGORY_LIST is None:
         from data.category import MAIN_CATEGORY_LIST
 except Exception as err:
-    print(f"{repr(err)}")
+    logger.error(f"{repr(err)}")
     from data.category import MAIN_CATEGORY_LIST
 
 try:
@@ -23,7 +23,7 @@ try:
     if CATEGORY_LIST is None:
         from data.category import CATEGORY_LIST
 except Exception as err:
-    print(f"{repr(err)}")
+    logger.error(f"{repr(err)}")
     from data.category import CATEGORY_LIST
 
 
@@ -44,11 +44,6 @@ async def main_category_answer(call: types.CallbackQuery):
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
                 await call.message.answer(text="Выберите ответ", reply_markup=reply_markup)
-
-                # await big_category(call, big_menu_list=CATEGORY_LIST, num_col=2)
-
-                # await bot_delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                #                          sleep_time=5)
 
                 break
 

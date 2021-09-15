@@ -3,6 +3,8 @@ import json
 import os.path
 from json import JSONDecodeError
 
+from loguru import logger
+
 filename = inspect.getframeinfo(inspect.currentframe()).filename
 path = os.path.dirname(os.path.abspath(filename))
 
@@ -38,14 +40,15 @@ CATEGORY_LIST: list = [
 ]
 
 VIOLATION_CATEGORY: list = [
-    "Происшествие без последствий*",
     "Опасные действия*",
-    "Травма*",
+    "RWC (Ограниченный рабочий случай)",
     "Опасная ситуация*",
-    "FAT*",
-    "LTI*",
-    "Акт-предписание*",
-    "акт 2го уровня*"
+    "NearMiss (Происшествие без последствий)",
+    "FAT (со смертельным исходом)",
+    "LTI (травма с врем. потерей трудоспособности)",
+    "Лёгкий НС",
+    "RTA (дорожно-транспортное происшествие)",
+    "Тяжелый и групповой НС"
 ]
 
 GENERAL_CONTRACTORS: list = [
@@ -61,6 +64,13 @@ ACT_REQUIRED_ACTION: list = [
     "Не требуется",
 ]
 
+INCIDENT_LEVEL: list = [
+    'Без последствий',
+    'Лёгкий',
+    'Серьезный',
+    'Катастрофический',
+]
+
 
 def get_names_from_json(name=None):
     """ Функция получения настроек из файла json.
@@ -71,8 +81,8 @@ def get_names_from_json(name=None):
                 return json.loads(read_file.read())
 
         except FileNotFoundError as err:
-            print(f"{repr(err)}")
+            logger.error(f"{repr(err)}")
         except JSONDecodeError as err:
-            print(f"{repr(err)}")
+            logger.error(f"{repr(err)}")
         except Exception as err:
-            print(f"{repr(err)}")
+            logger.error(f"{repr(err)}")

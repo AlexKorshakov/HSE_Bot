@@ -20,7 +20,7 @@ async def pre_set_violation_data(message: types.Message):
     await dp.bot.send_message(chat_id=chat_id, text=Messages.report_begin)
 
     stop_violation_id = messege_config.stop_violation_mes_id = message.message_id + 3
-    print(f"start_violation message.from_user.id {stop_violation_id}")
+    logger.info(f"start_violation message.from_user.id {stop_violation_id}")
 
     await set_violation_data(message)
 

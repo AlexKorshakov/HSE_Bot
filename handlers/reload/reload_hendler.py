@@ -1,11 +1,10 @@
 import os
-import sys
-from pprint import pprint
 from types import ModuleType
 from importlib import reload
 
 from aiogram import types
 from aiogram.dispatcher.filters import Command
+from config import logger
 
 from data.config import WORK_PATH
 from loader import dp
@@ -26,7 +25,7 @@ async def reload_handler(message: types.Message):
 
         if module_spec:
             module = import_module_from_spec(module_spec)
-            print(dir(module))
+            logger.info(dir(module))
 
 
 def run_fast_scandir(dir, ext):
@@ -81,10 +80,10 @@ def check_module(module_name):
     """
     module_spec = importlib.util.find_spec(module_name)
     if module_spec is None:
-        print('Module: {} not found'.format(module_name))
+        logger.error('Module: {} not found'.format(module_name))
         return None
     else:
-        print('Module: {} can be imported!'.format(module_name))
+        logger.info('Module: {} can be imported!'.format(module_name))
         return module_spec
 
 

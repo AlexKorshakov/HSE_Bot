@@ -22,8 +22,6 @@ async def get_report_full_filepath(user_id: str = None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\reports\\"
-    # return f"{BOT_DATA_PATH}reports\\"
     return f"{BOT_DATA_PATH}{user_id}\\data_file\\{await date_now()}\\reports\\"
 
 
@@ -31,8 +29,6 @@ async def get_photo_full_filepath(user_id: str = None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\photo\\"
-    # return f"{BOT_DATA_PATH}photo\\"
     return f"{BOT_DATA_PATH}{user_id}\\data_file\\{await date_now()}\\photo\\"
 
 
@@ -40,8 +36,6 @@ async def get_photo_full_filename(user_id: str = None, name=None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\photo\\{REPORT_NAME}{name}.jpg"
-    # return f"{BOT_DATA_PATH}photo\\{REPORT_NAME}{name}.jpg"
     return f"{BOT_DATA_PATH}{user_id}\\data_file\\{await date_now()}\\photo\\{REPORT_NAME}{name}.jpg"
 
 
@@ -49,8 +43,6 @@ async def get_json_full_filepath(user_id: str = None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\json\\"
-    # return f"{BOT_DATA_PATH}json\\"
     return f"{BOT_DATA_PATH}{user_id}\\data_file\\{await date_now()}\\json\\"
 
 
@@ -58,8 +50,6 @@ async def get_json_full_filename(user_id: str = None, name: str = None):
     """Обработчик сообщений с фото
     Получение полного пути файла
     """
-    # return f"{BOT_DATA_PATH}{user_id}\\data_file\\json\\{REPORT_NAME}{name}.json"
-    # return f"{BOT_DATA_PATH}json\\{REPORT_NAME}{name}.json"
     return f"{BOT_DATA_PATH}{user_id}\\data_file\\{await date_now()}\\json\\{REPORT_NAME}{name}.json"
 
 
@@ -96,7 +86,7 @@ async def preparation_paths_on_pc(message: types.Message):
 
 
 async def test():
-    print(f'date_now: {await date_now()}')
+    logger.info(f'date_now: {await date_now()}')
 
 
 if __name__ == "__main__":

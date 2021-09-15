@@ -1,3 +1,4 @@
+from loguru import logger
 from openpyxl.styles import Border, Side
 
 
@@ -14,4 +15,4 @@ async def set_border(ws):
             try:
                 cell.border = thin_border
             except Exception as err:
-                print(F"set_border {repr(err)}")
+                logger.error(F"set_border {repr(err)}")

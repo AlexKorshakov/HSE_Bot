@@ -14,7 +14,7 @@ try:
     if VIOLATION_CATEGORY is None:
         from data.category import VIOLATION_CATEGORY
 except Exception as err:
-    print(f"{repr(err)}")
+    logger.error(f"{repr(err)}")
     from data.category import VIOLATION_CATEGORY
 
 try:
@@ -22,7 +22,7 @@ try:
     if GENERAL_CONTRACTORS is None:
         from data.category import GENERAL_CONTRACTORS
 except Exception as err:
-    print(f"{repr(err)}")
+    logger.error(f"{repr(err)}")
     from data.category import GENERAL_CONTRACTORS
 
 

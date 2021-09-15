@@ -3,6 +3,7 @@ from pprint import pprint
 from time import sleep
 
 from docx import Document
+from loguru import logger
 from tqdm import tqdm
 
 from Config.Config import PATH_TO_JSON, SERVICE_ACCOUNT_FILE, SPREAD_SHEET_ID
@@ -132,7 +133,7 @@ def _collect_data(*, reports:dict, range_workers) -> list:
 
     collect_data = []
 
-    print(f'\n{"*" * 15} reports: {reports["file"]} {"*" * 15}')
+    logger.info(f'\n{"*" * 15} reports: {reports["file"]} {"*" * 15}')
 
     for item in reports["data"]:
         if item[0] != '':

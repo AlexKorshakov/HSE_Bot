@@ -39,10 +39,10 @@ try:
     import httplib2
     from google.oauth2 import service_account
 except Exception as err:
-    print(f"*** google api client error {err} ***")
+    logger.error(f"*** google api client error {err} ***")
     prepare_venv()
 
-print("V 0.043 master GoogleDriveWorker")
+logger.info("V 0.043 master GoogleDriveWorker")
 
 SCOPE_DRIVE = "https://www.googleapis.com/auth/drive"
 
@@ -87,7 +87,7 @@ async def drive_account_credentials(message: types.Message) -> object:
     try:
         # Выбираем работу с Google Drive и 3 версию API
         google_drive_service = build('drive', 'v3', http=http_auth)
-        print("авторизация пройдена")
+        logger.info("авторизация пройдена")
         logger.info("🔒 **Already authorized your Google Drive Account.**")
         return google_drive_service
 
@@ -119,4 +119,4 @@ async def move_file(service: object, id: str, add_parents: str, remove_parents: 
         serv = service.files()
         serv.update(fileId=id, addParents=add_parents, removeParents=remove_parents).execute()
     except Exception as err:
-        print(f"move_folder err {id} to move in add_parents \n: {repr(err)}")
+        logger.error(f"move_folder err {id} to move in add_parents \n: {repr(err)}")

@@ -2,6 +2,7 @@ import datetime
 from typing import Optional
 
 from aiogram import types
+from loguru import logger
 
 from utils.secondary_functions.get_filepath import create_file_path, get_report_full_filepath
 
@@ -20,5 +21,5 @@ async def get_full_report_name(message: types.Message) -> Optional[str]:
         return full_report_path
 
     except Exception as err:
-        print(f"get_report_path {repr(err)}")
+        logger.error(f"get_report_path {repr(err)}")
         return None

@@ -1,5 +1,4 @@
 from pprint import pprint
-
 from loguru import logger
 
 from utils.goolgedrive.GoogleDriveUtils.google_drive_api_worker import drive_service_files_create
@@ -24,13 +23,13 @@ def create_folder(service, folder_name, parent_id=None):
                                              fields='id').execute()
         pprint(root_folder)
     except Exception as err:
-        print(f'An error occurred:{err}')
+        logger.error(f'An error occurred:{err}')
 
     return root_folder['id']
 
 
 async def create_directory(drive_service, directory_name, parent_id: str = "") -> str:
-    """СОздание директории на Google Drive
+    """Создание директории на Google Drive
     :param drive_service:
     :param directory_name: имя директории
     :param parent_id: id родительской директории
@@ -75,6 +74,6 @@ async def create_user_permission(drive_service, file_id, user_email):
 
 async def callback(request_id: object, response: object, exception: object) -> object:
     if exception:
-        print(exception)
+        logger.error(exception)
     else:
-        print("Permission Id: %s" % response.get('id'))
+        logger.info("Permission Id: %s" % response.get('id'))

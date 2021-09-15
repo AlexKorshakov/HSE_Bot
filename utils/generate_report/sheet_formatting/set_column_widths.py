@@ -1,3 +1,4 @@
+from loguru import logger
 import openpyxl.utils
 from utils.generate_report.xlsx_config import MAXIMUM_COLUMN_WIDTH
 
@@ -19,7 +20,7 @@ async def set_column_widths(worksheet):
             try:
                 worksheet.column_dimensions[new_column_letter].width = new_column_length + 1
             except Exception as err:
-                print(F"set_column_widths {repr(err)}")
+                logger.error(F"set_column_widths {repr(err)}")
 
 
 def _as_text(value) -> str:

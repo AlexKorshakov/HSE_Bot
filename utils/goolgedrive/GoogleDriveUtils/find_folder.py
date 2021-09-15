@@ -49,7 +49,7 @@ async def find_all(service: object) -> list:
         found_folders = get_folder.get('items', [])
 
         for file in found_folders:
-            print(f"Found file: {file.get('name')} File id: {file.get('id')}")
+            logger.info(f"Found file: {file.get('name')} File id: {file.get('id')}")
 
         page_token = get_folder.get('nextPageToken', None)
         if page_token is None:
@@ -85,7 +85,7 @@ async def find_folder_by_name(service, name, spaces='drive'):
 
     found_folders_by_name = get_folder.get('files', [])
     for folder in found_folders_by_name:
-        print(f"File name: {folder.get('name')} File id: {folder.get('id')}")
+        logger.info(f"File name: {folder.get('name')} File id: {folder.get('id')}")
 
     if len(found_folders_by_name) == 1:
         return found_folders_by_name.get('id')

@@ -43,7 +43,7 @@ def prepare_venv():
 try:
     from googleapiclient.http import MediaIoBaseDownload
 except Exception as err:
-    print(f"*** googleapiclient error {err} ***")
+    logger.error(f"*** googleapiclient error {err} ***")
     prepare_venv()
 
 
@@ -124,4 +124,4 @@ async def download_file(service, file_id, file_name):
     done = False
     while done is False:
         status, done = downloader.next_chunk()
-        print("Download %d%%." % int(status.progress() * 100))
+        logger.info("Download %d%%." % int(status.progress() * 100))

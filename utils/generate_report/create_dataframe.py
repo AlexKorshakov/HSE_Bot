@@ -1,6 +1,7 @@
 from typing import Optional
 
 import pandas as pd
+from loguru import logger
 from pandas import DataFrame
 
 from utils.json_worker.read_json_file import read_json_file
@@ -18,6 +19,7 @@ async def create_dataframe_from_data(data) -> Optional[DataFrame]:
                    "general_contractor",
                    "description",
                    "comment",
+                   "incident_level",
                    "act_required",
                    "coordinates",
                    ]
@@ -25,7 +27,7 @@ async def create_dataframe_from_data(data) -> Optional[DataFrame]:
         dataframe = pd.DataFrame(data, columns=column_list)
         return dataframe
     except Exception as err:
-        print(f"get_workbook {repr(err)}")
+        logger.error(f"get_workbook {repr(err)}")
         return None
 
 
@@ -37,6 +39,7 @@ async def create_dataframe(file_list) -> Optional[DataFrame]:
         "general_contractor": "Подрядная организация",
         "description": "Описание нарушения",
         "comment": "Комментарий",
+        "incident_level": "Уровень происшествия",
         "act_required": "Оформление акта",
         "coordinates": "Координаты",
     }]
@@ -51,6 +54,7 @@ async def create_dataframe(file_list) -> Optional[DataFrame]:
         "general_contractor",
         "description",
         "comment",
+        "incident_level",
         "act_required",
         "coordinates",
     ]
@@ -59,5 +63,5 @@ async def create_dataframe(file_list) -> Optional[DataFrame]:
         dataframe = pd.DataFrame(data, columns=column_list)
         return dataframe
     except Exception as err:
-        print(F"get_workbook {repr(err)}")
+        logger.error(F"get_workbook {repr(err)}")
         return None

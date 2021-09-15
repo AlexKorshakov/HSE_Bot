@@ -1,3 +1,4 @@
+from loguru import logger
 from openpyxl.styles import Alignment
 
 
@@ -11,4 +12,4 @@ async def set_alignment(ws):
             try:
                 cell.alignment = wrap_alignment
             except Exception as err:
-                print(F"set_alignment {repr(err)}")
+                logger.error(F"set_alignment {repr(err)}")

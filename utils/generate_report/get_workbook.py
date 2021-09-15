@@ -1,6 +1,7 @@
 from typing import Optional
 
 import openpyxl
+from loguru import logger
 from openpyxl import Workbook
 
 
@@ -13,5 +14,5 @@ async def get_workbook(fill_report_path: str) -> Optional[Workbook]:
         workbook: Workbook = openpyxl.load_workbook(fill_report_path)
         return workbook
     except Exception as err:
-        print(F"get_workbook {repr(err)}")
+        logger.error(F"get_workbook {repr(err)}")
         return None

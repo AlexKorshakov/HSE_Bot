@@ -1,6 +1,7 @@
 import datetime
 
 from aiogram import types
+from loguru import logger
 
 from data import messege_config
 from data.report_data import violation_data
@@ -12,8 +13,6 @@ from utils.secondary_functions.get_filepath import preparation_paths_on_pc
 from utils.secondary_functions.get_month_message import get_month_message
 from utils.secondary_functions.get_year_message import get_year_message
 from utils.select_start_category import select_start_category
-
-from data.messege_config import start_violation_mes_id
 
 WORK_ON_HEROKU = False
 WORK_ON_PC = True
@@ -31,7 +30,7 @@ async def photo_handler(message: types.Message):
     #     return
 
     start_violation = messege_config.start_violation_mes_id = message.message_id
-    print(f"start_violation message.from_user.id {start_violation}")
+    logger.info(f"start_violation message.from_user.id {start_violation}")
 
     violation_data["file_id"] = await get_filename_msg_with_photo(message)
 

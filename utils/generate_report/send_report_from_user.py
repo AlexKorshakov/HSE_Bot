@@ -3,6 +3,7 @@ import datetime
 
 from aiogram import types
 from aiogram.types import ChatActions
+from loguru import logger
 
 from loader import bot
 from utils.secondary_functions.get_filepath import create_file_path, get_report_full_filepath
@@ -27,4 +28,4 @@ async def send_report_from_user(message: types.Message, full_report_path=None):
         await bot.send_document(user_id, document=doc,
                                 caption='Отчет собран для тебя с помощью бота!')
     except Exception as err:
-        print(F"send_report_from_user {repr(err)}")
+        logger.error(f"send_report_from_user {repr(err)}")

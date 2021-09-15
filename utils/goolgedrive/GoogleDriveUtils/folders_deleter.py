@@ -15,7 +15,7 @@ async def delete_folders(drive_service, folder_names: list):
             continue
 
         await delete_folder(service=drive_service, folder_id=f_name["id"])
-        print(f'Item {item}: delete file/folder {f_name["name"]} id {f_name["id"]}')
+        logger.info(f'Item {item}: delete file/folder {f_name["name"]} id {f_name["id"]}')
 
 
 async def delete_folder(service, folder_id):
@@ -27,7 +27,7 @@ async def delete_folder(service, folder_id):
     try:
         service.files().delete(fileId=folder_id).execute()
     except Exception as err:
-        print(f'An error occurred:{err}')
+        logger.error(f'An error occurred:{err}')
 
 
 async def delete_folders_for_id(drive_service, folder_id_list: list):

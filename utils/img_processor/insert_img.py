@@ -1,4 +1,5 @@
 import openpyxl
+from loguru import logger
 from openpyxl.drawing.image import Image
 from xlsxwriter.worksheet import Worksheet
 
@@ -20,7 +21,7 @@ async def insert_images_to_sheet(json_data, worksheet: Worksheet):
             await insert_images(img, ind, worksheet)
 
         except Exception as err:
-            print(f"insert_img {repr(err)}")
+            logger.error(f"insert_img {repr(err)}")
             return None
 
 
@@ -38,5 +39,5 @@ async def insert_images(img: Image, ind: int, worksheet: Worksheet):
     try:
         worksheet.add_image(img)
     except Exception as err:
-        print(F"insert_images {repr(err)}")
+        logger.error(f"insert_images {repr(err)}")
         return None

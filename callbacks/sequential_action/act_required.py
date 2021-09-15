@@ -1,19 +1,18 @@
-from data import board_config
+from aiogram import types
+
+from data.category import get_names_from_json
 from data.report_data import violation_data
 from errors.errors_decorators import logger
-from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 from loader import dp
 from states import AnswerUserState
 from utils.json_worker.writer_json_file import write_json_file
-from aiogram import types
-from data.category import get_names_from_json
 
 try:
     ACT_REQUIRED_ACTION = get_names_from_json("ACT_REQUIRED_ACTION")
     if ACT_REQUIRED_ACTION is None:
         from data.category import ACT_REQUIRED_ACTION, get_names_from_json
 except Exception as err:
-    print(f"{repr(err)}")
+    logger.error(f"{repr(err)}")
     from data.category import ACT_REQUIRED_ACTION
 
 

@@ -1,4 +1,4 @@
-
+from loguru import logger
 from openpyxl.styles import Font
 
 
@@ -10,4 +10,4 @@ async def set_font(ws):
             try:
                 cell.font = Font(size=14)
             except Exception as err:
-                print(F"set_border {repr(err)}")
+                logger.error(F"set_border {repr(err)}")

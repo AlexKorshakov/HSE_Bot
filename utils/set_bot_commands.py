@@ -12,16 +12,3 @@ async def set_default_commands(dp):
         types.BotCommand(command="/test", description="Тестовые команды"),
     ])
     logger.info('Установка комманд бота...')
-
-# async def load_handlers():
-#     handlers = [m[:-3] for m in os.listdir(HANDLERS_DIR) if m.endswith(".py")]
-#     for handler in (HANDLERS or handlers):
-#         print(f"Loading {handler}...  ", end="")
-#         print(f"\r\t\t\t\t", end="")
-#
-#         try:
-#             importlib.import_module(f'{HANDLERS_DIR}.{handler}')
-#             click.echo(click.style("loaded", fg='bright_green'))
-#         except Exception:
-#             click.echo(click.style("error", fg='bright_red'))
-#             click.echo(click.style(f"↳  {tb.format_exc()}", fg='bright_red'))

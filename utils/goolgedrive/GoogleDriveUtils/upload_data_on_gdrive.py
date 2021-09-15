@@ -14,6 +14,8 @@ INSTALL_REQUIRES = ['google-api-core',
                     'googleapis-common-protos',
                     'httplib2',
                     ]
+MIME_TYPE_TEXT = "text/plain"
+DESCRIPTION = "Uploaded Successfully"
 
 
 def prepare_venv():
@@ -33,7 +35,7 @@ def prepare_venv():
 try:
     from googleapiclient.http import MediaFileUpload
 except Exception as err:
-    print(f"*** googleapiclient error {err} ***")
+    logger.error(f"*** googleapiclient error {err} ***")
     prepare_venv()
 
 
@@ -51,14 +53,13 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, report_da
         await dp.bot.send_message(message.from_user.id, f'файл не обнаружен, загрузка на web прервана',
                                   disable_notification=True)
         return 'error'
-    #     file_path = report_data['json_full_name']
 
     if not os.path.isfile(file_path):
         logger.info(f"File {file_path} not found")
         return
 
     mime_type = guess_type(file_path)[0]
-    mime_type = mime_type if mime_type else "text/plain"
+    mime_type = mime_type if mime_type else MIME_TYPE_TEXT
 
     media_body = MediaFileUpload(file_path,
                                  mimetype=mime_type,
@@ -77,7 +78,7 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, report_da
 
     body = {
         "name": file_name,
-        "description": "Uploaded Successfully",
+        "description": DESCRIPTION,
         "mimeType": mime_type,
     }
 
@@ -88,6 +89,8 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, report_da
                                                      media_body=media_body,
                                                      fields='id',
                                                      supportsTeamDrives=True).execute()
+
+        # entries = ds.files().list(q=q, **kwargs).execute()
         file_id = uploaded_file.get('id')
         return file_id
 
@@ -115,7 +118,7 @@ async def upload_photo_file_on_gdrave(message: types.Message, drive_service, rep
         return
 
     mime_type = guess_type(file_path)[0]
-    mime_type = mime_type if mime_type else "text/plain"
+    mime_type = mime_type if mime_type else MIME_TYPE_TEXT
 
     media_body = MediaFileUpload(file_path,
                                  mimetype=mime_type,
@@ -134,7 +137,7 @@ async def upload_photo_file_on_gdrave(message: types.Message, drive_service, rep
 
     body = {
         "name": file_name,
-        "description": "Uploaded Successfully",
+        "description": DESCRIPTION,
         "mimeType": mime_type,
     }
 
@@ -172,7 +175,7 @@ async def upload_report_file_on_gdrave(message: types.Message, drive_service, re
         return
 
     mime_type = guess_type(file_path)[0]
-    mime_type = mime_type if mime_type else "text/plain"
+    mime_type = mime_type if mime_type else MIME_TYPE_TEXT
 
     media_body = MediaFileUpload(file_path,
                                  mimetype=mime_type,
@@ -191,7 +194,7 @@ async def upload_report_file_on_gdrave(message: types.Message, drive_service, re
 
     body = {
         "name": file_name,
-        "description": "Uploaded Successfully",
+        "description": DESCRIPTION,
         "mimeType": mime_type,
     }
 

@@ -21,8 +21,6 @@ async def write_json_reg_user_file(*, data: dict = None) -> bool:
     # if not os.path.isfile(name):
     # Todo: check
 
-    # return False
-
     await write_json(name=name, data=data)
     return True
 
@@ -54,4 +52,4 @@ async def write_json(name, data):
                               ensure_ascii=False)
             outfile.write(str_)
     except TypeError as err:
-        print(f" TypeError: {repr(err)}")
+        logger.error(f" TypeError: {repr(err)}")
