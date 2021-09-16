@@ -34,19 +34,22 @@ async def set_user_violation_data_on_google_drive(message: types.Message, violat
 
     user_folder_id = await get_user_folder_id(drive_service,
                                               root_folder_name=str(message.from_user.id),
-                                              parent_id=root_folder_id)
+                                              parent_id=root_folder_id,)
 
     json_folder_id = await get_json_folder_id(drive_service,
                                               json_folder_name=JSON_FOLDER_NAME,
-                                              parent_id=user_folder_id)
+                                              parent_id=user_folder_id,
+                                              root_json_folder_id=user_folder_id)
 
     photo_folder_id = await get_photo_folder_id(drive_service,
                                                 photo_folder_name=PHOTO_FOLDER_NAME,
-                                                parent_id=user_folder_id)
+                                                parent_id=user_folder_id,
+                                                root_photo_folder_id=user_folder_id)
 
     report_folder_id = await get_report_folder_id(drive_service,
                                                   report_folder_name=REPORT_FOLDER_NAME,
-                                                  parent_id=user_folder_id)
+                                                  parent_id=user_folder_id,
+                                                  root_report_folder_id=user_folder_id)
     if not json_folder_id:
         return
 
@@ -56,25 +59,16 @@ async def set_user_violation_data_on_google_drive(message: types.Message, violat
 
     await write_json_violation_user_file(data=violation_data)
 
-    # await write_photo_violation_user_file(data=report_data)
-
     violation_file_id = await upload_file_on_gdrave(message, drive_service,
-                                                    report_data=violation_data,
                                                     parent=violation_data["json_folder_id"],
                                                     file_path=violation_data['json_full_name'])
+    await get_user_permissions(drive_service, file_id=violation_file_id)
+    await move_file(drive_service, file_id=violation_file_id, add_parents=json_folder_id, remove_parents=root_folder_id)
 
     photo_file_id = await upload_photo_file_on_gdrave(message, drive_service,
-                                                      report_data=violation_data,
                                                       parent=violation_data["photo_folder_id"],
                                                       file_path=violation_data['photo_full_name'])
-
-    # await del_old_data_google_drive(message, drive_service, parent=user_data["parent_id"])
-
-    await get_user_permissions(drive_service, file_id=violation_file_id)
     await get_user_permissions(drive_service, file_id=photo_file_id)
-    await get_user_permissions(drive_service, file_id=report_folder_id)
-
-    await move_file(drive_service, violation_file_id, add_parents=json_folder_id, remove_parents=root_folder_id)
-    await move_file(drive_service, photo_file_id, add_parents=photo_folder_id, remove_parents=root_folder_id)
+    await move_file(drive_service, file_id=photo_file_id, add_parents=photo_folder_id, remove_parents=root_folder_id)
 
     return True

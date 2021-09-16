@@ -6,6 +6,7 @@ from aiogram import types
 from loguru import logger
 
 from loader import dp
+from messages.messages import Messages
 
 INSTALL_REQUIRES = ['google-api-core',
                     'google-api-python-client',
@@ -39,18 +40,17 @@ except Exception as err:
     prepare_venv()
 
 
-async def upload_file_on_gdrave(message: types.Message, drive_service, report_data=None, parent=None, file_path=None):
+async def upload_file_on_gdrave(message: types.Message, drive_service, parent=None, file_path=None):
     """Загрузка файла на Google Drive
 
     :param file_path:
     :param parent:
     :param message:
     :param drive_service:
-    :param report_data:
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.from_user.id, f'файл не обнаружен, загрузка на web прервана',
+        await dp.bot.send_message(message.from_user.id, Messages.error_upload_on_web,
                                   disable_notification=True)
         return 'error'
 
@@ -71,11 +71,6 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, report_da
 
     filesize = await humanbytes(os.path.getsize(file_path))
 
-    logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
-    await dp.bot.send_message(message.from_user.id,
-                              f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
-                              disable_notification=True)
-
     body = {
         "name": file_name,
         "description": DESCRIPTION,
@@ -90,27 +85,31 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, report_da
                                                      fields='id',
                                                      supportsTeamDrives=True).execute()
 
-        # entries = ds.files().list(q=q, **kwargs).execute()
         file_id = uploaded_file.get('id')
+
+        logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
+        await dp.bot.send_message(message.from_user.id,
+                                  f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
+                                  disable_notification=True)
+
         return file_id
 
-    except Exception as err:
-        await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{err}```', disable_notification=True)
+    except Exception as uploaded_err:
+        await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{uploaded_err}```', disable_notification=True)
         return 'error'
 
 
-async def upload_photo_file_on_gdrave(message: types.Message, drive_service, report_data, parent=None, file_path=None):
+async def upload_photo_file_on_gdrave(message: types.Message, drive_service, parent=None, file_path=None):
     """Загрузка файла на Google Drive
 
     :param parent:
-    :param report_data:
     :param message:
     :param drive_service:
     :param file_path:
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.from_user.id, f'файл не обнаружен, загрузка на web прервана',
+        await dp.bot.send_message(message.from_user.id, Messages.error_upload_on_web,
                                   disable_notification=True)
 
     if not os.path.isfile(file_path):
@@ -130,11 +129,6 @@ async def upload_photo_file_on_gdrave(message: types.Message, drive_service, rep
 
     filesize = await humanbytes(os.path.getsize(file_path))
 
-    logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
-    await dp.bot.send_message(message.from_user.id,
-                              f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
-                              disable_notification=True)
-
     body = {
         "name": file_name,
         "description": DESCRIPTION,
@@ -149,25 +143,29 @@ async def upload_photo_file_on_gdrave(message: types.Message, drive_service, rep
                                                      fields='id',
                                                      supportsTeamDrives=True).execute()
         file_id = uploaded_file.get('id')
+
+        logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
+        await dp.bot.send_message(message.from_user.id,
+                                  f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
+                                  disable_notification=True)
         return file_id
 
-    except Exception as err:
-        await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{err}```', disable_notification=True)
+    except Exception as uploaded_err:
+        await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{uploaded_err}```', disable_notification=True)
         return 'error'
 
 
-async def upload_report_file_on_gdrave(message: types.Message, drive_service, report_data=None, parent=None,
+async def upload_report_file_on_gdrave(message: types.Message, drive_service, parent=None,
                                        file_path=None):
     """Загрузка файла на Google Drive
     :param file_path:
     :param parent:
     :param message:
     :param drive_service:
-    :param report_data:
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.from_user.id, f'файл не обнаружен, загрузка на web прервана',
+        await dp.bot.send_message(message.from_user.id, Messages.error_upload_on_web,
                                   disable_notification=True)
 
     if not os.path.isfile(file_path):
@@ -187,11 +185,6 @@ async def upload_report_file_on_gdrave(message: types.Message, drive_service, re
 
     filesize = await humanbytes(os.path.getsize(file_path))
 
-    logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
-    await dp.bot.send_message(message.from_user.id,
-                              f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
-                              disable_notification=True)
-
     body = {
         "name": file_name,
         "description": DESCRIPTION,
@@ -206,17 +199,22 @@ async def upload_report_file_on_gdrave(message: types.Message, drive_service, re
                                                      fields='id',
                                                      supportsTeamDrives=True).execute()
         file_id = uploaded_file.get('id')
+
+        logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
+        await dp.bot.send_message(message.from_user.id,
+                                  f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
+                                  disable_notification=True)
         return file_id
 
-    except Exception as err:
-        await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{err}```', disable_notification=True)
+    except Exception as uploaded_err:
+        await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{uploaded_err}```', disable_notification=True)
         return 'error'
 
 
-async def humanbytes(size: int) -> str:
+async def humanbytes(f_size: int) -> str:
     """Представление обьма файла в читабельном формате
     """
-    if not size:
+    if not f_size:
         return ""
     power = 2 ** 10
     number = 0
@@ -227,7 +225,7 @@ async def humanbytes(size: int) -> str:
                     4: "T",
                     5: "P"
                     }
-    while size > power:
-        size /= power
+    while f_size > power:
+        f_size /= power
         number += 1
-    return str(round(size, 2)) + " " + dict_power_n[number] + 'B'
+    return str(round(f_size, 2)) + " " + dict_power_n[number] + 'B'

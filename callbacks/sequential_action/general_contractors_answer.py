@@ -4,7 +4,6 @@ from loguru import logger
 from data import board_config
 from data.category import get_names_from_json
 from data.report_data import violation_data
-from data.category import get_names_from_json
 from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 from loader import dp
 from utils.json_worker.writer_json_file import write_json_file

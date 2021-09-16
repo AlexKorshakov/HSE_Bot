@@ -1,4 +1,6 @@
 class Messages:
+    """Класс со всеми текстовыми сообщенияим
+    """
     write_to_developer: str = f'Чтобы написать разработчику нажмите /developer'
     help_message: str = f"Справка по командам бота /help \n" \
                         f'для начала работы и регистрации в системе (повторной регистрации) нажмите /start \n' \
@@ -14,7 +16,7 @@ class Messages:
     ask_name: str = f"Введите ваше ФИО полностью"
     ask_function: str = f"Введите вашу должность полностью"
     ask_phone_number: str = f"Отправь мне свой номер телефона с кодом (пример +7xxxxxxxxxx)"
-    ask_location: str = f"Введите с момощью клавиатуру ваще местоположение (пример Аминьевское шоссе)"
+    ask_location: str = f"Введите с момощью клавиатуры ваще местоположение (пример Аминьевское шоссе)"
     invalid_input: str = f"Неправильный ввод данных! \n" \
                          f"Отправь номер телефона в формате (без пробелов)(пример +7xxxxxxxxxx)"
     registration_completed_successfully: str = "регистрация прошла успешно"
@@ -37,3 +39,5 @@ class Messages:
     report_begin: str = f"Запись загружается"
     report_completed_successfully: str = f"Запись загружена"
     bot_start: str = f"Бот успешно запущен..."
+    error_upload_on_web: str = "файл не обнаружен, загрузка на web прервана"
+    save_data_on_g_drive: str = "Данные сохранены в Google Drive"

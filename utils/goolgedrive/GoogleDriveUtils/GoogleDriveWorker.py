@@ -61,7 +61,7 @@ async def drive_account_credentials(message: types.Message) -> object:
     """Авторизация на Google
     :param delegate_user: - аккаунт которому делегируется авторизация
     :param service_account_file: - файл с ключами и данными аккаунта
-    :return:
+    :return: object
     @rtype: object
     """
     credentials = None
@@ -91,10 +91,9 @@ async def drive_account_credentials(message: types.Message) -> object:
         logger.info("🔒 **Already authorized your Google Drive Account.**")
         return google_drive_service
 
-    except Exception as err:
-        logger.info(f"авторизация успешно провалена! : {repr(err)} ")
+    except Exception as authorized_err:
+        logger.info(f"авторизация успешно провалена! : {repr(authorized_err)} ")
         await bot.send_message(message.from_user.id, text=Messages.err_authorized_google_drive)
-        assert "Не удалось авторизоваться в системе"
 
 
 async def drive_account_auth_with_oauth2client(message):
@@ -108,15 +107,15 @@ async def drive_account_auth_with_oauth2client(message):
     return google_drive_service
 
 
-async def move_file(service: object, id: str, add_parents: str, remove_parents: str) -> None:
+async def move_file(service: object, *, file_id: str, add_parents: str, remove_parents: str) -> None:
     """Перемещение файла/папки из одной папки в другую
-    @param remove_parents:
-    @param add_parents:
     @param service:
-    @param id:
+    @param file_id: id файла / папки которую будет перемещаться
+    @param add_parents: id  каталога в который перемещается файл / папка
+    @param remove_parents: id  каталога из которого перемещается файл / папка
+    :rtype: object
     """
     try:
-        serv = service.files()
-        serv.update(fileId=id, addParents=add_parents, removeParents=remove_parents).execute()
-    except Exception as err:
-        logger.error(f"move_folder err {id} to move in add_parents \n: {repr(err)}")
+        service.files().update(fileId=file_id, addParents=add_parents, removeParents=remove_parents).execute()
+    except Exception as update_err:
+        logger.error(f"move_folder err {file_id} to move in add_parents \n: {repr(update_err)}")

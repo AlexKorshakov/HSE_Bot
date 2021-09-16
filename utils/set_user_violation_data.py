@@ -43,5 +43,5 @@ async def set_violation_data(message: types.Message):
 
     if await set_user_violation_data_on_google_drive(message, violation_data):
         # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
-        logger.info(f"Данные сохранены в Google Drive в директорию {violation_data['json_folder_id']} \n"
+        logger.info(f"Данные сохранены в Google Drive в директорию \n"
                     f"https://drive.google.com/drive/folders/{violation_data['json_folder_id']}")

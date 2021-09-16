@@ -51,4 +51,4 @@ async def set_user_registration_data(message, user_data):
     if await set_user_registration_data_on_google_drive(message, user_data):
         # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
         logger.info(f"Данные сохранены в Google Drive в файл {user_data['reg_user_file']} \n"
-                    f"https://drive.google.com/drive/folders/{user_data['json_folder_id']}")
+                    f"https://drive.google.com/drive/folders/{user_data['parent_id']}")

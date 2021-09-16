@@ -5,14 +5,22 @@ from typing import List, Dict
 from loguru import logger
 
 
-async def find_folder_with_name(drive_service, name: str):
+async def find_folder_with_name(drive_service, *, name: str, parent=None):
     """Получение id папки по имени
     """
-    get_folder = drive_service.files().list(q=f"name='{name}' and mimeType='application/vnd.google-apps.folder'",
-                                            spaces='drive',
-                                            fields='nextPageToken, files(id, name)',
-                                            pageToken=None).execute()
+    q = f"name='{name}' and mimeType='application/vnd.google-apps.folder'"
+
+    if parent:
+        q = f"name='{name}' and mimeType='application/vnd.google-apps.folder' and '{parent}' in parents"
+
+    get_folder = drive_service.files().list(
+        q=q,
+        spaces='drive',
+        fields='nextPageToken, files(id, name)',
+        pageToken=None).execute()
+
     await asyncio.sleep(2)
+
     found_folders_by_name = get_folder.get('files', [])
     for folder in found_folders_by_name:
         logger.info(f"File name: {folder.get('name')} File id: {folder.get('id')}")
@@ -24,6 +32,12 @@ async def find_folder_with_name(drive_service, name: str):
 
 
 async def find_folder_with_drive_id(drive_service, drive_id, recursively=True):
+    """Поиск папок в папке drive_id рекурсивно если recursively=True
+    :param drive_service:
+    :param drive_id:
+    :param recursively:
+    :return:
+    """
     files = drive_service.files().list(q=f"'{drive_id}' in parents",
                                        spaces='drive',
                                        pageSize=100,
