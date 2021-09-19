@@ -9,14 +9,14 @@ from data.report_data import user_data
 from loader import dp, bot
 from messages.messages import Messages
 from states import RegisterState
-from utils.custom_filters import IsPrivate
+from utils.custom_filters import is_private
 from utils.misc import rate_limit
 from utils.secondary_functions.get_filepath import create_file_path
 from utils.set_user_registration_data import registration_data
 
 
 @rate_limit(limit=20)
-@dp.message_handler(Command('start'), IsPrivate)
+@dp.message_handler(Command('start'), is_private)
 async def start(message: types.Message):
     """Начало регистрации пользователя
     :param message:
@@ -40,7 +40,7 @@ async def start(message: types.Message):
     await bot.send_message(message.from_user.id, Messages.ask_name, reply_markup=reply_markup)
 
 
-@dp.message_handler(IsPrivate, Text(equals=Messages.cancel), state=RegisterState.all_states)
+@dp.message_handler(is_private, Text(equals=Messages.cancel), state=RegisterState.all_states)
 async def cancel(message: types.Message, state: FSMContext):
     """Отмена регистрации
     :param message:
@@ -51,7 +51,7 @@ async def cancel(message: types.Message, state: FSMContext):
     return await message.reply(Messages.register_canceled, reply_markup=ReplyKeyboardRemove())
 
 
-@dp.message_handler(IsPrivate, state=RegisterState.name)
+@dp.message_handler(is_private, state=RegisterState.name)
 async def enter_name(message: types.Message, state: FSMContext):
     """Обработка ввода имени пользователя
     :param message:
@@ -66,7 +66,7 @@ async def enter_name(message: types.Message, state: FSMContext):
     return await message.reply(Messages.ask_function, reply_markup=markup)
 
 
-@dp.message_handler(IsPrivate, state=RegisterState.function)
+@dp.message_handler(is_private, state=RegisterState.function)
 async def enter_function(message: types.Message, state: FSMContext):
     """Обработка ввода должности пользователя
     :param message:
@@ -81,7 +81,7 @@ async def enter_function(message: types.Message, state: FSMContext):
     return await message.reply(Messages.ask_phone_number, reply_markup=markup)
 
 
-@dp.message_handler(IsPrivate, state=RegisterState.phone_number)
+@dp.message_handler(is_private, state=RegisterState.phone_number)
 async def enter_phone_number(message: types.Message, state: FSMContext):
     """Обработка ввода номера телефона пользователя
     :param message:
@@ -96,10 +96,24 @@ async def enter_phone_number(message: types.Message, state: FSMContext):
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(Messages.cancel)
+    return await message.reply(Messages.ask_work_shift, reply_markup=markup)
+
+
+@dp.message_handler(is_private, state=RegisterState.work_shift)
+async def enter_work_shift(message: types.Message, state: FSMContext):
+    """Окончание ввода данных.
+    Завершение RegisterState
+    Запись данных в базы различными способами registration_data
+    """
+    user_data["work_shift"] = str(message.text)
+
+    await RegisterState.next()
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(Messages.cancel)
     return await message.reply(Messages.ask_location, reply_markup=markup)
 
 
-@dp.message_handler(IsPrivate, state=RegisterState.location)
+@dp.message_handler(is_private, state=RegisterState.location)
 async def enter_location(message: types.Message, state: FSMContext):
     """Окончание ввода данных.
     Завершение RegisterState

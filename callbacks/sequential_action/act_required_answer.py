@@ -1,44 +1,43 @@
 from aiogram import types
-from loguru import logger
 
 from data import board_config
 from data.category import get_names_from_json
 from data.report_data import violation_data
+from errors.errors_decorators import logger
 from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
-
 from loader import dp
 from utils.json_worker.writer_json_file import write_json_file
 
 try:
-    VIOLATION_CATEGORY = get_names_from_json("VIOLATION_CATEGORY")
-    if VIOLATION_CATEGORY is None:
-        from data.category import VIOLATION_CATEGORY
+    ACT_REQUIRED_ACTION = get_names_from_json("ACT_REQUIRED_ACTION")
+    if ACT_REQUIRED_ACTION is None:
+        from data.category import ACT_REQUIRED_ACTION, get_names_from_json
 except Exception as err:
     logger.error(f"{repr(err)}")
-    from data.category import VIOLATION_CATEGORY
+    from data.category import ACT_REQUIRED_ACTION
 
 try:
-    GENERAL_CONTRACTORS = get_names_from_json("GENERAL_CONTRACTORS")
-    if GENERAL_CONTRACTORS is None:
-        from data.category import GENERAL_CONTRACTORS
+    ELIMINATION_TIME = get_names_from_json("ELIMINATION_TIME")
+    if ELIMINATION_TIME is None:
+        from data.category import ELIMINATION_TIME
 except Exception as err:
     logger.error(f"{repr(err)}")
-    from data.category import GENERAL_CONTRACTORS
+    from data.category import ELIMINATION_TIME
 
 
-@dp.callback_query_handler(lambda call: call.data in VIOLATION_CATEGORY)
-async def violation_category_answer(call: types.CallbackQuery):
-    """Обработка ответов содержащихся в VIOLATION_CATEGORY
+@dp.callback_query_handler(lambda call: call.data in ACT_REQUIRED_ACTION)
+async def act_required(call: types.CallbackQuery):
+    """Обработка ответов содержащихся в ACT_REQUIRED_ACTION
     """
-    for i in VIOLATION_CATEGORY:
+    for i in ACT_REQUIRED_ACTION:
         try:
             if call.data == i:
                 logger.debug(f"Выбрано: {i}")
-                violation_data["violation_category"] = i
+                violation_data["act_required"] = i
                 await write_json_file(data=violation_data, name=violation_data["json_full_name"])
 
                 menu_level = board_config.menu_level = 1
-                menu_list = board_config.menu_list = GENERAL_CONTRACTORS
+                menu_list = board_config.menu_list = ELIMINATION_TIME
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
                 await call.message.answer(text="Выберите ответ", reply_markup=reply_markup)

@@ -1,30 +1,30 @@
 from aiogram import types
+from loguru import logger
 
 from data.category import get_names_from_json
 from data.report_data import violation_data
-from errors.errors_decorators import logger
 from loader import dp
 from states import AnswerUserState
 from utils.json_worker.writer_json_file import write_json_file
 
 try:
-    ACT_REQUIRED_ACTION = get_names_from_json("ACT_REQUIRED_ACTION")
-    if ACT_REQUIRED_ACTION is None:
-        from data.category import ACT_REQUIRED_ACTION, get_names_from_json
+    ELIMINATION_TIME = get_names_from_json("ELIMINATION_TIME")
+    if ELIMINATION_TIME is None:
+        from data.category import ELIMINATION_TIME
 except Exception as err:
     logger.error(f"{repr(err)}")
-    from data.category import ACT_REQUIRED_ACTION
+    from data.category import ELIMINATION_TIME
 
 
-@dp.callback_query_handler(lambda call: call.data in ACT_REQUIRED_ACTION)
-async def act_required(call: types.CallbackQuery):
-    """Обработка ответов содержащихся в ACT_REQUIRED_ACTION
+@dp.callback_query_handler(lambda call: call.data in ELIMINATION_TIME)
+async def elimination_time_answer(call: types.CallbackQuery):
+    """Обработка ответов содержащихся в ELIMINATION_TIME
     """
-    for i in ACT_REQUIRED_ACTION:
+    for i in ELIMINATION_TIME:
         try:
             if call.data == i:
                 logger.debug(f"Выбрано: {i}")
-                violation_data["act_required"] = i
+                violation_data["elimination_time"] = i
                 await write_json_file(data=violation_data, name=violation_data["json_full_name"])
 
                 await call.message.answer("введите описание нарушения")

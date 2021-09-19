@@ -5,4 +5,5 @@ class RegisterState(StatesGroup):
     name = State()
     function = State()
     phone_number = State()
+    work_shift = State()
     location = State()
