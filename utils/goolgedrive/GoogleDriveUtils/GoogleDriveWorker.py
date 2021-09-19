@@ -42,7 +42,7 @@ except Exception as err:
     logger.error(f"*** google api client error {err} ***")
     prepare_venv()
 
-logger.info("V 0.043 master GoogleDriveWorker")
+# logger.info("V 0.043 master GoogleDriveWorker")
 
 SCOPE_DRIVE = "https://www.googleapis.com/auth/drive"
 
@@ -57,12 +57,12 @@ SCOPES = [SCOPE_DRIVE,
 PICKLE_PATH = '.\\utils\\goolgedrive\\token.pickle'
 
 
-async def drive_account_credentials(message: types.Message) -> object:
+async def drive_account_credentials(chat_id):
     """Авторизация на Google
     :param delegate_user: - аккаунт которому делегируется авторизация
     :param service_account_file: - файл с ключами и данными аккаунта
-    :return: object
-    @rtype: object
+    :return:
+    @rtype:
     """
     credentials = None
     # Файл token.pickle хранит токены доступа и обновления пользователя
@@ -93,10 +93,10 @@ async def drive_account_credentials(message: types.Message) -> object:
 
     except Exception as authorized_err:
         logger.info(f"авторизация успешно провалена! : {repr(authorized_err)} ")
-        await bot.send_message(message.from_user.id, text=Messages.err_authorized_google_drive)
+        await bot.send_message(chat_id=chat_id, text=Messages.err_authorized_google_drive)
 
 
-async def drive_account_auth_with_oauth2client(message):
+async def drive_account_auth_with_oauth2client(message: types.Message):
     """Авторизация на Google
     :param delegate_user: - аккаунт которому делегируется авторизация
     :param service_account_file: - файл с ключами и данными аккаунта

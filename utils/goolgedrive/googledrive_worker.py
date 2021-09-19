@@ -15,9 +15,6 @@ from utils.goolgedrive.GoogleDriveUtils.get_root_folder_id import get_root_folde
 WORK_ON_HEROKU: bool = False
 WORK_ON_PC: bool = True
 
-# WORK_ON_HEROKU: bool = True
-# WORK_ON_PC: bool = False
-
 ROOT_REPORT_FOLDER_NAME: str = "MosIng_HSE_repots"
 ROOT_REPORT_FOLDER_ID: str = '1n4M_LHDG_QQ4EFuDYxQLe_MaK-k3wv96'
 
@@ -33,15 +30,13 @@ async def write_data_on_google_drive(message: types.Message):
         drive_service = await drive_account_auth_with_oauth2client(message)
 
     if WORK_ON_PC:
-        drive_service = await drive_account_credentials(message)
+        drive_service = await drive_account_credentials(chat_id=message.chat.id)
 
     if not drive_service:
         logger.info(f"**drive_service {drive_service} in Google Drive.**")
         return
 
     root_folder_id = await get_root_folder_id(drive_service, ROOT_REPORT_FOLDER_NAME)
-    if root_folder_id:
-        ROOT_REPORT_FOLDER_ID = root_folder_id
 
     folder_id = await get_user_folder_id(drive_service,
                                          root_folder_name=str(message.from_user.id),

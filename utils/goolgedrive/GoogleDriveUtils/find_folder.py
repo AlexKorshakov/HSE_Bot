@@ -4,6 +4,7 @@ from typing import List, Dict
 
 from loguru import logger
 
+FIEDS = 'nextPageToken, files(id, name)'
 
 async def find_folder_with_name(drive_service, *, name: str, parent=None):
     """Получение id папки по имени
@@ -16,7 +17,7 @@ async def find_folder_with_name(drive_service, *, name: str, parent=None):
     get_folder = drive_service.files().list(
         q=q,
         spaces='drive',
-        fields='nextPageToken, files(id, name)',
+        fields=FIEDS,
         pageToken=None).execute()
 
     await asyncio.sleep(2)
@@ -28,7 +29,7 @@ async def find_folder_with_name(drive_service, *, name: str, parent=None):
     if len(found_folders_by_name) == 1:
         return found_folders_by_name[0].get('id')
     else:
-        return found_folders_by_name
+        return []
 
 
 async def find_folder_with_drive_id(drive_service, drive_id, recursively=True):
@@ -68,6 +69,7 @@ async def find_all(service: object) -> list:
         page_token = get_folder.get('nextPageToken', None)
         if page_token is None:
             break
+
     return found_folders
 
 
@@ -94,17 +96,18 @@ async def find_folder_by_name(service, name, spaces='drive'):
     """Получение id папки по имени"""
     get_folder = service.files().list(q=f"name='{name}' and mimeType='application/vnd.google-apps.folder'",
                                       spaces=spaces,
-                                      fields='nextPageToken, files(id, name)',
+                                      fields=FIEDS,
                                       pageToken=None).execute()
 
     found_folders_by_name = get_folder.get('files', [])
+
     for folder in found_folders_by_name:
         logger.info(f"File name: {folder.get('name')} File id: {folder.get('id')}")
 
     if len(found_folders_by_name) == 1:
         return found_folders_by_name.get('id')
     else:
-        return found_folders_by_name
+        return []
 
 
 async def find_file_by_name(service: object, name: str = None, is_folder: str = None, parent: str = None,
@@ -127,6 +130,7 @@ async def find_file_by_name(service: object, name: str = None, is_folder: str = 
         q.append(f"'{parent}' in parents")
 
     params = {'pageToken': None, 'orderBy': order_by}
+
     if q:
         params['q'] = ' and '.join(q)
 
@@ -135,3 +139,73 @@ async def find_file_by_name(service: object, name: str = None, is_folder: str = 
     found_folders_by_name = get_folder.get('files', [])
 
     return found_folders_by_name
+
+
+async def q_request_constructor(*, name: str = None, is_folder: bool = None, parent: str = None,
+                                mime_type: str = 'application/vnd.google-apps.folder') -> list:
+    """Конструктор q части запроса
+    :param mime_type:
+    :param is_folder: является ли папкой
+    :param name:
+    :param parent:
+    :return:
+    """
+    q = []
+    if name is not None:
+        q.append(f"name contains '{name}'")
+
+    if is_folder is not None:
+        q.append(f"mimeType {'=' if is_folder else '!='} '{mime_type}'")
+
+    if parent is not None:
+        q.append(f"'{parent}' in parents")
+
+    return q
+
+
+async def params_constructor(q: list = None, spaces='drive', page_size: int = 100, order_by=None, p_fields: str = None,
+                             files: str = None):
+    """Конструктор параметров запроса
+    :param files:
+    :param p_fields:
+    :param order_by:
+    :param page_size:
+    :param spaces:
+    :param q:
+    :return:
+    """
+
+    params = {'pageToken': None, 'pageSize': page_size}
+
+    if q:
+        params['q'] = ' and '.join(q)
+
+    if order_by:
+        params['orderBy'] = order_by
+
+    if spaces:
+        params['spaces'] = spaces
+
+    if p_fields is None:
+        params['fields'] = FIEDS
+
+    if files:
+        request_text = f'nextPageToken, files({files})'
+        params['fields'] = request_text
+
+    return params
+
+
+async def find_files_or_folders_list(drive_service, *, params: dict) -> list:
+    """Поик на drive_service по заданным параметрам
+    :return:
+    """
+    try:
+
+        get_folder = drive_service.files().list(**params).execute()
+        found_folders_by_name = get_folder.get('files', [])
+        return found_folders_by_name
+
+    except Exception as err:
+        logger.error(f"{repr(err)}")
+        return []

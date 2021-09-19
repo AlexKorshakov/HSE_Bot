@@ -19,14 +19,14 @@ async def build_inlinekeyboard(*, some_list, num_col=1, level=1) -> InlineKeyboa
     """
     button_list = []
 
-    if len(some_list) <= 11:
+    if len(some_list) <= STEP_MENU:
         button_list = [InlineKeyboardButton(text=ss, callback_data=ss) for ss in some_list]
 
         menu = await _build_menu(buttons=button_list, n_cols=num_col)
 
         return InlineKeyboardMarkup(resize_keyboard=True, inline_keyboard=menu)
 
-    if 11 < len(some_list):
+    if STEP_MENU < len(some_list):
 
         end_list = len(some_list)
         start_index, stop_index = await define_indices(level, end_list)
