@@ -22,11 +22,11 @@ async def registration_data(message, user_data):
     user_data["reg_user_path"] = f"{BOT_DATA_PATH}{message.from_user.id}\\"
 
     chat_id = message.from_user.id
-    await dp.bot.send_message(chat_id=chat_id, text=Messages.registration_begin)
+    await dp.bot.send_message(chat_id=chat_id, text=Messages.begin_registration)
 
     await set_user_registration_data(message, user_data)
 
-    await dp.bot.send_message(chat_id=chat_id, text=Messages.registration_completed_successfully)
+    await dp.bot.send_message(chat_id=chat_id, text=Messages.successfully_registration_completed)
     await dp.bot.send_message(chat_id=chat_id, text=Messages.help_message, reply_markup=ReplyKeyboardRemove())
 
 

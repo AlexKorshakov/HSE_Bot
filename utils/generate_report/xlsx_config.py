@@ -1,8 +1,7 @@
-
 STARTROW: int = 0
 STARTCOL: int = 1
 
 MAXIMUM_COLUMN_WIDTH: int = 40
 MAXIMUM_ROW_HEIGHT: int = 120
 
-COLUMN_SRT_INDEX:str = 'L'
+

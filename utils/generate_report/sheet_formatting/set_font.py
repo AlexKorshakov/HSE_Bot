@@ -13,7 +13,7 @@ async def set_font(ws):
                 logger.error(f"sets_report_font {repr(err)}")
 
 
-async def set_report_font(worksheet, cell_range, font_size=14, name='Arial'):
+async def set_report_font(worksheet, cell_range, font_size=14, name='Arial', color=""):
     """Форматирование ячейки: размер шрифта
     """
     cells = [cell for row in worksheet[cell_range] for cell in row]

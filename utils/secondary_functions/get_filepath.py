@@ -25,6 +25,13 @@ async def get_report_full_filepath(user_id: str = None):
     return f"{BOT_DATA_PATH}{user_id}\\data_file\\{await date_now()}\\reports\\"
 
 
+async def get_registration_full_filepath(user_id: str = None):
+    """Обработчик сообщений с фото
+    Получение полного пути файла
+    """
+    return f"{BOT_DATA_PATH}{user_id}\\"
+
+
 async def get_photo_full_filepath(user_id: str = None):
     """Обработчик сообщений с фото
     Получение полного пути файла

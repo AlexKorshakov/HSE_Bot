@@ -28,7 +28,7 @@ async def on_startup(dispatcher: Dispatcher):
 
     await on_startup_notify(dispatcher)
     await set_default_commands(dispatcher)
-    logger.info(Messages.bot_start)
+    logger.info(Messages.successfully_bot_start)
 
 
 async def on_shutdown(dispatcher: Dispatcher):

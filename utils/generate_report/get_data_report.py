@@ -22,7 +22,7 @@ async def get_data_report(message: types.Message, file_list=None):
     # await save_merged_file_on_pc(merge_file_list)
     if not file_list:
         logger.warning('error! file_list not found!')
-        await bot.send_message(message.from_user.id, Messages.file_list_not_found)
+        await bot.send_message(message.from_user.id, Messages.error_file_list_not_found)
 
         photo_full_filepath: str = await get_photo_full_filepath(user_id=str(message.from_user.id))
         json_full_filepath: str = await get_json_full_filepath(user_id=str(message.from_user.id))
