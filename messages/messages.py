@@ -8,7 +8,7 @@ class Messages:
     wait: str = f"Это может занять нескоторое время"
 
     report_done: str = f"Отчет сформирован на сервере"
-    report_start: str = f"Начинаю генерацию отчета"
+    report_start: str = f"Начинаю генерацию отчетов"
     report_sent_successfully: str = f"Отчет успешно отправлен"
     report_begin: str = f"Запись загружается"
     report_completed_successfully: str = f"Запись загружена"

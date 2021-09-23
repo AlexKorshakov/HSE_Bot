@@ -200,10 +200,10 @@ async def upload_report_file_on_gdrave(message: types.Message, drive_service, pa
                                                      supportsTeamDrives=True).execute()
         file_id = uploaded_file.get('id')
 
-        logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
-        await dp.bot.send_message(message.from_user.id,
-                                  f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
-                                  disable_notification=True)
+        # logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
+        # await dp.bot.send_message(message.from_user.id,
+        #                           f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
+        #                           disable_notification=True)
         return file_id
 
     except Exception as uploaded_err:

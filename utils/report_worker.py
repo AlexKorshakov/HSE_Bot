@@ -17,9 +17,6 @@ async def create_and_send_report(message: types.Message):
     :param message:
     :return:
     """
-    await message.answer(f'{Messages.report_start} \n'
-                         f'{Messages.wait} \n'
-                         f'{Messages.help_message}')
 
     file_list = await get_json_file_list(message)
     if not file_list:
@@ -51,9 +48,6 @@ async def create_and_send_mip_report(message: types.Message):
     :param message:
     :return:
     """
-    # await message.answer(f'{Messages.report_start} \n'
-    #                      f'{Messages.wait} \n'
-    #                      f'{Messages.help_message}')
 
     file_list = await get_json_file_list(message)
     if not file_list:
@@ -65,10 +59,10 @@ async def create_and_send_mip_report(message: types.Message):
         logger.warning(Messages.error_registration_file_list_not_found)
         await bot.send_message(message.from_user.id, Messages.error_file_list_not_found)
 
-    # dataframe = await get_data_report(message, file_list)
-    # if dataframe.empty:
-    #     logger.warning('error! dataframe not found!')
-    #     await message.answer(f"Не удалось получить данные для формирования отчета")
+    dataframe = await get_data_report(message, file_list)
+    if dataframe.empty:
+        logger.warning('error! dataframe not found!')
+        await message.answer("Не удалось получить данные для формирования отчета")
 
     registration_data = await read_json_file(registration_file_list)
     location_name = registration_data.get('name_location')
@@ -81,7 +75,7 @@ async def create_and_send_mip_report(message: types.Message):
     full_mip_report_path: str = await get_full_mip_report_name(message.chat.id, location_name=location_name)
 
     await create_mip_report(message,
-                            # dataframe=dataframe,
+                            dataframe=dataframe,
                             registration_file_list=registration_file_list,
                             full_mip_report_path=full_mip_report_path,
                             violation_data=file_list
@@ -89,10 +83,8 @@ async def create_and_send_mip_report(message: types.Message):
 
     await message.answer(f'{Messages.report_done} \n')
 
-    # full_report_path = await get_full_report_name(message)
+    await set_report_data(message, full_mip_report_path)
 
-    # await set_report_data(message, full_mip_report_path)
-
-    # await send_report_from_user(message, full_report_path=full_mip_report_path)
+    await send_report_from_user(message, full_report_path=full_mip_report_path)
 
     return True

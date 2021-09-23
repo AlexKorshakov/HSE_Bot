@@ -1,15 +1,28 @@
 import datetime
+import os
+from math import ceil
 
 from loguru import logger
+from openpyxl.drawing.image import Image
 
-from data.category import GENERAL_CONTRACTORS
-from utils.generate_report.sheet_formatting.set_font import sets_report_font
+from data.category import GENERAL_CONTRACTORS, CATEGORY_LIST, ELIMINATION_TIME
+from utils.generate_report.mip_report_settings import CATEGORY_LIST_VALUES
+from utils.generate_report.sheet_formatting.set_alignment import set_mip_alignment
+from utils.generate_report.sheet_formatting.set_font import sets_report_font, set_report_font
+from utils.generate_report.sheet_formatting.set_frame_border import set_range_border
+from utils.img_processor.insert_img import image_preparation, insert_images
+from utils.json_worker.read_json_file import read_json_file
 
 not_found: str = 'не выявлено'
 not_tested: str = 'не проверялось'
 be_away: str = 'отсутствовал'
 check_mark_true: str = 'V'
 check_mark_false: str = '□'
+
+start_photo_row: int = 52
+photo_column: str = 'C'
+description_column: int = 7
+photo_height: int = 400
 
 
 async def set_report_body_values(worksheet):
@@ -208,7 +221,7 @@ async def set_report_header_values(worksheet, registration_data):
         {"coordinate": "C3", "value": f"ЛО-МИП-УОТиПБ-{year}-{day}", "row": "3", "column": "3"},
         {"coordinate": "D6", "value": f"{custom_date}", "row": "6", "column": "4"},
         {"coordinate": "D7", "value": f"{GENERAL_CONTRACTORS[0]}, {GENERAL_CONTRACTORS[1]}", "row": "7", "column": "4"},
-        {"coordinate": "D8", "value": f"", "row": "8", "column": "4"},
+        {"coordinate": "D8", "value": "", "row": "8", "column": "4"},
         {"coordinate": "D9", "value": f"{name_location}", "row": "9", "column": "4"},
         {"coordinate": "F12", "value": f"{be_away}", "row": "12", "column": "6"},
 
@@ -223,12 +236,201 @@ async def set_report_header_values(worksheet, registration_data):
     for val in values:
         try:
 
-            worksheet.cell(row=int(val['row']), column=int(val['column'])).value = str(val['value'])
+            worksheet.cell(row=int(val['row']), column=int(val['column']), value=str(val['value']))
 
         except Exception as err:
             logger.error(f"set_user_values {repr(err)}")
             return None
 
 
-async def set_report_violation_values(worksheet, violation_data):
-    pass
+async def set_report_violation_values(worksheet, dataframe):
+    """
+    :param worksheet:
+    :param dataframe:
+    :return:
+    """
+
+    serial_number = 0
+    val = []
+    for category in CATEGORY_LIST:
+        for item in range(1, dataframe.category.size):
+            if dataframe.loc[item]["category"] != category:
+                continue
+
+            elimination_time = await get_elimination_time(dataframe, item)
+            val.append({"description": dataframe.loc[item]["description"] + ' \\',
+                        "elimination_time": elimination_time + ' \\'})
+
+        if not val:
+            continue
+
+        serial_number += 1
+        for item in CATEGORY_LIST_VALUES:
+
+            if category != item['value']:
+                continue
+
+            await set_worksheet_cell_value(worksheet, item, serial_number, val)
+
+            val = []
+            break
+
+
+async def get_elimination_time(dataframe, item) -> str:
+    """
+    :return:
+    """
+    if dataframe.loc[item]["elimination_time"] != ELIMINATION_TIME[0] and \
+            dataframe.loc[item]["elimination_time"] != ELIMINATION_TIME[1]:
+        add_days = int(dataframe.loc[item]["elimination_time"].split(' ')[0])
+        elimination_time = datetime.datetime.now() + datetime.timedelta(days=add_days)
+
+        return str(elimination_time.strftime("%d.%m.%Y"))
+
+    return dataframe.loc[item]["elimination_time"]
+
+
+async def set_worksheet_cell_value(worksheet, item, serial_number, val):
+    """
+    :param worksheet:
+    :param item:
+    :param serial_number:
+    :return:
+    """
+    worksheet.cell(row=int(item['row']), column=6, value=serial_number)
+    worksheet.cell(row=int(item['row']), column=7, value="".join([str(i["description"]) + ' \n' for i in val]))
+    worksheet.cell(row=int(item['row']), column=8, value="".join([str(i["elimination_time"]) + ' \n' for i in val]))
+
+    cell_ranges = [
+        [f"D{item['row']}:F{item['row']}", {"color": "FF0000", "font_size": "14", "name": "Arial"}],
+        [f"G{item['row']}:G{item['row']}", {"color": "FF0000", "font_size": "12", "name": "Arial"}],
+        [f"H{item['row']}:H{item['row']}", {"color": "FF0000", "font_size": "12", "name": "Arial"}],
+    ]
+    for cell_range in cell_ranges:
+        await sets_report_font(worksheet, cell_range[0], params=cell_range[1])
+        await set_mip_alignment(worksheet, cell_range[0], horizontal='left', vertical='center')
+
+    worksheet.row_dimensions[int(item['row'])].height = await get_height_for_row(
+        worksheet,
+        int(item['row']),
+        value="".join([str(i["description"]) + ' \n' for i in val]))
+
+
+factor_of_font_size_to_width = {
+
+    12: {
+        "factor": 0.9,  # width / count of symbols at row
+        "height": 25
+    }
+}
+
+
+async def get_height_for_row(sheet, row_number: int, font_size: int = 12, value=None):
+    """
+    :param value:
+    :param sheet:
+    :param row_number:
+    :param font_size:
+    :return:
+    """
+    font_params = factor_of_font_size_to_width[font_size]
+    row = list(sheet.rows)[row_number]
+    height = font_params["height"]
+
+    for index, cell in enumerate(row):
+        if index != 6:
+            continue
+
+        if hasattr(cell, 'column_letter'):
+            words_count_at_one_row = sheet.column_dimensions[cell.column_letter].width / font_params["factor"]
+
+            lines = ceil(len(str(value)) / words_count_at_one_row)
+            height = max(height, lines * font_params["height"])
+
+            return height
+
+
+async def set_photographic_materials_values(worksheet):
+    """
+    :param worksheet:
+
+    """
+
+    values = [
+        {"coordinate": "C50", "value": "Фотофиксация", "row": "50", "column": "3"},
+        {"coordinate": "C51", "value": "ФОТО", "row": "51", "column": "3"},
+        {"coordinate": "F51", "value": "№", "row": "51", "column": "6"},
+        {"coordinate": "C51", "value": "Примечание", "row": "51", "column": "7"},
+    ]
+
+    for val in values:
+        try:
+
+            worksheet.cell(row=int(val['row']), column=int(val['column']), value=str(val['value']))
+
+        except Exception as err:
+            logger.error(f"set_photographic_materials_values {repr(err)}")
+            return None
+
+
+async def set_photographic_materials(worksheet, violation_data: str, num_data: int):
+    """Вставка фото и описания наоушения га сстраницу отчета
+    :param num_data:
+    :param worksheet:
+    :param violation_data: 
+    :return: 
+    """
+
+    img_data = await read_json_file(violation_data)
+
+    if not os.path.isfile(img_data['photo_full_name']):
+        logger.error("photo not found")
+        return False
+
+    merged_cells = [
+        f'C{start_photo_row + num_data}:E{start_photo_row + num_data}',
+        f'G{start_photo_row + num_data}:H{start_photo_row + num_data}',
+    ]
+
+    for merged_cell in merged_cells:
+        worksheet.merge_cells(merged_cell)
+
+    photographic_materials_alignment = [
+        f'C{start_photo_row + num_data}:H{start_photo_row + num_data}',
+    ]
+
+    for item, cell_range in enumerate(photographic_materials_alignment, start=1):
+        await set_mip_alignment(worksheet, cell_range, horizontal='left', vertical='center')
+
+    photographic_row_dimensions = [
+        [f"{start_photo_row + num_data}", 300.0],
+    ]
+
+    for item in photographic_row_dimensions:
+        worksheet.row_dimensions[int(item[0])].height = float(item[1])
+
+    for item, cell_range in enumerate(photographic_materials_alignment, start=1):
+        await set_report_font(worksheet, cell_range=cell_range, font_size=14)
+
+    img: Image = Image(img_data['photo_full_name'])
+
+    img_params: dict = {
+        "column": photo_column,
+        "row": start_photo_row + num_data,
+        "height": photo_height,
+        "anchor": True,
+        "scale": True,
+    }
+
+    img = await image_preparation(img, img_params)
+
+    await insert_images(worksheet, img=img)
+
+    worksheet.cell(row=start_photo_row + num_data, column=description_column, value=str(img_data['description']))
+
+    for item, cell_border_range in enumerate(photographic_materials_alignment, start=1):
+        await set_range_border(worksheet, cell_range=cell_border_range)
+
+    worksheet.print_area = f'$A$1:$I${start_photo_row + num_data + 1}'
+
+    return True

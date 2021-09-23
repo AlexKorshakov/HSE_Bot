@@ -13,6 +13,7 @@ async def create_heders(file_list=None):
              "description": "Описание нарушения",
              "comment": "Комментарий",
              "incident_level": "Уровень происшествия",
+             "elimination_time": "Дней на устранение",
              "act_required": "Оформление акта",
              "coordinates": "Координаты",
              }]

@@ -6,12 +6,13 @@ from messages.messages import Messages
 from utils.generate_report.create_dataframe import create_dataframe
 from utils.generate_report.create_xlsx import create_xlsx, create_new_xlsx
 from utils.generate_report.get_file_list import get_json_file_list
-from utils.generate_report.get_report_path import get_full_report_name, get_full_mip_report_name
+from utils.generate_report.get_report_path import get_full_report_name
 from utils.generate_report.get_workbook import get_workbook
 from utils.generate_report.get_worksheet import get_worksheet
 from utils.generate_report.sheet_formatting.set_value import set_report_body_values, set_report_header_values, \
-    set_report_violation_values
-from utils.generate_report.sheet_formatting.sheet_formatting import format_sheets, format_mip_report_sheet
+    set_report_violation_values, set_photographic_materials_values, set_photographic_materials
+from utils.generate_report.sheet_formatting.sheet_formatting import format_sheets, format_mip_report_sheet, \
+    format_mip_photographic
 from utils.img_processor.insert_img import insert_images_to_sheet, insert_signalline_to_report_body
 from utils.json_worker.read_json_file import read_json_file
 
@@ -148,12 +149,22 @@ async def create_mip_report(message: types.Message, dataframe=None, full_mip_rep
 
     await set_report_header_values(worksheet, registration_data)
 
+    await set_report_violation_values(worksheet, dataframe)
+
+    await insert_signalline_to_report_body(worksheet)
+
     if violation_data is None:
         violation_data = await get_json_file_list(message)
 
-    await set_report_violation_values(worksheet, violation_data)
-    # await insert_images_to_sheet(file_list, worksheet)
+    if violation_data:
+        await set_photographic_materials_values(worksheet)
 
-    await insert_signalline_to_report_body(worksheet)
+        await format_mip_photographic(worksheet)
+
+        num_data: int = 0
+        for v_data in violation_data:
+            is_add = await set_photographic_materials(worksheet, v_data, num_data)
+            if is_add:
+                num_data += 1
 
     workbook.save(full_mip_report_path)

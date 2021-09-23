@@ -15,12 +15,12 @@ async def set_report_data(message: types.Message, full_report_path):
     """
     chat_id = message.from_user.id
 
-    await dp.bot.send_message(chat_id=chat_id, text=Messages.begin_registration_report)
+    # await dp.bot.send_message(chat_id=chat_id, text=Messages.begin_registration_report)
 
     await set_user_report_data(message, full_report_path)
 
     await dp.bot.send_message(chat_id=chat_id, text=Messages.successfully_registration_completed)
-    await dp.bot.send_message(chat_id=chat_id, text=Messages.help_message, reply_markup=ReplyKeyboardRemove())
+    # await dp.bot.send_message(chat_id=chat_id, text=Messages.help_message, reply_markup=ReplyKeyboardRemove())
 
 
 async def set_user_report_data(message: types.Message, full_report_path):
@@ -30,8 +30,8 @@ async def set_user_report_data(message: types.Message, full_report_path):
     :return:
     """
     if not full_report_path:
-        await dp.bot.send_message(chat_id=message.from_user.id, text=Messages.successfully_registration_completed)
-        logger.info(f"Данные сохранены на pc в файл {full_report_path}")
+        await dp.bot.send_message(chat_id=message.from_user.id, text=Messages.error_fill_report_path_not_found)
+        logger.info(Messages.error_fill_report_path_not_found)
         return
 
     if await set_user_report_data_on_google_drive(message, full_report_path):

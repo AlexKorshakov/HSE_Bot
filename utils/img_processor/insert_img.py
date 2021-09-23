@@ -10,7 +10,7 @@ from utils.secondary_functions.get_json_files import get_files
 
 from utils.json_worker.read_json_file import read_json_file
 
-COLUMN_STR_INDEX: str = 'L'
+COLUMN_STR_INDEX: str = 'M'
 SIGNALLINE_COLUMN_STR_INDEX: str = "B"
 
 IMG_ANCHOR = True
@@ -30,12 +30,13 @@ async def insert_images_to_sheet(json_data, worksheet: Worksheet, height=160):
                 logger.error(f"Изображение для вставки в строку {ind} не найдено!")
                 continue
 
-            img_params: dict = {}
-            img_params["height"] = height
-            img_params["scale"] = IMG_SCALE
-            img_params["anchor"] = IMG_ANCHOR
-            img_params["column"] = COLUMN_STR_INDEX
-            img_params["row"] = ind
+            img_params: dict = {
+                "height": height,
+                "scale": IMG_SCALE,
+                "anchor": IMG_ANCHOR,
+                "column": COLUMN_STR_INDEX,
+                "row": ind
+            }
 
             img = await image_preparation(img, img_params)
 
@@ -59,19 +60,18 @@ async def insert_signalline_to_report_body(worksheet: Worksheet) -> None:
         photo_full_name = file if file.split('\\')[-1].split('.')[0] == "signalline" else ''
 
     if not os.path.isfile(photo_full_name):
-        logger.error(f"signalline not found")
+        logger.error("signalline not found")
         return
 
     img: Image = openpyxl.drawing.image.Image(photo_full_name)
 
     # height = 0
-    # for item in range(4, 43):
-    #     height += worksheet.row_dimensions[item].height
+    # for item in range(3, 42):
+    #     height += int(worksheet.row_dimensions[item].height)
     # width = worksheet.column_dimensions[SIGNALLINE_COLUMN_STR_INDEX].width
+    # width = 115
+    # height = 1552
 
-    width = 115
-    height = 1552
-    
     img_params: dict = {
         # "width": width * 2.54,
         # "height": height * 2.54,
