@@ -103,3 +103,10 @@ async def format_mip_photographic(worksheet):
 
     for item, cell_range in enumerate(photographic_report_font, start=1):
         await sets_report_font(worksheet, cell_range[0], params=cell_range[1])
+
+    background_color = [
+        ["C50:H50", "FFFFC000"]
+    ]
+
+    for item in background_color:
+        await set_background_color(worksheet, item[0], rgb=item[1])

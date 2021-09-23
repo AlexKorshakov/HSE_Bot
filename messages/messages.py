@@ -1,8 +1,11 @@
 class Messages:
     """Класс со всеми текстовыми сообщенияим
     """
+    url_registration_violation: str = f"https://youtu.be/P7h611n7lLk"
+
     write_to_developer: str = f'Чтобы написать разработчику нажмите /developer'
     help_message: str = f"Справка по командам бота /help \n" \
+                        f"Видео инструкция {url_registration_violation}" \
                         f'для начала работы и регистрации в системе (повторной регистрации) нажмите /start \n' \
                         f'{write_to_developer}'
     wait: str = f"Это может занять нескоторое время"
