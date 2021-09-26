@@ -16,7 +16,8 @@ async def process_help_command(message: types.Message):
         "/developer- написать разработчику",
         "/cancel- Отмена регистрации",
         "/generate - Формирование отчета",
-        "/start- Начало работы",
+        "/start - Начало работы",
+        "/correct_entries - корректировка введённых значений",
         sep="\n"
     )
     await message.reply(text=help_message)

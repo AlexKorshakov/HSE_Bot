@@ -35,6 +35,7 @@ async def photo_handler(message: types.Message):
     violation_data["file_id"] = await get_filename_msg_with_photo(message)
 
     violation_data["user_id"] = message.from_user.id
+    violation_data["violation_id"] = message.message_id
     violation_data["user_fullname"] = message.from_user.full_name
 
     violation_data["now"] = str(datetime.datetime.now())

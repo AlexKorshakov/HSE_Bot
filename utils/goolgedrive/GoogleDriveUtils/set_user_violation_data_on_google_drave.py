@@ -54,7 +54,7 @@ async def set_user_violation_data_on_google_drive(message: types.Message, violat
         return
 
     violation_data["json_folder_id"] = json_folder_id
-    violation_data["photo_folder_id"] = json_folder_id
+    violation_data["photo_folder_id"] = photo_folder_id
     violation_data["report_folder_id"] = report_folder_id
 
     await write_json_violation_user_file(data=violation_data)

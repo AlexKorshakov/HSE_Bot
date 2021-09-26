@@ -6,6 +6,7 @@ from loguru import logger
 
 FIEDS = 'nextPageToken, files(id, name)'
 
+
 async def find_folder_with_name(drive_service, *, name: str, parent=None):
     """Получение id папки по имени
     """
@@ -152,18 +153,21 @@ async def q_request_constructor(*, name: str = None, is_folder: bool = None, par
     """
     q = []
     if name is not None:
-        q.append(f"name contains '{name}'")
+        q.append(f"fullText  contains '{name}' ")
 
     if is_folder is not None:
-        q.append(f"mimeType {'=' if is_folder else '!='} '{mime_type}'")
+        q.append(f"mimeType {'=' if is_folder else '!='} 'application/vnd.google-apps.folder'")
 
     if parent is not None:
         q.append(f"'{parent}' in parents")
 
+    if mime_type is not None:
+        q.append(f"mimeType ='{mime_type}' ")
+
     return q
 
 
-async def params_constructor(q: list = None, spaces='drive', page_size: int = 100, order_by=None, p_fields: str = None,
+async def params_constructor(q: list = None, spaces=None, page_size: int = 100, order_by=None, p_fields: str = None,
                              files: str = None):
     """Конструктор параметров запроса
     :param files:

@@ -50,10 +50,14 @@ class Messages:
                                                   " Обратитесь к разработчику! \n" \
                                                   f'чтобы написать разработчику нажмите /developer'
     error_authorized_google_drive: str = f"Не удалось авторизоваться на Google Drive!"
-    error_upload_on_web: str = "файл не обнаружен, загрузка на web прервана"
-
+    error_upload_on_web: str = "Файл не обнаружен, загрузка на web прервана"
+    error_file_not_found: str = "Файл не найден. Вероятно он был удалён"
     error_location_name_not_found: str = "Не найдены данные о местоположении!"
 
     successfully_bot_start: str = f"Бот успешно запущен..."
     successfully_save_data_on_g_drive: str = "Данные сохранены в Google Drive"
     successfully_registration_completed: str = "регистрация прошла успешно"
+
+    violation_removed: str = "Запись удалена"
+
+    bot_setting_commands: str = 'Установка комманд бота...'

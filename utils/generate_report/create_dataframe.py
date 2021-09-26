@@ -12,17 +12,19 @@ async def create_dataframe_from_data(data) -> Optional[DataFrame]:
     :return:
     """
 
-    column_list = ["main_category",
-                   "category",
-                   "violation_category",
-                   "general_contractor",
-                   "description",
-                   "comment",
-                   "incident_level",
-                   "elimination_time",
-                   "act_required",
-                   "coordinates",
-                   ]
+    column_list = [
+        "violation_id",
+        "main_category",
+        "category",
+        "violation_category",
+        "general_contractor",
+        "description",
+        "comment",
+        "incident_level",
+        "elimination_time",
+        "act_required",
+        "coordinates",
+    ]
     try:
         dataframe = DataFrame(data, columns=column_list)
         return dataframe
@@ -32,23 +34,27 @@ async def create_dataframe_from_data(data) -> Optional[DataFrame]:
 
 
 async def create_dataframe(file_list) -> Optional[DataFrame]:
-    data = [{
-        "main_category": "Основное направление",
-        "category": "Категория нарушения",
-        "violation_category": "Категория нарушений",
-        "general_contractor": "Подрядная организация",
-        "description": "Описание нарушения",
-        "comment": "Комментарий",
-        "incident_level": "Уровень происшествия",
-        "elimination_time": "Дней на устранение",
-        "act_required": "Оформление акта",
-        "coordinates": "Координаты",
-    }]
+    data = [
+        {
+            "violation_id": "id записи",
+            "main_category": "Основное направление",
+            "category": "Категория нарушения",
+            "violation_category": "Категория нарушений",
+            "general_contractor": "Подрядная организация",
+            "description": "Описание нарушения",
+            "comment": "Комментарий",
+            "incident_level": "Уровень происшествия",
+            "elimination_time": "Дней на устранение",
+            "act_required": "Оформление акта",
+            "coordinates": "Координаты",
+        }
+    ]
 
     for file in file_list:
         data.append(await read_json_file(file))
 
     column_list = [
+        "violation_id",
         "main_category",
         "category",
         "violation_category",
@@ -65,5 +71,5 @@ async def create_dataframe(file_list) -> Optional[DataFrame]:
         dataframe = DataFrame(data, columns=column_list)
         return dataframe
     except Exception as err:
-        logger.error(F"get_workbook {repr(err)}")
+        logger.error(F"create_dataframe {repr(err)}")
         return None
