@@ -7,6 +7,7 @@ from data.report_data import violation_data
 from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 from loader import dp
 from utils.json_worker.writer_json_file import write_json_file
+from messages.messages import Messages
 
 try:
     CATEGORY_LIST = get_names_from_json("CATEGORY_LIST")
@@ -37,14 +38,13 @@ async def category_answer(call: types.CallbackQuery):
                 await call.message.answer(text=f"Выбрано: {i}")
                 await write_json_file(data=violation_data, name=violation_data["json_full_name"])
 
+                await call.message.edit_reply_markup()
                 menu_level = board_config.menu_level = 1
                 menu_list = board_config.menu_list = VIOLATION_CATEGORY
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
-                await call.message.answer(text="Выберите ответ", reply_markup=reply_markup)
+                await call.message.answer(text=Messages.Choose.answer, reply_markup=reply_markup)
 
-                # await bot_delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                #                          sleep_time=5)
                 break
 
         except Exception as callback_err:

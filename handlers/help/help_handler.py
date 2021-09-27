@@ -1,7 +1,8 @@
 from aiogram import types
-from aiogram.utils.markdown import text
 from aiogram.dispatcher.filters import Command
+from aiogram.utils.markdown import text
 
+from keyboards.inline.help_inlinekeyboard import help_inline_button
 from loader import dp
 
 
@@ -10,14 +11,15 @@ async def process_help_command(message: types.Message):
     """Обработка команды help
     """
     help_message = text(
-        # "/description- Описание нарушения",
-        # "/comment- Комментарий к нарушению",
-        # "/registration- Зарегистрировать и записать",
+        "Справка по командам\n",
         "/developer- написать разработчику",
         "/cancel- Отмена регистрации",
         "/generate - Формирование отчета",
         "/start - Начало работы",
-        "/correct_entries - корректировка введённых значений",
+        "/correct_entries - Корректировка введённых значений",
+        "/admin_func - Админка",
+        "\nВидео инструкция по работе бота",
         sep="\n"
     )
-    await message.reply(text=help_message)
+    await message.reply(text=help_message, reply_markup=await help_inline_button())
+

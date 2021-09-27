@@ -20,13 +20,13 @@ async def create_and_send_report(message: types.Message):
 
     file_list = await get_json_file_list(message)
     if not file_list:
-        logger.warning(Messages.error_file_list_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_file_list_not_found)
+        logger.warning(Messages.Error.file_list_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
 
     dataframe = await get_data_report(message, file_list)
     if dataframe.empty:
-        logger.warning(Messages.error_dataframe_not_found)
-        await message.answer(Messages.error_dataframe_not_found)
+        logger.warning(Messages.Error.dataframe_not_found)
+        await message.answer(Messages.Error.dataframe_not_found)
 
     full_report_path = await get_full_report_name(message)
     await create_report_from_other_method(message,
@@ -34,7 +34,7 @@ async def create_and_send_report(message: types.Message):
                                           full_report_path=full_report_path,
                                           file_list=file_list)
 
-    await message.answer(f'{Messages.report_done} \n')
+    await message.answer(f'{Messages.Report.done} \n')
 
     await set_report_data(message, full_report_path)
 
@@ -51,25 +51,25 @@ async def create_and_send_mip_report(message: types.Message):
 
     file_list = await get_json_file_list(message)
     if not file_list:
-        logger.warning(Messages.error_file_list_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_file_list_not_found)
+        logger.warning(Messages.Error.file_list_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
 
     registration_file_list = await get_registration_json_file_list(chat_id=message.chat.id)
     if not registration_file_list:
-        logger.warning(Messages.error_registration_file_list_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_file_list_not_found)
+        logger.warning(Messages.Error.registration_file_list_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
 
     dataframe = await get_data_report(message, file_list)
     if dataframe.empty:
-        logger.warning('error! dataframe not found!')
-        await message.answer("Не удалось получить данные для формирования отчета")
+        logger.warning(Messages.Error.dataframe_not_found)
+        await message.answer(Messages.Error.dataframe_not_found)
 
     registration_data = await read_json_file(registration_file_list)
     location_name = registration_data.get('name_location')
 
     if location_name is None:
-        logger.warning(Messages.error_location_name_not_found)
-        await message.answer(Messages.error_location_name_not_found)
+        logger.warning(Messages.Error.location_name_not_found)
+        await message.answer(Messages.Error.location_name_not_found)
         location_name = ''
 
     full_mip_report_path: str = await get_full_mip_report_name(message.chat.id, location_name=location_name)
@@ -81,7 +81,7 @@ async def create_and_send_mip_report(message: types.Message):
                             violation_data=file_list
                             )
 
-    await message.answer(f'{Messages.report_done} \n')
+    await message.answer(f'{Messages.Report.done} \n')
 
     await set_report_data(message, full_mip_report_path)
 

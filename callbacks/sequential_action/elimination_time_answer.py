@@ -6,6 +6,7 @@ from data.report_data import violation_data
 from loader import dp
 from states import AnswerUserState
 from utils.json_worker.writer_json_file import write_json_file
+from messages.messages import Messages
 
 try:
     ELIMINATION_TIME = get_names_from_json("ELIMINATION_TIME")
@@ -27,7 +28,8 @@ async def elimination_time_answer(call: types.CallbackQuery):
                 violation_data["elimination_time"] = i
                 await write_json_file(data=violation_data, name=violation_data["json_full_name"])
 
-                await call.message.answer("введите описание нарушения")
+                await call.message.edit_reply_markup()
+                await call.message.answer(Messages.Enter.description_violation)
                 await AnswerUserState.description.set()
 
                 break

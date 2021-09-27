@@ -17,14 +17,14 @@ async def pre_set_violation_data(message: types.Message):
     """Интерфейс записи нарушения на Google Drive
     """
     chat_id = message.from_user.id
-    await dp.bot.send_message(chat_id=chat_id, text=Messages.report_begin)
+    await dp.bot.send_message(chat_id=chat_id, text=Messages.Report.begin)
 
     stop_violation_id = messege_config.stop_violation_mes_id = message.message_id + 3
     logger.info(f"start_violation message.from_user.id {stop_violation_id}")
 
     await set_violation_data(message)
 
-    await dp.bot.send_message(chat_id=chat_id, text=Messages.report_completed_successfully)
+    await dp.bot.send_message(chat_id=chat_id, text=Messages.Report.completed_successfully)
     await dp.bot.send_message(chat_id=chat_id, text=Messages.help_message, reply_markup=ReplyKeyboardRemove())
 
     await cyclical_deletion_message(chat_id)

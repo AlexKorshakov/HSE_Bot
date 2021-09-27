@@ -36,8 +36,8 @@ async def start(message: types.Message):
 
     await RegisterState.name.set()
     reply_markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    reply_markup.add(Messages.cancel)
-    await bot.send_message(message.from_user.id, Messages.ask_name, reply_markup=reply_markup)
+    reply_markup.add(Messages.Registration.cancel)
+    await bot.send_message(message.from_user.id, Messages.Ask.name, reply_markup=reply_markup)
 
 
 @dp.message_handler(is_private, Text(equals=Messages.cancel), state=RegisterState.all_states)
@@ -48,7 +48,7 @@ async def cancel(message: types.Message, state: FSMContext):
     :return:
     """
     await state.finish()
-    return await message.reply(Messages.register_canceled, reply_markup=ReplyKeyboardRemove())
+    return await message.reply(Messages.Registration.canceled, reply_markup=ReplyKeyboardRemove())
 
 
 @dp.message_handler(is_private, state=RegisterState.name)
@@ -62,8 +62,8 @@ async def enter_name(message: types.Message, state: FSMContext):
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(Messages.cancel)
-    return await message.reply(Messages.ask_function, reply_markup=markup)
+    markup.add(Messages.Registration.cancel)
+    return await message.reply(Messages.Ask.function, reply_markup=markup)
 
 
 @dp.message_handler(is_private, state=RegisterState.function)
@@ -77,8 +77,8 @@ async def enter_function(message: types.Message, state: FSMContext):
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(Messages.cancel)
-    return await message.reply(Messages.ask_phone_number, reply_markup=markup)
+    markup.add(Messages.Registration.cancel)
+    return await message.reply(Messages.Ask.phone_number, reply_markup=markup)
 
 
 @dp.message_handler(is_private, state=RegisterState.phone_number)
@@ -89,14 +89,14 @@ async def enter_phone_number(message: types.Message, state: FSMContext):
     :return:
     """
     if not message.text.startswith("+") or not message.text.strip("+").isnumeric():
-        return await message.reply(Messages.invalid_input)
+        return await message.reply(Messages.Error.invalid_input)
 
     user_data["phone_number"] = int(message.text.strip("+"))
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(Messages.cancel)
-    return await message.reply(Messages.ask_work_shift, reply_markup=markup)
+    markup.add(Messages.Registration.cancel)
+    return await message.reply(Messages.Ask.work_shift, reply_markup=markup)
 
 
 @dp.message_handler(is_private, state=RegisterState.work_shift)
@@ -109,8 +109,8 @@ async def enter_work_shift(message: types.Message, state: FSMContext):
 
     await RegisterState.next()
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(Messages.cancel)
-    return await message.reply(Messages.ask_location, reply_markup=markup)
+    markup.add(Messages.Registration.cancel)
+    return await message.reply(Messages.Ask.location, reply_markup=markup)
 
 
 @dp.message_handler(is_private, state=RegisterState.location)

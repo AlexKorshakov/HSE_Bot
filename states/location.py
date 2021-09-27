@@ -7,6 +7,7 @@ from keyboards.replykeyboards.registration_finist_keybord import registration_fi
 from loader import dp
 from states import AnswerUserState
 from utils.json_worker.writer_json_file import write_json_file
+from messages.messages import Messages
 
 
 @dp.message_handler(state=AnswerUserState.location, content_types=['location'])
@@ -23,5 +24,5 @@ async def process_comment(message: types.Message, state: FSMContext):
 
     if violation_data.get("comment"):
         keyboard = await registration_finish_keyboard()
-        await message.answer(text="При завершении регистрации дальнейшее изменение невозможно!",
+        await message.answer(text=Messages.Registration.confirm,
                              reply_markup=keyboard)

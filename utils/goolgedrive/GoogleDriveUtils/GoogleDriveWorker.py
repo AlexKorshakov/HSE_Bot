@@ -93,7 +93,7 @@ async def drive_account_credentials(chat_id):
 
     except Exception as authorized_err:
         logger.info(f"авторизация успешно провалена! : {repr(authorized_err)} ")
-        await bot.send_message(chat_id=chat_id, text=Messages.error_authorized_google_drive)
+        await bot.send_message(chat_id=chat_id, text=Messages.Error.authorized_google_drive)
 
 
 async def drive_account_auth_with_oauth2client(message: types.Message):

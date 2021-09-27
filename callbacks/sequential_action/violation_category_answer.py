@@ -8,6 +8,7 @@ from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 
 from loader import dp
 from utils.json_worker.writer_json_file import write_json_file
+from messages.messages import Messages
 
 try:
     VIOLATION_CATEGORY = get_names_from_json("VIOLATION_CATEGORY")
@@ -37,11 +38,12 @@ async def violation_category_answer(call: types.CallbackQuery):
                 violation_data["violation_category"] = i
                 await write_json_file(data=violation_data, name=violation_data["json_full_name"])
 
+                await call.message.edit_reply_markup()
                 menu_level = board_config.menu_level = 1
                 menu_list = board_config.menu_list = GENERAL_CONTRACTORS
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
-                await call.message.answer(text="Выберите ответ", reply_markup=reply_markup)
+                await call.message.answer(text=Messages.Choose.answer, reply_markup=reply_markup)
 
                 break
 

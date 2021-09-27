@@ -18,7 +18,7 @@ async def delete_folders(drive_service, folder_names: list):
         logger.info(f'Item {item}: delete file/folder {f_name["name"]} id {f_name["id"]}')
 
 
-async def delete_folder(service, folder_id):
+async def delete_folder(service, folder_id) -> bool:
     """Permanently delete a file, skipping the trash.
       Args:
         service: Drive API service instance.
@@ -26,8 +26,10 @@ async def delete_folder(service, folder_id):
       """
     try:
         service.files().delete(fileId=folder_id).execute()
+        return True
     except Exception as err:
         logger.error(f'An error occurred:{err}')
+        return False
 
 
 async def delete_folders_for_id(drive_service, folder_id_list: list):
@@ -64,21 +66,3 @@ async def del_by_name_old_data_google_drive(message, drive_service, name=None, p
 
     await delete_folders_for_id(drive_service, folder_id_list=found_files)
 
-
-# if __name__ == '__main__':
-#     """
-#     """
-#     message: str = "373084462"
-#     drive_service = drive_account_auth_with_oauth2client(message)
-#
-#     # folders_name = find_all_folder(service=drive_service)
-#     # folder_id_list = [folder["id"] for folder in folders_name]
-#
-#     folder_id_list = ['1gAh--W8NkzFpUJVfesEDjWLm_UQ4uO-U',
-#                       '1qQ-KI9oPHqYpysdSEJn1escc7NhdAIZV'
-#                       ]
-#
-#     delete_folders_for_id(drive_service=drive_service, folder_id_list=folder_id_list)
-
-    # folders = find_all_folders(service=drive_service)
-    # js.write_json_file(data=folders, name=PATH_TO_JSON + "all_folder")

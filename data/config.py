@@ -15,7 +15,7 @@ except Exception as env_err:
         logger.error('You have forgot to set BOT_TOKEN')
         quit()
 
-ADMINS_ID: str = env("ADMINS_ID")
+ADMIN_ID: str = env("ADMINS_ID")
 DEVELOPER_ID: str = env("DEVELOPER_ID")
 
 # WORK_ON_HEROKU: bool = env.bool("WORK_ON_HEROKU")
@@ -46,21 +46,3 @@ if 'init' in sys.argv:
     logger.info(f'sys.argv: {sys.argv}')
     sys.exit(0)
 
-
-# class Config:
-#     BOT_TOKEN: str = env("BOT_TOKEN")
-#     APP_ID = ""
-#     API_HASH = ""
-#     DATABASE_URL = ""
-#     SUDO_USERS = ""  # Sepearted by space.
-#     SUPPORT_CHAT_LINK = ""
-#     DOWNLOAD_DIRECTORY = "./downloads/"
-#     G_DRIVE_CLIENT_ID = ""
-#     G_DRIVE_CLIENT_SECRET = ""
-#     PRIVATE_KEY = env("PRIVATE_KEY")
-#     SERVICE_ACCOUNT_EMAIL = env("SERVICE_ACCOUNT_EMAIL")
-#     PRIVATE_KEY_ID = env("PRIVATE_KEY_ID")
-#     CLIENT_ID = env("CLIENT_ID")
-#     TOKEN_URI = env("TOKEN_URI")
-#     WORK_ON_HEROKU: bool = env.bool("WORK_ON_HEROKU")
-#     WORK_ON_PC: bool = env.bool("WORK_ON_PC")

@@ -32,20 +32,20 @@ async def create_report_from_other_method(message: types.Message, dataframe=None
 
     is_created: bool = await create_xlsx(dataframe, report_file=full_report_path)
     if is_created is None:
-        logger.warning(Messages.error_workbook_not_create)
-        await bot.send_message(message.from_user.id, Messages.error_workbook_not_create)
+        logger.warning(Messages.Error.workbook_not_create)
+        await bot.send_message(message.from_user.id, Messages.Error.workbook_not_create)
         return
 
     workbook = await get_workbook(full_report_path)
     if workbook is None:
-        logger.warning(Messages.error_workbook_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_workbook_not_found)
+        logger.warning(Messages.Error.workbook_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.workbook_not_found)
         return
 
     worksheet = await get_worksheet(workbook, index=0)
     if worksheet is None:
-        logger.warning(Messages.error_worksheet_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_worksheet_not_found)
+        logger.warning(Messages.Error.worksheet_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.worksheet_not_found)
         return
 
     await format_sheets(worksheet)
@@ -65,43 +65,43 @@ async def create_report(message: types.Message):
     fill_report_path = await get_full_report_name(message)
     if fill_report_path is None:
         logger.warning('error! fill_report_path not found!')
-        bot.send_message(message.from_user.id, Messages.error_fill_report_path_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_fill_report_path_not_found)
+        bot.send_message(message.from_user.id, Messages.Error.fill_report_path_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.fill_report_path_not_found)
         return
 
     file_list = await get_json_file_list(message)
     if file_list is None:
         logger.warning('error! file_list not found!')
-        bot.send_message(message.from_user.id, Messages.error_file_list_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_file_list_not_found)
+        bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
         return
 
     dataframe = await create_dataframe(file_list=file_list)
     if dataframe is None:
         logger.warning('error! dataframe not found!')
-        bot.send_message(message.from_user.id, Messages.error_dataframe_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_dataframe_not_found)
+        bot.send_message(message.from_user.id, Messages.Error.dataframe_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.dataframe_not_found)
         return
 
     is_created: bool = await create_xlsx(dataframe, report_file=fill_report_path)
     if is_created is None:
-        logger.warning(Messages.error_workbook_not_create)
-        bot.send_message(message.from_user.id, Messages.error_workbook_not_create)
-        await bot.send_message(message.from_user.id, Messages.error_workbook_not_create)
+        logger.warning(Messages.Error.workbook_not_create)
+        bot.send_message(message.from_user.id, Messages.Error.workbook_not_create)
+        await bot.send_message(message.from_user.id, Messages.Error.workbook_not_create)
         return
 
     workbook = await get_workbook(fill_report_path)
     if workbook is None:
-        logger.warning(Messages.error_workbook_not_found)
-        bot.send_message(message.from_user.id, Messages.error_workbook_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_workbook_not_found)
+        logger.warning(Messages.Error.workbook_not_found)
+        bot.send_message(message.from_user.id, Messages.Error.workbook_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.workbook_not_found)
         return
 
     worksheet = await get_worksheet(workbook, index=0)
     if worksheet is None:
-        logger.warning(Messages.error_worksheet_not_found)
-        bot.send_message(message.from_user.id, Messages.error_worksheet_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_worksheet_not_found)
+        logger.warning(Messages.Error.worksheet_not_found)
+        bot.send_message(message.from_user.id, Messages.Error.worksheet_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.worksheet_not_found)
         return
 
     await format_sheets(worksheet)
@@ -116,29 +116,29 @@ async def create_mip_report(message: types.Message, dataframe=None, full_mip_rep
     """Создание отчета xls из данных json
     """
     if not full_mip_report_path:
-        logger.warning(Messages.error_fill_report_path_not_found)
+        logger.warning(Messages.Error.fill_report_path_not_found)
         return
 
     if not registration_file_list:
-        logger.warning(Messages.error_registration_file_list_not_found)
+        logger.warning(Messages.Error.registration_file_list_not_found)
         return
 
     is_created: bool = await create_new_xlsx(report_file=full_mip_report_path)
     if is_created is None:
-        logger.warning(Messages.error_workbook_not_create)
-        await bot.send_message(message.from_user.id, Messages.error_workbook_not_create)
+        logger.warning(Messages.Error.workbook_not_create)
+        await bot.send_message(message.from_user.id, Messages.Error.workbook_not_create)
         return
 
     workbook = await get_workbook(fill_report_path=full_mip_report_path)
     if workbook is None:
-        logger.warning(Messages.error_workbook_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_workbook_not_found)
+        logger.warning(Messages.Error.workbook_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.workbook_not_found)
         return
 
     worksheet = await get_worksheet(workbook, index=0)
     if worksheet is None:
-        logger.warning(Messages.error_worksheet_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_worksheet_not_found)
+        logger.warning(Messages.Error.worksheet_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.worksheet_not_found)
         return
 
     await format_mip_report_sheet(worksheet)

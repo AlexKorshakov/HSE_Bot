@@ -37,6 +37,7 @@ async def general_contractors_answer(call: types.CallbackQuery):
                 await call.message.answer(text=f"Выбрано: {i}")
                 await write_json_file(data=violation_data, name=violation_data["json_full_name"])
 
+                await call.message.edit_reply_markup()
                 menu_level = board_config.menu_level = 1
                 menu_list = board_config.menu_list = INCIDENT_LEVEL
 

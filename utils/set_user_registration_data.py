@@ -22,11 +22,11 @@ async def registration_data(message, user_data):
     user_data["reg_user_path"] = f"{BOT_DATA_PATH}{message.from_user.id}\\"
 
     chat_id = message.from_user.id
-    await dp.bot.send_message(chat_id=chat_id, text=Messages.begin_registration)
+    await dp.bot.send_message(chat_id=chat_id, text=Messages.Registration.user_registration)
 
     await set_user_registration_data(message, user_data)
 
-    await dp.bot.send_message(chat_id=chat_id, text=Messages.successfully_registration_completed)
+    await dp.bot.send_message(chat_id=chat_id, text=Messages.Successfully.registration_completed)
     await dp.bot.send_message(chat_id=chat_id, text=Messages.help_message, reply_markup=ReplyKeyboardRemove())
 
 
@@ -41,14 +41,11 @@ async def set_user_registration_data(message, user_data):
     user_data["reg_user_path"] = f"{BOT_DATA_PATH}{message.from_user.id}\\"
 
     if await write_json_reg_user_file(data=user_data):
-        # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
         logger.info(f"Данные сохранены на pc в файл {user_data['reg_user_file']}")
 
     if await entry_in_db(reg_data=user_data):
-        # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
         logger.info(f"Данные сохранены в local DB в файл {user_data['reg_user_file']}")
 
     if await set_user_registration_data_on_google_drive(message, user_data):
-        # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
         logger.info(f"Данные сохранены в Google Drive в файл {user_data['reg_user_file']} \n"
                     f"https://drive.google.com/drive/folders/{user_data['parent_id']}")

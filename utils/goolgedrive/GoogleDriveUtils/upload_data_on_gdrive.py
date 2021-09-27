@@ -50,7 +50,7 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, parent=No
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.from_user.id, Messages.error_upload_on_web,
+        await dp.bot.send_message(message.from_user.id, Messages.Error.upload_on_web,
                                   disable_notification=True)
         return 'error'
 
@@ -109,7 +109,7 @@ async def upload_photo_file_on_gdrave(message: types.Message, drive_service, par
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.from_user.id, Messages.error_upload_on_web,
+        await dp.bot.send_message(message.from_user.id, Messages.Error.upload_on_web,
                                   disable_notification=True)
 
     if not os.path.isfile(file_path):
@@ -165,7 +165,7 @@ async def upload_report_file_on_gdrave(message: types.Message, drive_service, pa
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.from_user.id, Messages.error_upload_on_web,
+        await dp.bot.send_message(message.from_user.id, Messages.Error.upload_on_web,
                                   disable_notification=True)
 
     if not os.path.isfile(file_path):

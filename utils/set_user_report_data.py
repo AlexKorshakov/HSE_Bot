@@ -19,7 +19,7 @@ async def set_report_data(message: types.Message, full_report_path):
 
     await set_user_report_data(message, full_report_path)
 
-    await dp.bot.send_message(chat_id=chat_id, text=Messages.successfully_registration_completed)
+    await dp.bot.send_message(chat_id=chat_id, text=Messages.Successfully.registration_completed)
     # await dp.bot.send_message(chat_id=chat_id, text=Messages.help_message, reply_markup=ReplyKeyboardRemove())
 
 
@@ -30,10 +30,10 @@ async def set_user_report_data(message: types.Message, full_report_path):
     :return:
     """
     if not full_report_path:
-        await dp.bot.send_message(chat_id=message.from_user.id, text=Messages.error_fill_report_path_not_found)
-        logger.info(Messages.error_fill_report_path_not_found)
+        await dp.bot.send_message(chat_id=message.from_user.id, text=Messages.Error.fill_report_path_not_found)
+        logger.info(Messages.Error.fill_report_path_not_found)
         return
 
     if await set_user_report_data_on_google_drive(message, full_report_path):
         # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
-        logger.info(Messages.successfully_save_data_on_g_drive)
+        logger.info(Messages.Successfully.save_data_on_g_drive)

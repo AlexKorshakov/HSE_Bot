@@ -30,8 +30,8 @@ async def correct_entries(message: types.Message):
     file_list = await get_json_file_list(message)
 
     if not file_list:
-        logger.warning(Messages.error_file_list_not_found)
-        await bot.send_message(message.from_user.id, Messages.error_file_list_not_found)
+        logger.warning(Messages.Error.file_list_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
 
     for file_path in file_list:
 
@@ -58,7 +58,7 @@ async def correct_entries(message: types.Message):
     menu_list = board_config.violation_menu_list = violation_description
 
     reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
-    await message.answer(text="Выберите запись по id", reply_markup=reply_markup)
+    await message.answer(text=Messages.Choose.entry, reply_markup=reply_markup)
 
 
 @dp.callback_query_handler(lambda call: call.data in board_config.violation_menu_list)
@@ -69,41 +69,59 @@ async def violation_id_answer(call: types.CallbackQuery):
         try:
             if call.data != item:
                 continue
-
             logger.debug(f"Выбрано: {item}")
 
             for file in board_config.violation_file:
                 if file['description'] != item:
                     continue
-
                 violation_file = await read_json_file(file['json_full_name'])
+
+                if not violation_file:
+                    await call.message.answer(text=Messages.Error.file_not_found)
+                    continue
 
                 logger.info(
                     f"🔒 **Find  https://drive.google.com/drive/folders/{violation_file['json_folder_id']} in Google Drive.**")
                 logger.info(
                     f"🔒 **Find  https://drive.google.com/drive/folders/{violation_file['photo_folder_id']} in Google Drive.**")
 
-                await del_file(call.message, path=file['json_full_name'])
-                await del_file(call.message, path=file['photo_full_name'])
-
-                await del_file_from_gdrive(call.message, file, violation_file)
-
+                await delete_violation_files_from_pc(call.message, file=file)
+                await delete_violation_files_from_gdrive(call.message, file=file, violation_file=violation_file)
                 break
 
-                # await call.message.answer(text=Messages.error_file_not_found)
             break
 
         except Exception as callback_err:
             logger.error(f"{repr(callback_err)}")
 
 
-async def del_file(message, path):
+async def delete_violation_files_from_pc(message: types.Message, file):
+    """Удаление файлов из памяти pc
+    :param message:
+    :param file:
+    :return:
+    """
+    if not await del_file(path=file['json_full_name']):
+        await bot.message.answer(text=Messages.Error.file_not_found)
+    await message.answer(text=Messages.Removed.violation_data_pc)
+
+    if not await del_file(path=file['photo_full_name']):
+        await message.answer(text=Messages.Error.file_not_found)
+    await message.answer(text=Messages.Removed.violation_photo_pc)
+
+
+async def del_file(path) -> bool:
+    """Удаление файла из памяти pc
+    :param path:
+    :return:
+    """
     if os.path.isfile(path):
-        await message.answer(text=Messages.violation_removed)
         os.remove(path)
+        return True
+    return False
 
 
-async def del_file_from_gdrive(message, file, violation_file):
+async def delete_violation_files_from_gdrive(message, file, violation_file):
     """Удаление файлов из google drive
     :param violation_file:
     :param file:
@@ -118,26 +136,46 @@ async def del_file_from_gdrive(message, file, violation_file):
     else:
         name: str = file.get("file_id")
 
-    mime_type: str = str(guess_type(violation_file['json_full_name'])[0])
-    q = await q_request_constructor(name=name,
-                                    parent=violation_file['json_folder_id'],
-                                    mime_type=mime_type
-                                    )
-    params = await params_constructor(q=q, spaces="drive")
-    v_files = await find_files_or_folders_list(drive_service, params=params)
-    for v in v_files:
-        if v.get("id"):
-            await delete_folder(service=drive_service, folder_id=v["id"])
-    pprint(v_files)
+    violation_data_file = violation_file['json_full_name']
+    violation_data_parent_id = violation_file['json_folder_id']
 
-    mime_type: str = str(guess_type(violation_file['photo_full_name'])[0])
+    if not await del_file_from_gdrive(drive_service,
+                                      name=name,
+                                      violation_file=violation_data_file,
+                                      parent_id=violation_data_parent_id):
+        await message.answer(text=Messages.Error.file_not_found)
+    await message.answer(text=Messages.Removed.violation_data_gdrive)
+
+    violation_photo_file = violation_file['photo_full_name']
+    violation_photo_parent_id = violation_file['photo_folder_id']
+
+    if not await del_file_from_gdrive(drive_service,
+                                      name=name,
+                                      violation_file=violation_photo_file,
+                                      parent_id=violation_photo_parent_id):
+        await message.answer(text=Messages.Error.file_not_found)
+    await message.answer(text=Messages.Removed.violation_photo_gdrive)
+
+
+async def del_file_from_gdrive(drive_service, *, name, violation_file, parent_id) -> bool:
+    """Удаление файлов из google drive
+    :param parent_id:
+    :param violation_file:
+    :param name:
+    :param drive_service:
+    :return:
+    """
+
+    mime_type: str = str(guess_type(violation_file)[0])
     q = await q_request_constructor(name=name,
-                                    parent=violation_file['photo_folder_id'],
+                                    parent=parent_id,
                                     mime_type=mime_type
                                     )
     params = await params_constructor(q=q, spaces="drive")
     v_files = await find_files_or_folders_list(drive_service, params=params)
+    pprint(f"find_files {v_files}")
+
     for v in v_files:
         if v.get("id"):
-            await delete_folder(service=drive_service, folder_id=v["id"])
-    pprint(v_files)
+            return True if await delete_folder(service=drive_service, folder_id=v["id"]) else False
+    return False
