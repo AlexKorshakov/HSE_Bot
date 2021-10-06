@@ -48,4 +48,4 @@ if __name__ == '__main__':
             dp.storage.wait_closed()
             bot.session.close()
     else:
-        raise AttributeError('количество кнопок не может быть меньше 2х или больше 7и')
+        raise AttributeError('количество кнопок не может быть меньше 2х или больше 7ми')

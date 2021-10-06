@@ -48,7 +48,11 @@ class Messages:
     class Successfully:
         bot_start: str = f"Бот успешно запущен..."
         save_data_on_g_drive: str = "Данные сохранены в Google Drive"
-        registration_completed: str = "регистрация прошла успешно"
+        registration_completed: str = "Регистрация прошла успешно"
+        registration_data_received: str = "Регистрационные данные получены"
+        list_tutors_received: str = "Список поучателей получен"
+        mail_send: str = "Письмо с отчетами успешно отправлено"
+        letter_formed: str = "Письмо сформировано"
 
     class Enter:
         comment: str = "Введите комментарий"
@@ -68,8 +72,8 @@ class Messages:
         dataframe_not_found: str = f'Не удалось получить массив данных для формирования отчета! \n' \
                                    'Обратитесь к разработчику! \n' \
                                    f'чтобы написать разработчику нажмите /developer'
-        file_list_not_found: str = f"Список файлов не найден! \n" \
-                                   f'попытка загрузить данные с сервера'
+        file_list_not_found: str = f"Список файлов не найден! \n"  # \
+        # f'попытка загрузить данные с сервера'
         workbook_not_create: str = f"Файл с отчетом не создан! Обратитесь к разработчику! \n" \
                                    f'чтобы написать разработчику нажмите /developer'
 
@@ -81,3 +85,4 @@ class Messages:
         file_not_found: str = "Файлы не найдены. Вероятно они были удалёны"
         location_name_not_found: str = "Не найдены данные о местоположении!"
         invalid_input: str = f"Отправь мне свой номер телефона с кодом (пример +7xxxxxxxxxx)"
+        no_file_too_send: str = "Нет файлов для отправки"

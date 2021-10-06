@@ -4,10 +4,12 @@ import os
 import pickle
 import subprocess
 
+from oauth2client.service_account import ServiceAccountCredentials
+
 from aiogram import types
 from loguru import logger
 
-from data.config import SERVICE_ACCOUNT_FILE, WORK_PATH
+from data.config import SERVICE_ACCOUNT_FILE, WORK_PATH, PRIVATE_KEY
 from loader import bot
 from messages.messages import Messages
 
@@ -54,6 +56,7 @@ SCOPES = [SCOPE_DRIVE,
           SCOPE_DRIVE_APPDATA,
           SCOPE_DRIVE_FILE
           ]
+
 PICKLE_PATH = '.\\utils\\goolgedrive\\token.pickle'
 
 

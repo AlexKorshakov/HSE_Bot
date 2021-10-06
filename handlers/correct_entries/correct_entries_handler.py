@@ -18,6 +18,8 @@ from utils.goolgedrive.GoogleDriveUtils.find_folder import q_request_constructor
 from utils.goolgedrive.GoogleDriveUtils.folders_deleter import delete_folder
 from utils.json_worker.read_json_file import read_json_file
 
+len_description = 25
+
 
 @dp.message_handler(Command('correct_entries'))
 async def correct_entries(message: types.Message):
@@ -37,17 +39,27 @@ async def correct_entries(message: types.Message):
 
         file = await read_json_file(file_path)
 
+        if file is None:
+            continue
+
         if file.get("violation_id"):
             violation_id = file.get("violation_id")
         else:
             violation_id = file.get("file_id").split(SEPARATOR)[-1]
+        try:
+            if len(file.get('description')) < len_description:
+                description = file.get('description')[:len(file.get('description'))]
+            else:
+                description = file.get('description')[:len_description]
+        except TypeError:
+            description = 'нет описания'
 
         violation_description.append(
-            f"{violation_id} {file.get('description')[:25]}..."
+            f"{violation_id} {description}..."
         )
         violation_file.append(
             {"violation_id": f"{violation_id}",
-             "description": f"{violation_id} {file.get('description')[:25]}...",
+             "description": f"{violation_id} {description}...",
              "json_full_name": f"{file.get('json_full_name')}",
              "photo_full_name": f"{file.get('photo_full_name')}"
              }

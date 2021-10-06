@@ -12,8 +12,7 @@ confirming_callback = CallbackData("confirm", "subject", "necessary_subject", "u
 
 
 def generate_confirm_markup(user_id: int) -> Tuple[InlineKeyboardMarkup, str]:
-    """
-    Функция, создающая клавиатуру для подтверждения, что пользователь не является ботом
+    """Функция, создающая клавиатуру для подтверждения, что пользователь не является ботом
     """
     # создаём инлайн клавиатуру
     confirm_user_markup = InlineKeyboardMarkup(row_width=NUM_BUTTONS)

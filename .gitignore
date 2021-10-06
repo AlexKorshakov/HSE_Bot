@@ -146,6 +146,7 @@ cython_debug/
 /utils/goolgedrive/token.pickle
 /utils/goolgedrive/config.yml
 /config.yml
+
 /utils/goolgedrive/GoogleDriveUtils/config.yml
 config.yml
 
@@ -153,3 +154,5 @@ config.yml
 #/user_data/photo/report_data*
 #/user_data/reports/*
 /data/service_account_myctng.json
+/data/SENT_TO.json
+!/data/SENT_TO.json

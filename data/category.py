@@ -89,6 +89,11 @@ ELIMINATION_TIME: list = [
     "30 дней"
 ]
 
+SENT_TO: list = [
+    "arsutinaa@mosinzhproekt.ru",
+    "lozhkov.rd@mosinzhproekt.ru"
+]
+
 
 def get_names_from_json(name=None) -> list:
     """ Функция получения настроек из файла json.

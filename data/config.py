@@ -17,11 +17,13 @@ except Exception as env_err:
 
 ADMIN_ID: str = env("ADMINS_ID")
 DEVELOPER_ID: str = env("DEVELOPER_ID")
+DEVELOPER_EMAIL: str = env("DEVELOPER_EMAIL")
 
-# WORK_ON_HEROKU: bool = env.bool("WORK_ON_HEROKU")
-# WORK_ON_PC: bool = env.bool("WORK_ON_PC")
+PRIVATE_KEY: str = env("PRIVATE_KEY")
 
-# MAIN_MODULE_NAME = os.path.basename(__file__)[:-3]
+SENDER: str = env("SENDER")
+SENDER_ACCOUNT_GMAIL: str = env("SENDER_ACCOUNT_GMAIL")
+SENDER_ACCOUNT_PASSWORD: str = env("SENDER_ACCOUNT_PASSWORD")
 
 SKIP_UPDATES = env.bool("SKIP_UPDATES", False)
 BOT_DELETE_MESSAGE = True
@@ -45,4 +47,3 @@ SERVICE_ACCOUNT_FILE: str = './data/service_account_myctng.json'
 if 'init' in sys.argv:
     logger.info(f'sys.argv: {sys.argv}')
     sys.exit(0)
-

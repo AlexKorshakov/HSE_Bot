@@ -10,7 +10,7 @@ from utils.secondary_functions.get_json_files import get_files
 
 from utils.json_worker.read_json_file import read_json_file
 
-COLUMN_STR_INDEX: str = 'M'
+COLUMN_STR_INDEX: str = 'O'
 SIGNALLINE_COLUMN_STR_INDEX: str = "B"
 
 IMG_ANCHOR = True

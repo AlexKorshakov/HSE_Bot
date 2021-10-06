@@ -41,7 +41,7 @@ async def help_inline_button():
     inline_kb_full.add(btn_1)
     inline_kb_full.add(btn_2)
     inline_kb_full.add(btn_3)
-    # inline_kb_full.add(btn_4)
+    inline_kb_full.add(btn_4)
     # inline_kb_full.add(btn_5)
     # inline_kb_full.add(btn_6)
 
