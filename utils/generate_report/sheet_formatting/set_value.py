@@ -196,10 +196,12 @@ async def set_report_header_values(worksheet, registration_data, dataframe):
     :return:
     """
     contractors = dataframe.general_contractor.tolist()
-    contractors = list(contractors)
+    contractors = list(set(list(contractors)))
     contractors_str = ''
     for item in contractors:
-        if item != 'Подрядная организация':
+        if isinstance(item, float):
+            continue
+        if item and item != 'Подрядная организация':
             contractors_str = contractors_str + item + ', '
 
     date_now = datetime.datetime.now().strftime("%d.%m.%Y")
@@ -431,6 +433,9 @@ async def set_photographic_materials(worksheet, violation_data: str, num_data: i
     img = await image_preparation(img, img_params)
 
     await insert_images(worksheet, img=img)
+
+    if not img_data.get('description'):
+        return False
 
     worksheet.cell(row=start_photo_row + num_data, column=description_column, value=str(img_data['description']))
 
