@@ -154,5 +154,4 @@ config.yml
 #/user_data/photo/report_data*
 #/user_data/reports/*
 /data/service_account_myctng.json
-/data/SENT_TO.json
-!/data/SENT_TO.json
+
