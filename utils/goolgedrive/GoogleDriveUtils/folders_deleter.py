@@ -57,7 +57,7 @@ async def del_by_name_old_data_google_drive(message, drive_service, name=None, p
     """
 
     if not name:
-        name = str(message.from_user.id)
+        name = str(message.chat.id)
 
     found_files = await find_file_by_name(drive_service, name=name, parent=parent)
 

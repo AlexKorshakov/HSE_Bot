@@ -4,8 +4,10 @@ from aiogram.dispatcher.filters import Command, Text
 from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from loguru import logger
 
+from data import board_config
 from data.config import BOT_DATA_PATH
 from data.report_data import user_data
+from data.category import get_names_from_json
 from loader import dp, bot
 from messages.messages import Messages
 from states import RegisterState
@@ -13,6 +15,24 @@ from utils.custom_filters import is_private
 from utils.misc import rate_limit
 from utils.secondary_functions.get_filepath import create_file_path
 from utils.set_user_registration_data import registration_data
+
+from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
+
+try:
+    WORK_SHIFT = get_names_from_json("WORK_SHIFT")
+    if WORK_SHIFT is None:
+        from data.category import WORK_SHIFT, get_names_from_json
+except Exception as err:
+    logger.error(f"{repr(err)}")
+    from data.category import WORK_SHIFT
+
+try:
+    METRO_STATION = get_names_from_json("METRO_STATION")
+    if METRO_STATION is None:
+        from data.category import WORKMETRO_STATION_SHIFT, get_names_from_json
+except Exception as err:
+    logger.error(f"{repr(err)}")
+    from data.category import METRO_STATION
 
 
 @rate_limit(limit=20)
@@ -93,17 +113,17 @@ async def enter_phone_number(message: types.Message, state: FSMContext):
 
     user_data["phone_number"] = int(message.text.strip("+"))
 
+    menu_level = board_config.menu_level = 1
+    menu_list = board_config.menu_list = WORK_SHIFT
+
+    reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
     await RegisterState.next()
-    markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(Messages.Registration.cancel)
-    return await message.reply(Messages.Ask.work_shift, reply_markup=markup)
+    return await message.reply(Messages.Ask.work_shift, reply_markup=reply_markup)
 
 
 @dp.message_handler(is_private, state=RegisterState.work_shift)
 async def enter_work_shift(message: types.Message, state: FSMContext):
-    """Окончание ввода данных.
-    Завершение RegisterState
-    Запись данных в базы различными способами registration_data
+    """Обработка рабочей смены
     """
     user_data["work_shift"] = str(message.text)
 
@@ -113,13 +133,62 @@ async def enter_work_shift(message: types.Message, state: FSMContext):
     return await message.reply(Messages.Ask.location, reply_markup=markup)
 
 
-@dp.message_handler(is_private, state=RegisterState.location)
-async def enter_location(message: types.Message, state: FSMContext):
-    """Окончание ввода данных.
-    Завершение RegisterState
-    Запись данных в базы различными способами registration_data
+@dp.callback_query_handler(is_private, lambda call: call.data in WORK_SHIFT, state=RegisterState.work_shift)
+async def work_shift_answer(call: types.CallbackQuery):
+    """Обработка ответов содержащтхся в GENERAL_CONTRACTORS
     """
-    user_data["name_location"] = str(message.text)
-    await state.finish()
+    for i in WORK_SHIFT:
+        try:
+            if call.data == i:
+                logger.debug(f"Выбрано: {i}")
+                user_data["work_shift"] = i
+                await call.message.answer(text=f"Выбрано: {i}")
+                # await write_json_file(data=violation_data, name=violation_data["json_full_name"])
 
-    await registration_data(message, user_data)
+                await call.message.edit_reply_markup()
+
+                METRO = [list(item.keys())[0] for item in METRO_STATION]
+
+                menu_level = board_config.menu_level = 1
+                menu_list = board_config.menu_list = METRO
+
+                reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
+                await call.message.answer(text="Выберите строительную площадку", reply_markup=reply_markup)
+                break
+
+        except Exception as callback_err:
+            logger.error(f"{repr(callback_err)}")
+    await RegisterState.next()
+
+
+@dp.callback_query_handler(is_private, lambda call: call.data in [list(item.keys())[0] for item in METRO_STATION],
+                           state=RegisterState.location)
+async def enter_location_answer(call: types.CallbackQuery, state: FSMContext):
+    """Обработка ответов содержащихся в METRO_STATION
+    """
+    for i in [list(item.keys())[0] for item in METRO_STATION]:
+        try:
+            if call.data == i:
+                # logger.debug(f"Выбрано: {i}")
+                user_data["name_location"] = i
+                await call.message.answer(text=f"Выбрано: {i}")
+                # await write_json_file(data=violation_data, name=violation_data["json_full_name"])
+
+                await call.message.edit_reply_markup()
+                break
+
+        except Exception as callback_err:
+            logger.error(f"{repr(callback_err)}")
+
+    await state.finish()
+    await registration_data(call.message, user_data)
+
+
+# @dp.message_handler(is_private, state=RegisterState.location)
+# async def enter_location(message: types.Message, state: FSMContext):
+#     """Обработка места работы
+#     """
+#     user_data["name_location"] = str(message.text)
+#     await state.finish()
+#
+#     await registration_data(message, user_data)

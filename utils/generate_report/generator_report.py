@@ -147,7 +147,7 @@ async def create_mip_report(message: types.Message, dataframe=None, full_mip_rep
 
     registration_data = await read_json_file(registration_file_list)
 
-    await set_report_header_values(worksheet, registration_data)
+    await set_report_header_values(worksheet, registration_data, dataframe)
 
     await set_report_violation_values(worksheet, dataframe)
 

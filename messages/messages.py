@@ -18,6 +18,8 @@ class Messages:
 
     bot_setting_commands: str = 'Установка комманд бота...'
 
+    defined_recipient_list: str = 'Определён список получателей'
+
     class Registration:
         user_registration: str = f"Начинаю процедуру регистрации"
         # start_registration: str = f"Начинаю процедуру регистрации отчета"
@@ -86,3 +88,8 @@ class Messages:
         location_name_not_found: str = "Не найдены данные о местоположении!"
         invalid_input: str = f"Отправь мне свой номер телефона с кодом (пример +7xxxxxxxxxx)"
         no_file_too_send: str = "Нет файлов для отправки"
+
+        list_too_send_not_found: str = f"Не найжкн список получателей!\n Пройдите процедуру регистрации повторно" \
+                                       f"Для регистрации нажмите /start" \
+                                       f"Если ошибка повторится обратитесь к разработчику " \
+                                       f"Чтобы написать разработчику нажмите /developer"

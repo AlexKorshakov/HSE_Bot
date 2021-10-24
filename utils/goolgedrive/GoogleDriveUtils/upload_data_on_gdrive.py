@@ -50,7 +50,7 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, parent=No
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.from_user.id, Messages.Error.upload_on_web,
+        await dp.bot.send_message(message.chat.id, Messages.Error.upload_on_web,
                                   disable_notification=True)
         return 'error'
 
@@ -88,7 +88,7 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, parent=No
         file_id = uploaded_file.get('id')
 
         logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
-        await dp.bot.send_message(message.from_user.id,
+        await dp.bot.send_message(message.chat.id,
                                   f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
                                   disable_notification=True)
 

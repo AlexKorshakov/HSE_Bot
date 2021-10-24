@@ -5,7 +5,7 @@ from math import ceil
 from loguru import logger
 from openpyxl.drawing.image import Image
 
-from data.category import GENERAL_CONTRACTORS, CATEGORY_LIST, ELIMINATION_TIME
+from data.category import CATEGORY_LIST, ELIMINATION_TIME
 from utils.generate_report.mip_report_settings import CATEGORY_LIST_VALUES
 from utils.generate_report.sheet_formatting.set_alignment import set_mip_alignment
 from utils.generate_report.sheet_formatting.set_font import sets_report_font, set_report_font
@@ -189,12 +189,20 @@ async def set_report_body_values(worksheet):
             return None
 
 
-async def set_report_header_values(worksheet, registration_data):
+async def set_report_header_values(worksheet, registration_data, dataframe):
     """Заполнение заголовка отчета
     :param worksheet:
     :param registration_data:
     :return:
     """
+    contractors = dataframe.general_contractor.tolist()
+    contractors = list(set(list(contractors)))
+    contractors_str = ''
+    for item in contractors:
+        if isinstance(item, float):
+            continue
+        if item and item != 'Подрядная организация':
+            contractors_str = contractors_str + item + ', '
 
     date_now = datetime.datetime.now().strftime("%d.%m.%Y")
     date_then = datetime.datetime.now() - datetime.timedelta(days=1)
@@ -220,7 +228,7 @@ async def set_report_header_values(worksheet, registration_data):
         {"coordinate": "D2", "value": f"Отчет {work_shift} за {custom_date}", "row": "2", "column": "4"},
         {"coordinate": "C3", "value": f"ЛО-МИП-УОТиПБ-{year}-{day}", "row": "3", "column": "3"},
         {"coordinate": "D6", "value": f"{custom_date}", "row": "6", "column": "4"},
-        {"coordinate": "D7", "value": f"{GENERAL_CONTRACTORS[0]}, {GENERAL_CONTRACTORS[1]}", "row": "7", "column": "4"},
+        {"coordinate": "D7", "value": f"{contractors_str}", "row": "7", "column": "4"},
         {"coordinate": "D8", "value": "", "row": "8", "column": "4"},
         {"coordinate": "D9", "value": f"{name_location}", "row": "9", "column": "4"},
         {"coordinate": "F12", "value": f"{be_away}", "row": "12", "column": "6"},
@@ -425,6 +433,9 @@ async def set_photographic_materials(worksheet, violation_data: str, num_data: i
     img = await image_preparation(img, img_params)
 
     await insert_images(worksheet, img=img)
+
+    if not img_data.get('description'):
+        return False
 
     worksheet.cell(row=start_photo_row + num_data, column=description_column, value=str(img_data['description']))
 

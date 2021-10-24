@@ -15,6 +15,7 @@ from loguru import logger
 
 from data.category import get_names_from_json
 from data.config import SENDER_ACCOUNT_GMAIL, SENDER_ACCOUNT_PASSWORD, SENDER
+from handlers.start.start_handler import METRO_STATION
 from loader import dp, bot
 from messages.messages import Messages
 from utils.generate_report.get_file_list import get_registration_json_file_list, get_report_file_list
@@ -29,8 +30,16 @@ except Exception as err:
     logger.error(f"{repr(err)}")
     from data.category import SENT_TO
 
+try:
+    SENT_TO_CC = get_names_from_json("SENT_TO_СС")
+    if SENT_TO_CC is None:
+        from data.category import SENT_TO_CC
+except Exception as err:
+    logger.error(f"{repr(err)}")
+    from data.category import SENT_TO_CC
 
-@rate_limit(limit=360)
+
+# @rate_limit(limit=360)
 @dp.message_handler(Command('send_mail'))
 async def send_mail(message: types.Message, file_list: list = None, registration_data: dict = None):
     """Отправка сообщения с отчетом
@@ -41,16 +50,17 @@ async def send_mail(message: types.Message, file_list: list = None, registration
     """
 
     registration_file_list = []
-    assert isinstance(SENT_TO, list)
+    # assert isinstance(SENT_TO, list)
+    # assert isinstance(SENT_TO_CC, list)
 
     if not file_list:
-        file_list = await get_report_file_list(chat_id=message.chat.id)
+        file_list = await get_report_file_list(chat_id=message.from_user.id)
         if not file_list:
             logger.warning(Messages.Error.file_list_not_found)
             await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
 
     if not registration_data:
-        registration_file_list = await get_registration_json_file_list(chat_id=message.chat.id)
+        registration_file_list = await get_registration_json_file_list(chat_id=message.from_user.id)
         if not registration_file_list:
             logger.warning(Messages.Error.registration_file_list_not_found)
             await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
@@ -63,15 +73,47 @@ async def send_mail(message: types.Message, file_list: list = None, registration
     await bot.send_message(message.from_user.id, Messages.Successfully.registration_data_received)
     logger.info(Messages.Successfully.registration_data_received)
 
-    if not SENT_TO:
+    location = registration_data.get("name_location", None)
+
+    if not location:
+        logger.warning(Messages.Error.location_name_not_found)
+        await bot.send_message(message.from_user.id, Messages.Error.location_name_not_found)
+        return
+
+    sent_to = None
+    if location in [list(item.keys())[0] for item in METRO_STATION]:
+
+        for item in METRO_STATION:
+            if list(item.keys())[0] == location:
+                sent_to: list = item.get(location)
+
+                break  # strjuchkovav@mosinzhproekt.ru
+
+                # // "arsutinaa@mosinzhproekt.ru",
+                # // "lozhkov.rd@mosinzhproekt.ru",
+                # // "Nikolaev.SM@mosinzhproekt.ru",
+                # // "zaykov.av@mosinzhproekt.ru"
+
+        await bot.send_message(message.from_user.id, Messages.defined_recipient_list)
+
+    if not sent_to:
         logger.error(f"SENT_TO is empty")
+        await bot.send_message(message.from_user.id, Messages.Error.list_too_send_not_found)
+        return
+
+    await bot.send_message(message.from_user.id, Messages.Successfully.list_tutors_received)
+    logger.info(Messages.Successfully.list_tutors_received)
+
+    if not SENT_TO_CC:
+        logger.error(f"SENT_TO_CC is empty")
         return
     await bot.send_message(message.from_user.id, Messages.Successfully.list_tutors_received)
     logger.info(Messages.Successfully.list_tutors_received)
 
     email_message = MIMEMultipart('mixed')
-    email_message['From'] = f"Contact {SENDER} <{SENDER_ACCOUNT_GMAIL}>"
-    email_message['To'] = ', '.join(SENT_TO)
+    email_message['From'] = f"{SENDER} <{SENDER_ACCOUNT_GMAIL}>"
+    email_message['To'] = ', '.join(sent_to)
+    email_message['Cc'] = ', '.join(SENT_TO_CC)
 
     isreportfile = []
     for report_file in file_list or []:
@@ -91,6 +133,7 @@ async def send_mail(message: types.Message, file_list: list = None, registration
                 p.add_header('Content-Disposition', 'attachment', filename=name)
                 email_message.attach(p)
                 isreportfile.append(True)
+                break
         except Exception as e:
             print(str(e))
             return
@@ -121,12 +164,11 @@ async def send_mail(message: types.Message, file_list: list = None, registration
             work_shift = ''
 
         email_message['Subject'] = f'Отчет за {custom_date} по площадке {location}'
-        msg_content = f'<h4>Добрый день!,<br> Направляю Вам Отчет {work_shift} за {custom_date} ' \
+        msg_content = f'<h4>Добрый день!<br> Направляю Вам Отчет {work_shift} за {custom_date} ' \
                       f'по площадке {location}.<br>' \
                       f'Отчет составил {function} {name}.</h4>' \
                       f'<br>' \
                       f'<br>' \
-                      f'<center>письмо отправлено с помощью {SENDER} <br>' \
                       f'</center>'
         # f'по вопросам работы бота обращайтесь {DEVELOPER_EMAIL}' \
         body = MIMEText(msg_content, 'html')
@@ -142,7 +184,7 @@ async def send_mail(message: types.Message, file_list: list = None, registration
             server.ehlo()
             server.login(SENDER_ACCOUNT_GMAIL, password=SENDER_ACCOUNT_PASSWORD)
             server.sendmail(SENDER_ACCOUNT_GMAIL,
-                            to_addrs=SENT_TO,
+                            to_addrs=sent_to + SENT_TO_CC,
                             msg=msg_full)
             await bot.send_message(message.from_user.id, Messages.Successfully.mail_send)
             logger.info(Messages.Successfully.mail_send)
