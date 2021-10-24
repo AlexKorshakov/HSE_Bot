@@ -29,7 +29,7 @@ async def set_user_registration_data_on_google_drive(message: types.Message, use
         return
 
     folder_id = await get_user_folder_id(drive_service,
-                                         root_folder_name=str(message.from_user.id),
+                                         root_folder_name=str(message.chat.id),
                                          parent_id=root_folder_id)
     user_data["parent_id"] = folder_id
 

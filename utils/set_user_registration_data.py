@@ -1,3 +1,4 @@
+from aiogram import types
 from aiogram.types import ReplyKeyboardRemove
 from loguru import logger
 
@@ -11,7 +12,7 @@ from utils.goolgedrive.GoogleDriveUtils.set_user_registration_data_on_google_dra
 from utils.json_worker.writer_json_file import write_json_reg_user_file
 
 
-async def registration_data(message, user_data):
+async def registration_data(message: types.Message, user_data):
     """
     :param message:
     :param user_data:
@@ -21,7 +22,7 @@ async def registration_data(message, user_data):
     user_data["json_full_name"] = f"{BOT_DATA_PATH}{message.from_user.id}\\{message.from_user.id}.json"
     user_data["reg_user_path"] = f"{BOT_DATA_PATH}{message.from_user.id}\\"
 
-    chat_id = message.from_user.id
+    chat_id = message.chat.id
     await dp.bot.send_message(chat_id=chat_id, text=Messages.Registration.user_registration)
 
     await set_user_registration_data(message, user_data)
@@ -36,9 +37,9 @@ async def set_user_registration_data(message, user_data):
      :param user_data:
      :return:
      """
-    user_data["reg_json_full_name"] = f"{BOT_DATA_PATH}{message.from_user.id}\\{message.from_user.id}.json"
-    user_data["json_full_name"] = f"{BOT_DATA_PATH}{message.from_user.id}\\{message.from_user.id}.json"
-    user_data["reg_user_path"] = f"{BOT_DATA_PATH}{message.from_user.id}\\"
+    user_data["reg_json_full_name"] = f"{BOT_DATA_PATH}{message.chat.id}\\{message.chat.id}.json"
+    user_data["json_full_name"] = f"{BOT_DATA_PATH}{message.chat.id}\\{message.chat.id}.json"
+    user_data["reg_user_path"] = f"{BOT_DATA_PATH}{message.chat.id}\\"
 
     if await write_json_reg_user_file(data=user_data):
         logger.info(f"Данные сохранены на pc в файл {user_data['reg_user_file']}")
