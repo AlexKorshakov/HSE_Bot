@@ -3,6 +3,7 @@ from loguru import logger
 
 from loader import bot
 from messages.messages import Messages
+from utils.generate_report.convert_xlsx_to_pdf import convert_report_to_pdf
 from utils.generate_report.create_dataframe import create_dataframe
 from utils.generate_report.create_xlsx import create_xlsx, create_new_xlsx
 from utils.generate_report.get_file_list import get_json_file_list
@@ -110,6 +111,8 @@ async def create_report(message: types.Message):
 
     workbook.save(fill_report_path)
 
+    await convert_report_to_pdf(message, path=fill_report_path)
+
 
 async def create_mip_report(message: types.Message, dataframe=None, full_mip_report_path=None,
                             registration_file_list=None, violation_data=None):
@@ -168,3 +171,5 @@ async def create_mip_report(message: types.Message, dataframe=None, full_mip_rep
                 num_data += 1
 
     workbook.save(full_mip_report_path)
+
+    await convert_report_to_pdf(message, path=full_mip_report_path)
