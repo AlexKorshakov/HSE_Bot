@@ -42,17 +42,17 @@ async def get_registration_json_file_list(chat_id) -> list:
     return []
 
 
-async def get_report_file_list(chat_id) -> list:
+async def get_report_file_list(chat_id, endswith=".xlsx") -> list:
     """Получение списка файлов из директории
     """
     date_now = str(datetime.now().strftime("%d.%m.%Y"))
     report_path = await get_report_full_filepath(str(chat_id))
-    files = await get_files(report_path, endswith=".xlsx")
+    files = await get_files(report_path, endswith=endswith)
 
     report_files = []
     for file in files:
         report_date = file.split('\\')[-1]
-        report_date = report_date.replace(".xlsx", '')
+        report_date = report_date.replace(endswith, '')
         report_date = report_date.split(' ')[-1]
         #
         if str(report_date) == str(date_now):

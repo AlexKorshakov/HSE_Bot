@@ -87,4 +87,8 @@ async def create_and_send_mip_report(message: types.Message):
 
     await send_report_from_user(message, full_report_path=full_mip_report_path)
 
+    full_mip_report_path = full_mip_report_path.replace(".xlsx", ".pdf")
+
+    await send_report_from_user(message, full_report_path=full_mip_report_path)
+
     return True
