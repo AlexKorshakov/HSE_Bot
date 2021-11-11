@@ -46,6 +46,8 @@ class Messages:
         sent_successfully: str = f"Отчет успешно отправлен"
         begin: str = f"Запись загружается"
         completed_successfully: str = f"Запись загружена"
+        convert_successfully: str = f"Отчет успешно конвертирован в pdf"
+        error: str = 'не удалось конвертировать отчет в pdf'
 
     class Successfully:
         bot_start: str = f"Бот успешно запущен..."
