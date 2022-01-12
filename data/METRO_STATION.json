@@ -1,32 +1,88 @@
 [
   {
     "Ст. Аминьевская": [
-      "strjuchkovav@mosinzhproekt.ru"
+      {
+        "RS": "strjuchkovav@mosinzhproekt.ru"
+      },
+      {
+        "HSE": [
+          "nikolaev.sm@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "nikolaev.sm@mosinzhproekt.ru"
+        ]
+      }
     ]
   },
   {
     "Ст. Зюзино": [
-    "sokolov.aa@mosinzhproekt.ru"
+      {
+        "RS": "sokolov.aa@mosinzhproekt.ru"
+      }
     ]
   },
   {
     "Ст. Калужская": [
-    "sokolov.aa@mosinzhproekt.ru"
+      {
+        "RS": "sokolov.aa@mosinzhproekt.ru"
+      }
     ]
   },
   {
     "Ст. Кунцевская": [
-    "dorozhko.do@mosinzhproekt.ru"
+      {
+        "RS": "dorozhko.do@mosinzhproekt.ru"
+      }
     ]
   },
   {
     "Ст. Мичуринский проспект": [
-    "maleev.vs@mosinzhproekt.ru"
+      {
+        "RS": "maleev.vs@mosinzhproekt.ru"
+      }
     ]
   },
   {
     "Ст. Новаторская": [
-    "sokolov.aa@mosinzhproekt.ru"
+      {
+        "RS": "sokolov.aa@mosinzhproekt.ru"
+      }
+    ]
+  },
+  {
+    "Ст. Печатники": [
+      {
+        "RS": "nurullin.ka@mosinzhproekt.ru"
+      },
+      {
+        "HSE": [
+          "feneva.en@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "nikolaev.sm@mosinzhproekt.ru"
+        ]
+      }
+    ]
+  },
+  {
+    "Ст. Текстильщики": [
+      {
+        "RS": "dolgov.ae@mosinzhproekt.ru"
+      },
+      {
+        "HSE": [
+          "grichkoiv@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+
+        ]
+      }
     ]
   }
 ]

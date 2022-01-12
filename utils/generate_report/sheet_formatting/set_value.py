@@ -77,7 +77,7 @@ async def set_report_body_values(worksheet):
 
         {"coordinate": "D20", "value": f"{check_mark_false}", "row": "20", "column": "4"},
         {"coordinate": "E20", "value": "Обучение/аттестация/квалификация", "row": "20", "column": "5"},
-        {"coordinate": "G20", "value": f"{not_tested}", "row": "20", "column": "7"},
+        {"coordinate": "G20", "value": f"{not_found}", "row": "20", "column": "7"},
 
         {"coordinate": "D21", "value": f"{check_mark_true}", "row": "21", "column": "4"},
         {"coordinate": "E21", "value": "СИЗ", "row": "21", "column": "5"},
@@ -221,11 +221,11 @@ async def set_report_header_values(worksheet, registration_data, dataframe):
         work_shift = 'дневной смены'
         custom_date = f"{date_now}"
     else:
-        work_shift = 'ночной смены'
+        work_shift = 'о ночной смене'
         custom_date = f"{date_then} - {date_now}"
 
     values = [
-        {"coordinate": "D2", "value": f"Отчет {work_shift} за {custom_date}", "row": "2", "column": "4"},
+        {"coordinate": "D2", "value": f"Отчет {work_shift} {custom_date}", "row": "2", "column": "4"},
         {"coordinate": "C3", "value": f"ЛО-МИП-УОТиПБ-{year}-{day}", "row": "3", "column": "3"},
         {"coordinate": "D6", "value": f"{custom_date}", "row": "6", "column": "4"},
         {"coordinate": "D7", "value": f"{contractors_str}", "row": "7", "column": "4"},
