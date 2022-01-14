@@ -11,7 +11,6 @@
       },
       {
         "SUB_HSE": [
-          "nikolaev.sm@mosinzhproekt.ru"
         ]
       }
     ]
@@ -34,13 +33,6 @@
     "Ст. Кунцевская": [
       {
         "RS": "dorozhko.do@mosinzhproekt.ru"
-      }
-    ]
-  },
-  {
-    "Ст. Мичуринский проспект": [
-      {
-        "RS": "maleev.vs@mosinzhproekt.ru"
       }
     ]
   },
@@ -80,6 +72,253 @@
       {
         "SUB_HSE": [
         ]
+      }
+    ]
+  },
+  {
+    "Национальный космический центр": [
+      {
+        "RS": "seroglazov.ra@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Нагатинский затон": [
+      {
+        "RS": "scherbakov.o@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "МК Мневники": [
+      {
+        "RS": "puzankov.nm@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Электродепо Выхино": [
+      {
+        "RS": "doroshenko.v@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Лесопарковая": [
+      {
+        "RS": "shumov.a@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Мичуринский проспект": [
+      {
+        "RS": "kozhemiako.n@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Проспект Вернадского": [
+      {
+        "RS": "sorokin.s@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "ТПУ Некрасовка": [
+      {
+        "RS": "polyanovich.v@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Электродепо Южное": [
+      {
+        "RS": "kalmurzin.aa@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Печатники": [
+      {
+        "RS": "volkov.s@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Юго-восточная хорда 9": [
+      {
+        "RS": "zakirov.r@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Текстильщики, пл. 7": [
+      {
+        "RS": "rybakov.a@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Текстильщики, пл. 8": [
+      {
+        "RS": "aa.sergeev@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Текстильщики, пл. 13": [
+      {
+        "RS": "aa.sergeev@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Текстильщики, пл. 19": [
+      {
+        "RS": "aa.sergeev@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Кленовый бульвар, пл. 3": [
+      {
+        "RS": "polamorchuk.v@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Кленовый бульвар, пл. 2": [
+      {
+        "RS": "aa.sergeev@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Кленовый бульвар, пл. 1.3.1": [
+      {
+        "RS": "aa.sergeev@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
+      }
+    ]
+  },
+  {
+    "Ст. Кленовый бульвар, пл. 1.3.2": [
+      {
+        "RS": "aa.sergeev@mosinzhproekt.ru"
+      },
+      {
+        "HSE": []
+      },
+      {
+        "SUB_HSE": []
       }
     ]
   }
