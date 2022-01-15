@@ -11,6 +11,7 @@
       },
       {
         "SUB_HSE": [
+          "tselousov.ao@mosinzhproekt.ru"
         ]
       }
     ]
@@ -60,22 +61,6 @@
     ]
   },
   {
-    "Ст. Текстильщики": [
-      {
-        "RS": "zausaev.ss@mosinzhproekt.ru"
-      },
-      {
-        "HSE": [
-          "feneva.en@mosinzhproekt.ru"
-        ]
-      },
-      {
-        "SUB_HSE": [
-        ]
-      }
-    ]
-  },
-  {
     "Национальный космический центр": [
       {
         "RS": "seroglazov.ra@mosinzhproekt.ru"
@@ -84,7 +69,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "kachanov.dn@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -97,7 +84,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "petrukhina.eg@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -110,7 +99,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "tselousov.ao@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -123,7 +114,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "tselousov.ao@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -136,7 +129,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "tselousov.ao@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -149,7 +144,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "tselousov.ao@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -162,7 +159,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "tselousov.ao@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -175,7 +174,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "tselousov.ao@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -188,7 +189,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "kolesnikov.a@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -201,7 +204,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "kirdiashkin.ma@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -214,7 +219,27 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "kirdiashkin.ma@mosinzhproekt.ru"
+        ]
+      }
+    ]
+  },
+  {
+    "Ст. Текстильщики": [
+      {
+        "RS": "zausaev.ss@mosinzhproekt.ru"
+      },
+      {
+        "HSE": [
+          "feneva.en@mosinzhproekt.ru",
+          "korshakov.as@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "gadelshin.ks@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -224,10 +249,15 @@
         "RS": "rybakov.a@mosinzhproekt.ru"
       },
       {
-        "HSE": []
+        "HSE": [
+          "feneva.en@mosinzhproekt.ru",
+          "korshakov.as@mosinzhproekt.ru"
+        ]
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "gadelshin.ks@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -237,10 +267,15 @@
         "RS": "aa.sergeev@mosinzhproekt.ru"
       },
       {
-        "HSE": []
+        "HSE": [
+          "feneva.en@mosinzhproekt.ru",
+          "korshakov.as@mosinzhproekt.ru"
+        ]
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "gadelshin.ks@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -250,10 +285,15 @@
         "RS": "aa.sergeev@mosinzhproekt.ru"
       },
       {
-        "HSE": []
+        "HSE": [
+          "feneva.en@mosinzhproekt.ru",
+          "korshakov.as@mosinzhproekt.ru"
+        ]
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "gadelshin.ks@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -263,10 +303,15 @@
         "RS": "aa.sergeev@mosinzhproekt.ru"
       },
       {
-        "HSE": []
+        "HSE": [
+          "feneva.en@mosinzhproekt.ru",
+          "korshakov.as@mosinzhproekt.ru"
+        ]
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "gadelshin.ks@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -279,7 +324,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "gadelshin.ks@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -292,7 +339,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "gadelshin.ks@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -305,7 +354,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "gadelshin.ks@mosinzhproekt.ru"
+        ]
       }
     ]
   },
@@ -318,7 +369,9 @@
         "HSE": []
       },
       {
-        "SUB_HSE": []
+        "SUB_HSE": [
+          "gadelshin.ks@mosinzhproekt.ru"
+        ]
       }
     ]
   }
