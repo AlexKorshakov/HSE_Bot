@@ -374,5 +374,21 @@
         ]
       }
     ]
+  },
+  {
+    "Ст. Мамыри": [
+      {
+        "RS": "zhivotenko.vs@mosinzhproekt.ru"
+      },
+      {
+        "HSE": [
+          "nikolaev.sm@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+        ]
+      }
+    ]
   }
 ]
