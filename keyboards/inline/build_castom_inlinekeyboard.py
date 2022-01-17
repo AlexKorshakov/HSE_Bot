@@ -6,7 +6,7 @@ from data import board_config
 from loader import dp, bot
 
 NUM_COL = 1
-STEP_MENU = 10
+STEP_MENU = 8
 move_action = CallbackData("description", "action")
 
 
