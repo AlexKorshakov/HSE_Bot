@@ -1,5 +1,5 @@
 class Messages:
-    """Класс со всеми текстовыми сообщенияим
+    """Класс со всеми текстовыми сообщениями
     """
     url_registration_violation: str = f"https://www.youtube.com/channel/UCbq0Z7aDzYc3S4dAPTFDtkA"
 
@@ -10,13 +10,13 @@ class Messages:
                         f'\n' \
                         f'Для регистрации в системе (повторной регистрации) нажмите /start \n' \
                         f'{write_to_developer}'
-    wait: str = f"Это может занять нескоторое время"
+    wait: str = f"Это может занять некоторое время"
     cancel: str = f"Отмена!"
     hi: str = f"Привет"
     user_greeting: str = f'Этот бот предназначен для регистрации нарушений и создания ежедневных отчетов \n' \
                          f'Для начала работы просто отправьте фото боту'
 
-    bot_setting_commands: str = 'Установка комманд бота...'
+    bot_setting_commands: str = 'Установка команд бота...'
 
     defined_recipient_list: str = 'Определён список получателей'
 
@@ -38,7 +38,7 @@ class Messages:
         function: str = f"Введите вашу должность полностью"
         phone_number: str = f"Отправь мне свой номер телефона с кодом (пример +7xxxxxxxxxx)"
         work_shift: str = f"В какую смену вы работаете? (пример дневная смена / ночная смена)"
-        location: str = f"Введите с момощью клавиатуры ваще местоположение (пример Аминьевское шоссе)"
+        location: str = f"Введите с помощью клавиатуры ваше местоположение (пример Аминьевское шоссе)"
 
     class Report:
         done: str = f"Отчет сформирован на сервере"
@@ -54,7 +54,7 @@ class Messages:
         save_data_on_g_drive: str = "Данные сохранены в Google Drive"
         registration_completed: str = "Регистрация прошла успешно"
         registration_data_received: str = "Регистрационные данные получены"
-        list_tutors_received: str = "Список поучателей получен"
+        list_tutors_received: str = "Список получателей получен"
         mail_send: str = "Письмо с отчетами успешно отправлено"
         letter_formed: str = "Письмо сформировано"
 
@@ -65,6 +65,12 @@ class Messages:
     class Choose:
         answer: str = f"Выберите ответ"
         entry: str = f"Выберите запись по id"
+        days_to_fix: str = f"Выберите количество дней на устранение"
+        degree_danger_situation: str = f"Выберете степень опасности ситуации"
+        issue_act_instructions: str = f"Выберите требуется ли оформление акта - предписания"
+        constractor: str = f"Выберите подрядную организацию"
+        category: str = f"Выберите категорию нарушения"
+        incident_level: str = f"Выберите уровень происшествия"
 
     class Error:
         workbook_not_found: str = f"Файл с отчетом не найден! Обратитесь к разработчику! \n" \
@@ -91,7 +97,7 @@ class Messages:
         invalid_input: str = f"Отправь мне свой номер телефона с кодом (пример +7xxxxxxxxxx)"
         no_file_too_send: str = "Нет файлов для отправки"
 
-        list_too_send_not_found: str = f"Не найжкн список получателей!\n Пройдите процедуру регистрации повторно" \
+        list_too_send_not_found: str = f"Не найден список получателей!\n Пройдите процедуру регистрации повторно" \
                                        f"Для регистрации нажмите /start" \
                                        f"Если ошибка повторится обратитесь к разработчику " \
                                        f"Чтобы написать разработчику нажмите /developer"

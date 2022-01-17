@@ -43,7 +43,7 @@ async def violation_category_answer(call: types.CallbackQuery):
                 menu_list = board_config.menu_list = GENERAL_CONTRACTORS
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
-                await call.message.answer(text=Messages.Choose.answer, reply_markup=reply_markup)
+                await call.message.answer(text=Messages.Choose.constractor, reply_markup=reply_markup)
 
                 break
 

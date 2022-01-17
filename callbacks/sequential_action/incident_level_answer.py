@@ -43,7 +43,7 @@ async def incident_level(call: types.CallbackQuery):
                 menu_list = board_config.menu_list = ACT_REQUIRED_ACTION
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
-                await call.message.answer(text=Messages.Choose.answer, reply_markup=reply_markup)
+                await call.message.answer(text=Messages.Choose.issue_act_instructions, reply_markup=reply_markup)
 
                 break
 
