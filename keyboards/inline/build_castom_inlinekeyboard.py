@@ -6,11 +6,11 @@ from data import board_config
 from loader import dp, bot
 
 NUM_COL = 1
-STEP_MENU = 8
+STEP_MENU = 10
 move_action = CallbackData("description", "action")
 
 
-async def build_inlinekeyboard(*, some_list, num_col=1, level=1) -> InlineKeyboardMarkup:
+async def build_inlinekeyboard(*, some_list, num_col=1, level=1,step= None) -> InlineKeyboardMarkup:
     """Создание кнопок в чате для пользователя на основе some_list.
     Колличество кнопок = колличество элементов в списке some_list
     Расположение в n_cols столбцов
@@ -18,6 +18,11 @@ async def build_inlinekeyboard(*, some_list, num_col=1, level=1) -> InlineKeyboa
     Возвращаемое значение, при нажатии кнопки в чате callback_data=ss
     """
     button_list = []
+
+    if step:
+        button_list = [InlineKeyboardButton(text=ss, callback_data=ss) for ss in some_list]
+        menu = await _build_menu(buttons=button_list, n_cols=num_col)
+        return InlineKeyboardMarkup(resize_keyboard=True, inline_keyboard=menu)
 
     if len(some_list) <= STEP_MENU:
         button_list = [InlineKeyboardButton(text=ss, callback_data=ss) for ss in some_list]
@@ -76,8 +81,8 @@ async def add_action_button(reply_markup, start_index, stop_index, end_list):
         return reply_markup
 
     if stop_index == end_list:
-        reply_markup.row(bt_down)  # добаление кнопок в новую строку # ПРИОРИТЕТ
-        # reply_markup.add(bt_down)  # добаление кнопок в конец списка
+        reply_markup.row(bt_down)  # добавление кнопок в новую строку # ПРИОРИТЕТ
+        # reply_markup.add(bt_down)  # добавление кнопок в конец списка
         return reply_markup
 
     reply_markup.row(bt_down, bt_up)

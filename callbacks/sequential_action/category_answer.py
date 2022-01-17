@@ -28,7 +28,7 @@ except Exception as err:
 
 @dp.callback_query_handler(lambda call: call.data in CATEGORY_LIST)
 async def category_answer(call: types.CallbackQuery):
-    """Обработка ответов содержащтхся в CATEGORY_LIST
+    """Обработка ответов содержащихся в CATEGORY_LIST
     """
     for i in CATEGORY_LIST:
         try:
@@ -43,7 +43,7 @@ async def category_answer(call: types.CallbackQuery):
                 menu_list = board_config.menu_list = VIOLATION_CATEGORY
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
-                await call.message.answer(text=Messages.Choose.answer, reply_markup=reply_markup)
+                await call.message.answer(text=Messages.Choose.degree_danger_situation, reply_markup=reply_markup)
 
                 break
 

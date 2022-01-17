@@ -135,7 +135,7 @@ async def enter_work_shift(message: types.Message, state: FSMContext):
 
 @dp.callback_query_handler(is_private, lambda call: call.data in WORK_SHIFT, state=RegisterState.work_shift)
 async def work_shift_answer(call: types.CallbackQuery):
-    """Обработка ответов содержащтхся в GENERAL_CONTRACTORS
+    """Обработка ответов содержащихся в GENERAL_CONTRACTORS
     """
     for i in WORK_SHIFT:
         try:
@@ -152,12 +152,14 @@ async def work_shift_answer(call: types.CallbackQuery):
                 menu_level = board_config.menu_level = 1
                 menu_list = board_config.menu_list = METRO
 
-                reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
+                reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level,
+                                                          step=len(menu_list))
                 await call.message.answer(text="Выберите строительную площадку", reply_markup=reply_markup)
                 break
 
         except Exception as callback_err:
             logger.error(f"{repr(callback_err)}")
+
     await RegisterState.next()
 
 
