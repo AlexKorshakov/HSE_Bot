@@ -28,7 +28,7 @@ except Exception as err:
 
 @dp.callback_query_handler(lambda call: call.data in CATEGORY_LIST)
 async def category_answer(call: types.CallbackQuery):
-    """Обработка ответов содержащтхся в CATEGORY_LIST
+    """Обработка ответов содержащихся в CATEGORY_LIST
     """
     for i in CATEGORY_LIST:
         try:
