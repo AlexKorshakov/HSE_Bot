@@ -1,4 +1,5 @@
 from . import errors
+from . import admin_func
 from . import test_hse
 from . import photo
 from . import start
@@ -7,5 +8,4 @@ from . import send_mail
 from . import generate_report
 from . import correct_entries
 from . import developer
-from . import admin_func
 from . import text
