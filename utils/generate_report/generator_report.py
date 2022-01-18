@@ -152,7 +152,11 @@ async def create_mip_report(message: types.Message, dataframe=None, full_mip_rep
 
     await set_report_header_values(worksheet, registration_data, dataframe)
 
-    await set_report_violation_values(worksheet, dataframe)
+    try:
+        await set_report_violation_values(worksheet, dataframe)
+    except Exception:
+        await bot.send_message(message.from_user.id, Messages.Error.file_not_found)
+        return
 
     await insert_signalline_to_report_body(worksheet)
 

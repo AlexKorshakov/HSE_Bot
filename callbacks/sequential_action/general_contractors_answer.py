@@ -7,6 +7,7 @@ from data.report_data import violation_data
 from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 from loader import dp
 from utils.json_worker.writer_json_file import write_json_file
+from messages.messages import Messages
 
 try:
     GENERAL_CONTRACTORS = get_names_from_json("GENERAL_CONTRACTORS")

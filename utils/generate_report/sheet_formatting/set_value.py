@@ -252,7 +252,7 @@ async def set_report_header_values(worksheet, registration_data, dataframe):
 
 
 async def set_report_violation_values(worksheet, dataframe):
-    """
+    """ установить значения нарушения
     :param worksheet:
     :param dataframe:
     :return:
@@ -265,9 +265,13 @@ async def set_report_violation_values(worksheet, dataframe):
             if dataframe.loc[item]["category"] != category:
                 continue
 
-            elimination_time = await get_elimination_time(dataframe, item)
-            val.append({"description": dataframe.loc[item]["description"] + ' \\',
-                        "elimination_time": elimination_time + ' \\'})
+            try:
+                elimination_time = await get_elimination_time(dataframe, item)
+                val.append({"description": dataframe.loc[item]["description"] + ' \\',
+                            "elimination_time": elimination_time + ' \\'})
+            except Exception as err:
+                logger.error(f"{repr(err)}")
+                return
 
         if not val:
             continue
@@ -285,8 +289,8 @@ async def set_report_violation_values(worksheet, dataframe):
 
 
 async def get_elimination_time(dataframe, item) -> str:
-    """
-    :return:
+    """Получить время устранения
+    :return: str
     """
     if dataframe.loc[item]["elimination_time"] != ELIMINATION_TIME[0] and \
             dataframe.loc[item]["elimination_time"] != ELIMINATION_TIME[1]:
