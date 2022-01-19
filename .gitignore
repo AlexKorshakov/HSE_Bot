@@ -155,3 +155,4 @@ config.yml
 #/user_data/reports/*
 /data/service_account_myctng.json
 
+/user_data/
