@@ -6,7 +6,7 @@ from loguru import logger
 
 from data.category import get_names_from_json
 
-import moviepy.editor as moviepy
+# import moviepy.editor as moviepy
 
 try:
     SENT_TO = get_names_from_json("SENT_TO")
@@ -34,10 +34,10 @@ async def main():
     flist = ['Любит-не любит Урок 6.mp4',
              'Любит-не любит Урок 7.mp4']
 
-    for ffail in flist:
-        clip = moviepy.VideoFileClip(base_path + ffail)
-        clip.write_videofile(base_path + "k_" + ffail, fps=25, codec="mpeg4")
-        clip.close()
+    # for ffail in flist:
+    #     clip = moviepy.VideoFileClip(base_path + ffail)
+    #     clip.write_videofile(base_path + "k_" + ffail, fps=25, codec="mpeg4")
+    #     clip.close()
 
 
 if __name__ == '__main__':
