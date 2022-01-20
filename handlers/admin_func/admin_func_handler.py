@@ -32,27 +32,27 @@ async def admin_func_handler(message: types.Message) -> None:
     if message.from_user.id == int(ADMIN_ID) or message.from_user.id == str(DEVELOPER_ID):
         logger.info(f'User @{message.from_user.username}:{message.from_user.id} йа печенько')
 
-        class PullProgress(RemoteProgress):
-            def update(self, op_code, cur_count, max_count=None, message=''):
-                pbar = tqdm(total=max_count)
-                pbar.update(cur_count)
+        # class PullProgress(RemoteProgress):
+        #     def update(self, op_code, cur_count, max_count=None, message=''):
+        #         pbar = tqdm(total=max_count)
+        #         pbar.update(cur_count)
+        #
+        # try:
+        #     path = 'C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot'
+        #     repo = Repo(path)
+        #     repo.remote().fetch()
+        #     repo.remote().pull(progress=PullProgress())
+        #
+        #     diff_tree = repo.git.execute('git diff-tree --name-status -t master origin/master')
+        #
+        #     for line in diff_tree.splitlines():  # type: ignore
+        #         change_status, file_path = line.split('\t')
+        #         logger.info(f'{change_status = }:{file_path = }')
+        #
+        # except Exception as err:
+        #     await message.answer(f'{repr(err)}')
 
-        try:
-            path = 'C:\\Users\\KDeusEx\\PycharmProjects\\HSE_Bot'
-            repo = Repo(path)
-            repo.remote().fetch()
-            repo.remote().pull(progress=PullProgress())
-
-            diff_tree = repo.git.execute('git diff-tree --name-status -t master origin/master')
-
-            for line in diff_tree.splitlines():  # type: ignore
-                change_status, file_path = line.split('\t')
-                logger.info(f'{change_status = }:{file_path = }')
-
-        except Exception as err:
-            await message.answer(f'{repr(err)}')
-
-        await message.answer(f'йа печенько')
+        await message.answer(f'йа красавчег')
 
         return
 
