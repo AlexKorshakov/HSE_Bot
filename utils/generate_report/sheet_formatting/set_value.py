@@ -143,9 +143,9 @@ async def set_report_body_values(worksheet):
         {"coordinate": "E36", "value": "Химические, биологические факторы", "row": "36", "column": "5"},
         {"coordinate": "G36", "value": f"{not_tested}", "row": "36", "column": "7"},
 
-        {"coordinate": "D37", "value": f"{check_mark_false}", "row": "37", "column": "4"},
+        {"coordinate": "D37", "value": f"{check_mark_true}", "row": "37", "column": "4"},
         {"coordinate": "E37", "value": "Санитарные требования", "row": "37", "column": "5"},
-        {"coordinate": "G37", "value": f"{not_tested}", "row": "37", "column": "7"},
+        {"coordinate": "G37", "value": f"{not_found}", "row": "37", "column": "7"},
 
         {"coordinate": "D38", "value": f"{check_mark_true}", "row": "38", "column": "4"},
         {"coordinate": "E38", "value": "Складирование", "row": "38", "column": "5"},
