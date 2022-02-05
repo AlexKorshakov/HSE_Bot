@@ -52,7 +52,7 @@ async def admin_func_handler(message: types.Message) -> None:
         # except Exception as err:
         #     await message.answer(f'{repr(err)}')
 
-        await message.answer(f' у меня получилось сделать удаленное управление!!')
+        await message.answer(f' Все мушкетёры а я Дартаньян!!')
 
         return
 
