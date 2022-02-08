@@ -90,7 +90,11 @@ async def send_mail(message: types.Message, file_list: list = None, registration
                 for item_to in dikt_sent_to:
                     if list(item_to.keys())[0] == 'RS':
                         rs_list = item_to.get('RS')
-                        sent_to.append(rs_list)
+                        if isinstance(rs_list, list):
+                            for i in rs_list:
+                                sent_to.append(i)
+                        else:
+                            sent_to.append(rs_list)
 
                     if list(item_to.keys())[0] == 'HSE':
                         hse_list = item_to.get('HSE')

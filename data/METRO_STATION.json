@@ -362,7 +362,9 @@
   {
     "Ст. Мамыри": [
       {
-        "RS": "zhivotenko.vs@mosinzhproekt.ru"
+        "RS": [
+          "Magomedov.TA@mosinzhproekt.ru"
+        ]
       },
       {
         "HSE": [
@@ -371,6 +373,133 @@
       },
       {
         "SUB_HSE": [
+          "bogatikov_aa@ao-urst.ru",
+          "churikov_ms@ao-urst.ru"
+        ]
+      }
+    ]
+  },
+  {
+    "Ст. Улица Новаторов": [
+      {
+        "RS": [
+          "Petrov.DV@mosinzhproekt.ru",
+          "Kirianov.GA@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "HSE": [
+          "Kulchanova.AZh@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "sashenko_vv@ao-urst.ru",
+          "churikov_ms@ao-urst.ru"
+        ]
+      }
+    ]
+  },
+  {
+    "Ст. У-т Дружбы Народов": [
+      {
+        "RS": [
+          "Petrov.DV@mosinzhproekt.ru",
+          "Kirianov.GA@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "HSE": [
+          "Ulanov.DO@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "trautwain_av@ao-urst.ru",
+          "churikov_ms@ao-urst.ru"
+        ]
+      }
+    ]
+  },
+  {
+    "Ст. Ул Ген-ла Тюленева": [
+      {
+        "RS": [
+          "Babanin.MS@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "HSE": [
+          "Lozhkov.RD@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "trautwain_av@ao-urst.ru",
+          "churikov_ms@ao-urst.ru"
+        ]
+      }
+    ]
+  },
+  {
+    "Ст. Славянский Мир": [
+      {
+        "RS": [
+          "Shuliak.SN@mosinzhproekt.ru",
+          "Makeichik.VE@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "HSE": [
+          "Shvedova.AA@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "bogatikov_aa@ao-urst.ru",
+          "churikov_ms@ao-urst.ru"
+        ]
+      }
+    ]
+  },
+  {
+    "Ст. Академическая": [
+      {
+        "RS": [
+          "Borisov.A@mosinzhproekt.ru",
+          "Shereshovets.AS@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "HSE": [
+          "Bogdanova.IuN@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "d.harkovsky@tinso.ru",
+          "lukyanov@tinso.ru"
+        ]
+      }
+    ]
+  },
+  {
+    "Ст. Славянский Мир": [
+      {
+        "RS": [
+          "Borisov.A@mosinzhproekt.ru",
+          "Shereshovets.AS@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "HSE": [
+          "Kulikov.IuD@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "d.harkovsky@tinso.ru",
+          "lukyanov@tinso.ru"
         ]
       }
     ]
