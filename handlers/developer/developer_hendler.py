@@ -23,6 +23,6 @@ async def text_message_handler(message: types.Message):
         logger.info(f'message from developer user {message.from_user.id} name {message.from_user.full_name}')
 
         text = f"Message from user {message.from_user.id} name {message.chat.full_name} \n" \
-               f"{message.chat.user_url} \n" \
-               f"message: {message.text}"
+               f"https://t.me/{message.from_user.mention.replace('@', '')} \n" \
+               f"message: {message.text.replace('@dev','')}"
         await bot.send_message(chat_id=DEVELOPER_ID, text=text)

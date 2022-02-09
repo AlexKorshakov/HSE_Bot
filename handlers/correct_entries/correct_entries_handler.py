@@ -27,7 +27,7 @@ async def correct_entries(message: types.Message):
     :return:
     """
     violation_description: list = []
-    violation_file: list = []
+    violation_files: list = []
 
     file_list = await get_json_file_list(message)
 
@@ -54,10 +54,8 @@ async def correct_entries(message: types.Message):
         except TypeError:
             description = 'нет описания'
 
-        violation_description.append(
-            f"{violation_id} {description}..."
-        )
-        violation_file.append(
+        violation_description.append(f"{violation_id} {description}...")
+        violation_files.append(
             {"violation_id": f"{violation_id}",
              "description": f"{violation_id} {description}...",
              "json_full_name": f"{file.get('json_full_name')}",
@@ -66,7 +64,7 @@ async def correct_entries(message: types.Message):
         )
 
     menu_level = board_config.menu_level = 1
-    board_config.violation_file = violation_file
+    board_config.violation_file = violation_files
     menu_list = board_config.violation_menu_list = violation_description
 
     reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
