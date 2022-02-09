@@ -6,7 +6,10 @@ from aiogram import types
 from aiogram.dispatcher.filters import Command
 from loguru import logger
 
+from keyboards.inline.build_castom_inlinekeyboard import posts_cb, add_subtract_inline_keyboard_with_action
+
 from data import board_config
+from data.category import CORRECT_COMMANDS_LIST
 from data.config import SEPARATOR
 from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 from loader import dp, bot
@@ -67,13 +70,18 @@ async def correct_entries(message: types.Message):
     board_config.violation_file = violation_files
     menu_list = board_config.violation_menu_list = violation_description
 
-    reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
+    commission_button = types.InlineKeyboardButton('Состав комиссии',
+                                                   callback_data=posts_cb.new(id='-',
+                                                   action='correct_commission_composition'))
+
+    reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level,
+                                              addition=commission_button)
     await message.answer(text=Messages.Choose.entry, reply_markup=reply_markup)
 
 
 @dp.callback_query_handler(lambda call: call.data in board_config.violation_menu_list)
 async def violation_id_answer(call: types.CallbackQuery):
-    """Обработка ответов содержащихся в CATEGORY_LIST
+    """Обработка ответов содержащихся в board_config.violation_menu_list
     """
     for item in board_config.violation_menu_list:
         try:
@@ -95,11 +103,42 @@ async def violation_id_answer(call: types.CallbackQuery):
                 logger.info(
                     f"🔒 **Find  https://drive.google.com/drive/folders/{violation_file['photo_folder_id']} in Google Drive.**")
 
-                await delete_violation_files_from_pc(call.message, file=file)
-                await delete_violation_files_from_gdrive(call.message, file=file, violation_file=violation_file)
+                # menu_level = board_config.menu_level = 1
+                # menu_list = board_config.menu_list = CORRECT_COMMANDS_LIST
+                board_config.current_file = item
+
+                reply_markup = await add_subtract_inline_keyboard_with_action()
+                await call.message.answer(text=Messages.Admin.answer, reply_markup=reply_markup)
+
+                # await delete_violation_files_from_pc(call.message, file=file)
+                # await delete_violation_files_from_gdrive(call.message, file=file, violation_file=violation_file)
                 break
 
             break
+
+        except Exception as callback_err:
+            logger.error(f"{repr(callback_err)}")
+
+
+@dp.callback_query_handler(lambda call: call.data in CORRECT_COMMANDS_LIST)
+async def act_required(call: types.CallbackQuery):
+    """Обработка ответов содержащихся в ACT_REQUIRED_ACTION
+    """
+    for i in CORRECT_COMMANDS_LIST:
+        try:
+            if call.data == i:
+                logger.debug(f"Выбрано: {i}")
+
+                # await write_json_file(data=violation_data, name=violation_data["json_full_name"])
+                #
+                # await call.message.edit_reply_markup()
+                # menu_level = board_config.menu_level = 1
+                board_config.current_file = i
+
+                reply_markup = await add_subtract_inline_keyboard_with_action()
+                await call.message.answer(text=i, reply_markup=reply_markup)
+
+                break
 
         except Exception as callback_err:
             logger.error(f"{repr(callback_err)}")

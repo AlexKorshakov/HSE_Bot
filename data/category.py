@@ -94,6 +94,12 @@ SENT_TO: list = [
     "lozhkov.rd@mosinzhproekt.ru"
 ]
 
+CORRECT_COMMANDS_LIST: list = [
+    'Состав комиссии',
+    'Корректировать значения',
+    'Удалить Полностью'
+]
+
 
 def get_names_from_json(name=None) -> list:
     """ Функция получения настроек из файла json.

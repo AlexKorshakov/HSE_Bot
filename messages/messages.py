@@ -67,7 +67,7 @@ class Messages:
 
     class Choose:
         answer: str = f"Выберите ответ"
-        entry: str = f"Выберите запись по id"
+        entry: str = f"Выберите запись или действие для корректировки"
         days_to_fix: str = f"Выберите количество дней на устранение"
         degree_danger_situation: str = f"Выберете степень опасности ситуации"
         issue_act_instructions: str = f"Выберите требуется ли оформление акта - предписания"
