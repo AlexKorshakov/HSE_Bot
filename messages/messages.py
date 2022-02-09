@@ -62,6 +62,9 @@ class Messages:
         comment: str = "Введите комментарий"
         description_violation: str = "Введите описание нарушения"
 
+    class Admin:
+        answer: str = f"Выберите действие"
+
     class Choose:
         answer: str = f"Выберите ответ"
         entry: str = f"Выберите запись по id"
