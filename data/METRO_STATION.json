@@ -503,5 +503,25 @@
         ]
       }
     ]
+  },
+  {
+    "Ст. ЗИЛ": [
+      {
+        "RS": [
+          "Neliubin.DA@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "HSE": [
+          "Trubochkina.MI@mosinzhproekt.ru"
+        ]
+      },
+      {
+        "SUB_HSE": [
+          "i.kalkin@engeocom.ru",
+          "v.doroqan@engeocom.ru"
+        ]
+      }
+    ]
   }
 ]

@@ -50,8 +50,6 @@ async def send_mail(message: types.Message, file_list: list = None, registration
     """
 
     registration_file_list = []
-    # assert isinstance(SENT_TO, list)
-    # assert isinstance(SENT_TO_CC, list)
 
     if not file_list:
         file_list = await get_report_file_list(chat_id=message.from_user.id, endswith='.pdf')
@@ -107,11 +105,6 @@ async def send_mail(message: types.Message, file_list: list = None, registration
                             sent_to.append(i)
 
                 break
-                # strjuchkovav@mosinzhproekt.ru
-                # // "arsutinaa@mosinzhproekt.ru",
-                # // "lozhkov.rd@mosinzhproekt.ru",
-                # // "Nikolaev.SM@mosinzhproekt.ru",
-                # // "zaykov.av@mosinzhproekt.ru"
 
         await bot.send_message(message.from_user.id, Messages.defined_recipient_list)
 

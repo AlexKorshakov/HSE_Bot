@@ -43,7 +43,6 @@ SEPARATOR = "___"
 SERVICE_ACCOUNT_FILE: str = './data/service_account_myctng.json'
 
 # Init config
-# fastconf.config(__name__)
 if 'init' in sys.argv:
     logger.info(f'sys.argv: {sys.argv}')
     sys.exit(0)
