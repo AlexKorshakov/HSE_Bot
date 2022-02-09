@@ -20,6 +20,7 @@ async def send_msg_from_developer(message: types.Message):
 @dp.message_handler(content_types=['text'])
 async def text_message_handler(message: types.Message):
     if "@dev" in message.text.strip().lower():
+
         logger.info(f'message from developer user {message.from_user.id} name {message.from_user.full_name}')
 
         text = f"Message from user {message.from_user.id} name {message.chat.full_name} \n" \
