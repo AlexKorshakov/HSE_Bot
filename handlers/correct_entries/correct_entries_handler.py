@@ -6,6 +6,7 @@ from aiogram import types
 from aiogram.dispatcher.filters import Command
 from loguru import logger
 
+from callbacks.sequential_action.correct_registration_data_answer import get_correct_data
 from keyboards.inline.build_castom_inlinekeyboard import posts_cb, add_subtract_inline_keyboard_with_action
 
 from data import board_config
@@ -39,7 +40,6 @@ async def correct_entries(message: types.Message):
         await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
 
     for file_path in file_list:
-
         file = await read_json_file(file_path)
 
         if file is None:
@@ -70,12 +70,19 @@ async def correct_entries(message: types.Message):
     board_config.violation_file = violation_files
     menu_list = board_config.violation_menu_list = violation_description
 
-    commission_button = types.InlineKeyboardButton('Состав комиссии',
-                                                   callback_data=posts_cb.new(id='-',
-                                                   action='correct_commission_composition'))
+    registration_button = types.InlineKeyboardButton(
+        text='Данные регистрации',
+        callback_data=posts_cb.new(id='-', action='correct_registration_data')
+    )
+
+    commission_button = types.InlineKeyboardButton(
+        text='Состав комиссии',
+        callback_data=posts_cb.new(id='-', action='correct_commission_composition')
+    )
 
     reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level,
-                                              addition=commission_button)
+                                              addition=[registration_button, commission_button])
+
     await message.answer(text=Messages.Choose.entry, reply_markup=reply_markup)
 
 
@@ -103,15 +110,11 @@ async def violation_id_answer(call: types.CallbackQuery):
                 logger.info(
                     f"🔒 **Find  https://drive.google.com/drive/folders/{violation_file['photo_folder_id']} in Google Drive.**")
 
-                # menu_level = board_config.menu_level = 1
-                # menu_list = board_config.menu_list = CORRECT_COMMANDS_LIST
                 board_config.current_file = item
 
                 reply_markup = await add_subtract_inline_keyboard_with_action()
                 await call.message.answer(text=Messages.Admin.answer, reply_markup=reply_markup)
 
-                # await delete_violation_files_from_pc(call.message, file=file)
-                # await delete_violation_files_from_gdrive(call.message, file=file, violation_file=violation_file)
                 break
 
             break
@@ -122,26 +125,19 @@ async def violation_id_answer(call: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda call: call.data in CORRECT_COMMANDS_LIST)
 async def act_required(call: types.CallbackQuery):
-    """Обработка ответов содержащихся в ACT_REQUIRED_ACTION
+    """Обработка ответов содержащихся в CORRECT_COMMANDS_LIST
     """
-    for i in CORRECT_COMMANDS_LIST:
-        try:
-            if call.data == i:
-                logger.debug(f"Выбрано: {i}")
 
-                # await write_json_file(data=violation_data, name=violation_data["json_full_name"])
-                #
-                # await call.message.edit_reply_markup()
-                # menu_level = board_config.menu_level = 1
-                board_config.current_file = i
+    chat_id = call.message.chat.id
+    correct_data = await get_correct_data(chat_id=chat_id, call=call, json_file_name="WORK_SHIFT")
 
-                reply_markup = await add_subtract_inline_keyboard_with_action()
-                await call.message.answer(text=i, reply_markup=reply_markup)
+    if not correct_data:
+        return
 
-                break
+    board_config.current_file = correct_data
 
-        except Exception as callback_err:
-            logger.error(f"{repr(callback_err)}")
+    reply_markup = await add_subtract_inline_keyboard_with_action()
+    await call.message.answer(text=correct_data, reply_markup=reply_markup)
 
 
 async def delete_violation_files_from_pc(message: types.Message, file):
@@ -188,7 +184,7 @@ async def delete_violation_files_from_gdrive(message, file, violation_file):
     violation_data_file = violation_file['json_full_name']
     violation_data_parent_id = violation_file['json_folder_id']
 
-    if not await del_file_from_gdrive(drive_service,
+    if not await del_file_from_gdrive(drive_service=drive_service,
                                       name=name,
                                       violation_file=violation_data_file,
                                       parent_id=violation_data_parent_id):
@@ -198,7 +194,7 @@ async def delete_violation_files_from_gdrive(message, file, violation_file):
     violation_photo_file = violation_file['photo_full_name']
     violation_photo_parent_id = violation_file['photo_folder_id']
 
-    if not await del_file_from_gdrive(drive_service,
+    if not await del_file_from_gdrive(drive_service=drive_service,
                                       name=name,
                                       violation_file=violation_photo_file,
                                       parent_id=violation_photo_parent_id):

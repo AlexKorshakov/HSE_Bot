@@ -12,6 +12,7 @@ class Messages:
                         f'{write_to_developer}'
     wait: str = f"Это может занять некоторое время"
     cancel: str = f"Отмена!"
+    correct_cancel: str = f"продолжить без изменений"
     hi: str = f"Привет"
     user_greeting: str = f'Этот бот предназначен для регистрации нарушений и создания ежедневных отчетов \n' \
                          f'Для начала работы просто отправьте фото боту'
@@ -25,7 +26,7 @@ class Messages:
         # start_registration: str = f"Начинаю процедуру регистрации отчета"
         confirm: str = f"При завершении регистрации дальнейшее изменение невозможно!"
         canceled: str = f"OK! если хотите зарегистрироваться, отправьте /start заново"
-        cancel: str = f"Отмена!"
+        cancel: str = f"Отменить регистрацию"
 
     class Removed:
         violation_data_pc: str = "Запись о нарушении удалена с сервера"
@@ -38,7 +39,7 @@ class Messages:
         function: str = f"Введите вашу должность полностью"
         phone_number: str = f"Отправь мне свой номер телефона с кодом (пример +7xxxxxxxxxx)"
         work_shift: str = f"В какую смену вы работаете? (пример дневная смена / ночная смена)"
-        location: str = f"Введите с помощью клавиатуры ваше местоположение (пример Аминьевское шоссе)"
+        location: str = f"Выберите ваше местоположение (пример Аминьевское шоссе)"
 
     class Report:
         done: str = f"Отчет сформирован на сервере"
@@ -53,6 +54,7 @@ class Messages:
         bot_start: str = f"Бот успешно запущен..."
         save_data_on_g_drive: str = "Данные сохранены в Google Drive"
         registration_completed: str = "Регистрация прошла успешно"
+        correct_registration_completed: str = "Изменение данных прошло успешно"
         registration_data_received: str = "Регистрационные данные получены"
         list_tutors_received: str = "Список получателей получен"
         mail_send: str = "Письмо с отчетами успешно отправлено"

@@ -100,6 +100,14 @@ CORRECT_COMMANDS_LIST: list = [
     'Удалить Полностью'
 ]
 
+REGISTRATION_DATA_LIST: list = [
+    "ФИО",
+    "Должность",
+    "Место работы",
+    "Смена",
+    "Телефон"
+]
+
 
 def get_names_from_json(name=None) -> list:
     """ Функция получения настроек из файла json.
