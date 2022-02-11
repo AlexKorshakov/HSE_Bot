@@ -12,7 +12,8 @@ from utils.misc import rate_limit
 async def send_msg_from_developer(message: types.Message):
     logger.info(f'User @{message.from_user.username}:{message.from_user.id} send message from developer')
 
-    text = f"Для связи с разработчиком начните сообщение с @dev и подробно опишите проблему, пожелание и другую информацию  "
+    text = f"Для связи с разработчиком начните сообщение с @dev и подробно опишите проблему," \
+           f" пожелание и другую информацию"
 
     await message.answer(text)
 

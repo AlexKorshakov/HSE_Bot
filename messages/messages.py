@@ -20,6 +20,7 @@ class Messages:
     bot_setting_commands: str = 'Установка команд бота...'
 
     defined_recipient_list: str = 'Определён список получателей'
+    all_canceled: str = f"Все действия отменены"
 
     class Registration:
         user_registration: str = f"Начинаю процедуру регистрации"
