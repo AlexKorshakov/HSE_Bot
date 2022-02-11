@@ -11,24 +11,25 @@ move_action = CallbackData("description", "action")
 posts_cb: CallbackData = CallbackData('post', 'id', 'action')
 
 
-async def build_inlinekeyboard(*, some_list, num_col=1, level=1, step=None, addition=None) -> InlineKeyboardMarkup:
+async def build_inlinekeyboard(*, some_list, num_col=1, level=1, step=None,
+                               addition: list = []) -> InlineKeyboardMarkup:
     """Создание кнопок в чате для пользователя на основе some_list.
     Количество кнопок = количество элементов в списке some_list
     Расположение в n_cols столбцов
     Текст на кнопках text=ss
     Возвращаемое значение, при нажатии кнопки в чате callback_data=ss
     """
-    button_list = []
+    button_list: list = []
 
     if addition:
-        button_list.append(addition)
+        button_list = [item for item in addition]
     if step:
-        button_list = button_list+ [InlineKeyboardButton(text=ss, callback_data=ss) for ss in some_list]
+        button_list = button_list + [InlineKeyboardButton(text=ss, callback_data=ss) for ss in some_list]
         menu = await _build_menu(buttons=button_list, n_cols=num_col)
         return InlineKeyboardMarkup(resize_keyboard=True, inline_keyboard=menu)
 
     if len(some_list) <= STEP_MENU:
-        button_list = button_list+ [InlineKeyboardButton(text=ss, callback_data=ss) for ss in some_list]
+        button_list = button_list + [InlineKeyboardButton(text=ss, callback_data=ss) for ss in some_list]
 
         menu = await _build_menu(buttons=button_list, n_cols=num_col)
 
@@ -66,7 +67,7 @@ async def define_indices(level, end_list):
     return start_index, stop_index
 
 
-async def add_action_button(reply_markup, start_index, stop_index, end_list):
+async def add_action_button(reply_markup, start_index: int, stop_index: int, end_list: int):
     """Добавление кнопок навигации в зависимости от начального (start_index),
     конечного индекса (stop_index) и конца списка list (end_list)
     :param start_index:
@@ -137,12 +138,9 @@ async def add_subtract_inline_keyboard_with_action(data: dict = None):
     :return:
     """
 
-    # text = await text_processor(data)
 
     markup = types.InlineKeyboardMarkup()
 
-    # markup.add(types.InlineKeyboardButton('Состав комиссии',
-    #                                       callback_data=posts_cb.new(id='-', action='commission_composition')))
     markup.add(types.InlineKeyboardButton('Корректировать значения',
                                           callback_data=posts_cb.new(id='-', action='correct_current_post')))
     markup.add(types.InlineKeyboardButton('Удалить Полностью',
@@ -150,5 +148,4 @@ async def add_subtract_inline_keyboard_with_action(data: dict = None):
     markup.add(types.InlineKeyboardButton('Оставить без изменений',
                                           callback_data=posts_cb.new(id='-', action='correct_abort_current_post')))
 
-    # return text, markup
     return markup

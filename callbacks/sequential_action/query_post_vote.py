@@ -4,11 +4,14 @@ from aiogram import types
 from loguru import logger
 
 from data import board_config
+from data.category import REGISTRATION_DATA_LIST
 from handlers.correct_entries.correct_entries_handler import delete_violation_files_from_pc, \
     delete_violation_files_from_gdrive
-from keyboards.inline.build_castom_inlinekeyboard import posts_cb
-from loader import dp
+from keyboards.inline.build_castom_inlinekeyboard import posts_cb, add_subtract_inline_keyboard_with_action, \
+    build_inlinekeyboard
+from loader import dp, bot
 from messages.messages import Messages
+from utils.generate_report.get_file_list import get_registration_json_file_list
 from utils.json_worker.read_json_file import read_json_file
 
 
@@ -45,11 +48,6 @@ async def call_del_current_violation(call: types.CallbackQuery, callback_data: t
                     f"🔒 **Find  https://drive.google.com/drive/folders/{violation_file['photo_folder_id']}"
                     f" in Google Drive.**")
 
-                # menu_level = board_config.menu_level = 1
-                # menu_list = board_config.menu_list = CORRECT_COMMANDS_LIST
-                # reply_markup = await add_subtract_inline_keyboard_with_action()
-                # await call.message.answer(text=Messages.Admin.answer, reply_markup=reply_markup)
-
                 await delete_violation_files_from_pc(call.message, file=file)
                 await delete_violation_files_from_gdrive(call.message, file=file, violation_file=violation_file)
                 board_config.current_file = None
@@ -58,6 +56,53 @@ async def call_del_current_violation(call: types.CallbackQuery, callback_data: t
         except Exception as callback_err:
             logger.error(f"{repr(callback_err)}")
         break
+
+
+@dp.callback_query_handler(posts_cb.filter(action=['correct_registration_data']))
+async def call_correct_registration_data(call: types.CallbackQuery, callback_data: typing.Dict[str, str]):
+    """
+    :param call:
+    :param callback_data:
+    :return:
+    """
+    action: str = callback_data['action']
+    registration_text: str = ''
+
+    if action == 'correct_registration_data':
+
+        registration_file_list = await get_registration_json_file_list(chat_id=call.message.from_user.id)
+
+        if not registration_file_list:
+            registration_file_list = await get_registration_json_file_list(chat_id=call.message.chat.id)
+
+        if not registration_file_list:
+            logger.warning(Messages.Error.registration_file_list_not_found)
+            await bot.send_message(call.message.from_user.id, Messages.Error.file_list_not_found)
+            return
+
+        registration_data: dict = await read_json_file(registration_file_list)
+
+        if not registration_data:
+            logger.error(f"registration_data is empty")
+            await bot.send_message(chat_id=call.message.chat.id, text=Messages.Error.file_list_not_found)
+            return
+
+        if registration_data:
+            registration_text = f"Данные регистрации: \n" \
+                                f"ФИО: {registration_data.get('name')} \n" \
+                                f"Должность: {registration_data.get('function')} \n" \
+                                f"Место работы: {registration_data.get('name_location')} \n" \
+                                f"Смена: {registration_data.get('work_shift')} \n" \
+                                f"Телефон: {registration_data.get('phone_number')} \n"
+
+        await bot.send_message(call.message.chat.id, text=registration_text)
+
+        menu_level = board_config.menu_level = 1
+        menu_list = board_config.menu_list = REGISTRATION_DATA_LIST
+
+        reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=menu_level, level=1)
+
+        await call.message.answer(text=Messages.Choose.entry, reply_markup=reply_markup)
 
 
 @dp.callback_query_handler(posts_cb.filter(action=['correct_abort_current_post']))
@@ -71,6 +116,8 @@ async def call_del_current_violation(call: types.CallbackQuery, callback_data: t
 
     if action == 'correct_abort_current_post':
         board_config.current_file = None
+        board_config.violation_menu_list: list = []
+        board_config.violation_file: list = []
 
 
 @dp.callback_query_handler(posts_cb.filter(action=['correct_current_post']))
@@ -96,5 +143,6 @@ async def call_del_current_violation(call: types.CallbackQuery, callback_data: t
     """
     action: str = callback_data['action']
 
-    await call.message.answer(text="Раздел находится в разработке")
-    await call.message.answer(text=Messages.help_message)
+    if action == 'correct_commission_composition':
+        await call.message.answer(text="Раздел находится в разработке")
+        await call.message.answer(text=Messages.help_message)
