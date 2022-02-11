@@ -40,18 +40,17 @@ except Exception as err:
     prepare_venv()
 
 
-async def upload_file_on_gdrave(message: types.Message, drive_service, parent=None, file_path=None):
+async def upload_file_on_gdrave(*, chat_id, drive_service, parent=None, file_path=None):
     """Загрузка файла на Google Drive
 
     :param file_path:
     :param parent:
-    :param message:
+    :param chat_id:
     :param drive_service:
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.chat.id, Messages.Error.upload_on_web,
-                                  disable_notification=True)
+        await dp.bot.send_message(chat_id=chat_id, text=Messages.Error.upload_on_web, disable_notification=True)
         return 'error'
 
     if not os.path.isfile(file_path):
@@ -88,28 +87,30 @@ async def upload_file_on_gdrave(message: types.Message, drive_service, parent=No
         file_id = uploaded_file.get('id')
 
         logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
-        await dp.bot.send_message(message.chat.id,
-                                  f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
-                                  disable_notification=True)
+        await dp.bot.send_message(
+            chat_id=chat_id,
+            text=f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
+            disable_notification=True
+        )
 
         return file_id
 
     except Exception as uploaded_err:
-        await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{uploaded_err}```', disable_notification=True)
+        await dp.bot.send_message(chat_id, f'**ERROR:** ```{uploaded_err}```', disable_notification=True)
         return 'error'
 
 
-async def upload_photo_file_on_gdrave(message: types.Message, drive_service, parent=None, file_path=None):
+async def upload_photo_file_on_gdrave(*, chat_id, drive_service, parent=None, file_path=None):
     """Загрузка файла на Google Drive
 
     :param parent:
-    :param message:
+    :param chat_id:
     :param drive_service:
     :param file_path:
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.from_user.id, Messages.Error.upload_on_web,
+        await dp.bot.send_message(chat_id, Messages.Error.upload_on_web,
                                   disable_notification=True)
 
     if not os.path.isfile(file_path):
@@ -145,27 +146,28 @@ async def upload_photo_file_on_gdrave(message: types.Message, drive_service, par
         file_id = uploaded_file.get('id')
 
         logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
-        await dp.bot.send_message(message.from_user.id,
+        await dp.bot.send_message(chat_id,
                                   f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
                                   disable_notification=True)
         return file_id
 
     except Exception as uploaded_err:
-        await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{uploaded_err}```', disable_notification=True)
+        await dp.bot.send_message(chat_id, f'**ERROR:** ```{uploaded_err}```', disable_notification=True)
         return 'error'
 
 
-async def upload_report_file_on_gdrave(message: types.Message, drive_service, parent=None,
+async def upload_report_file_on_gdrave(*, chat_id, drive_service, parent=None,
                                        file_path=None):
     """Загрузка файла на Google Drive
     :param file_path:
     :param parent:
-    :param message:
+    :param chat_id:
     :param drive_service:
     :return:
     """
     if not file_path:
-        await dp.bot.send_message(message.from_user.id, Messages.Error.upload_on_web,
+        await dp.bot.send_message(chat_id=chat_id,
+                                  text=Messages.Error.upload_on_web,
                                   disable_notification=True)
 
     if not os.path.isfile(file_path):
@@ -183,8 +185,6 @@ async def upload_report_file_on_gdrave(message: types.Message, drive_service, pa
 
     file_name = os.path.basename(file_path)
 
-    filesize = await humanbytes(os.path.getsize(file_path))
-
     body = {
         "name": file_name,
         "description": DESCRIPTION,
@@ -200,14 +200,10 @@ async def upload_report_file_on_gdrave(message: types.Message, drive_service, pa
                                                      supportsTeamDrives=True).execute()
         file_id = uploaded_file.get('id')
 
-        # logger.info(f'📤 **Uploading...**\n**Filename:** ```{file_name}```\n**Size:** ```{filesize}```')
-        # await dp.bot.send_message(message.from_user.id,
-        #                           f'📤 **Uploading...**  **Filename:** ```{file_name}```\n**Size:** ```{filesize}```',
-        #                           disable_notification=True)
         return file_id
 
     except Exception as uploaded_err:
-        await dp.bot.send_message(message.from_user.id, f'**ERROR:** ```{uploaded_err}```', disable_notification=True)
+        await dp.bot.send_message(chat_id=chat_id, text=f'**ERROR:** ```{uploaded_err}```', disable_notification=True)
         return 'error'
 
 

@@ -11,13 +11,14 @@ from utils.goolgedrive.googledrive_worker import ROOT_REPORT_FOLDER_NAME
 from utils.json_worker.writer_json_file import write_json_reg_user_file
 
 
-async def set_user_registration_data_on_google_drive(message: types.Message, user_data):
+async def set_user_registration_data_on_google_drive(*, chat_id, user_data):
     """ Загрузка данных на Google Drive
-    :param message:
+    :param chat_id:
     :param user_data: данные для записи
     :return:
     """
-    drive_service = await drive_account_auth_with_oauth2client(message)
+
+    drive_service = await drive_account_auth_with_oauth2client(chat_id=chat_id)
 
     if not drive_service:
         logger.info(f"🔒 **drive_service {drive_service} in Google Drive.**")
@@ -29,19 +30,26 @@ async def set_user_registration_data_on_google_drive(message: types.Message, use
         return
 
     folder_id = await get_user_folder_id(drive_service,
-                                         root_folder_name=str(message.chat.id),
+                                         root_folder_name=str(chat_id),
                                          parent_id=root_folder_id)
     user_data["parent_id"] = folder_id
 
     await write_json_reg_user_file(data=user_data)
 
-    await del_by_name_old_data_google_drive(message, drive_service, parent=user_data["parent_id"])
+    await del_by_name_old_data_google_drive(chat_id=chat_id,
+                                            drive_service=drive_service,
+                                            parent=user_data["parent_id"])
 
-    registration_file_id = await upload_file_on_gdrave(message, drive_service,
+    registration_file_id = await upload_file_on_gdrave(chat_id=chat_id,
+                                                       drive_service=drive_service,
                                                        file_path=user_data["reg_json_full_name"])
 
-    await get_user_permissions(drive_service, file_id=registration_file_id)
+    await get_user_permissions(drive_service=drive_service,
+                               file_id=registration_file_id)
 
-    await move_file(drive_service, file_id=registration_file_id, add_parents=folder_id, remove_parents=root_folder_id)
+    await move_file(service=drive_service,
+                    file_id=registration_file_id,
+                    add_parents=folder_id,
+                    remove_parents=root_folder_id)
 
     return True

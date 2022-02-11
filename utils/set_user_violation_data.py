@@ -22,15 +22,15 @@ async def pre_set_violation_data(message: types.Message):
     stop_violation_id = messege_config.stop_violation_mes_id = message.message_id + 3
     logger.info(f"start_violation message.from_user.id {stop_violation_id}")
 
-    await set_violation_data(message)
+    await set_violation_data(chat_id=chat_id)
 
     await dp.bot.send_message(chat_id=chat_id, text=Messages.Report.completed_successfully)
     await dp.bot.send_message(chat_id=chat_id, text=Messages.help_message, reply_markup=ReplyKeyboardRemove())
 
-    await cyclical_deletion_message(chat_id)
+    await cyclical_deletion_message(chat_id=chat_id)
 
 
-async def set_violation_data(message: types.Message):
+async def set_violation_data(*, chat_id):
     """запись нарушения на Google Drive
     """
     if await write_json_violation_user_file(data=violation_data):
@@ -41,7 +41,7 @@ async def set_violation_data(message: types.Message):
         # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
         logger.info(f"Данные сохранены в local DB в файл {violation_data['json_full_name']}")
 
-    if await set_user_violation_data_on_google_drive(message, violation_data):
+    if await set_user_violation_data_on_google_drive(chat_id=chat_id, violation_data=violation_data):
         # await dp.bot.send_message(chat_id=user_data["user_id"], text=MESSAGES['registration completed successfully'])
         logger.info(f"Данные сохранены в Google Drive в директорию \n"
                     f"https://drive.google.com/drive/folders/{violation_data['json_folder_id']}")

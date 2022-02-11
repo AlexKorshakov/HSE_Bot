@@ -60,7 +60,7 @@ SCOPES = [SCOPE_DRIVE,
 PICKLE_PATH = '.\\utils\\goolgedrive\\token.pickle'
 
 
-async def drive_account_credentials(chat_id):
+async def drive_account_credentials(*, chat_id):
     """Авторизация на Google
     :param delegate_user: - аккаунт которому делегируется авторизация
     :param service_account_file: - файл с ключами и данными аккаунта
@@ -99,14 +99,14 @@ async def drive_account_credentials(chat_id):
         await bot.send_message(chat_id=chat_id, text=Messages.Error.authorized_google_drive)
 
 
-async def drive_account_auth_with_oauth2client(message: types.Message):
+async def drive_account_auth_with_oauth2client(*, chat_id):
     """Авторизация на Google
     :param delegate_user: - аккаунт которому делегируется авторизация
     :param service_account_file: - файл с ключами и данными аккаунта
     :return:
     @rtype: object
     """
-    google_drive_service = await drive_account_credentials(message)
+    google_drive_service = await drive_account_credentials(chat_id=chat_id)
     return google_drive_service
 
 

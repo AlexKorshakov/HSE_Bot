@@ -58,7 +58,7 @@ async def send_mail(message: types.Message, file_list: list = None, registration
             await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
 
     if not registration_data:
-        registration_file_list = await get_registration_json_file_list(chat_id=message.from_user.id)
+        registration_file_list = await get_registration_json_file_list(chat_id=message.chat.id)
         if not registration_file_list:
             logger.warning(Messages.Error.registration_file_list_not_found)
             await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
@@ -68,6 +68,7 @@ async def send_mail(message: types.Message, file_list: list = None, registration
     if not registration_data:
         logger.error(f"registration_data is empty")
         return
+
     await bot.send_message(message.from_user.id, Messages.Successfully.registration_data_received)
     logger.info(Messages.Successfully.registration_data_received)
 
@@ -235,10 +236,7 @@ if __name__ == '__main__':
                         for i in sub_hse_list:
                             sent_to.append(i)
 
-    # email_message = MIMEMultipart('mixed')
-    # email_message['To'] = ', '.join(sent_to)
 
-    # sent_to = [i for row in sent_to for i in row]
     sent_to = list(set(sent_to))
     print(sent_to)
 

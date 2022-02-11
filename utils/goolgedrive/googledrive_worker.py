@@ -24,13 +24,14 @@ async def write_data_on_google_drive(message: types.Message):
                               "\n"
                               + Messages.help_message)
 
+    chat_id = message.chat.id
     drive_service = None
 
     if WORK_ON_HEROKU:
-        drive_service = await drive_account_auth_with_oauth2client(message)
+        drive_service = await drive_account_auth_with_oauth2client(chat_id=chat_id)
 
     if WORK_ON_PC:
-        drive_service = await drive_account_credentials(chat_id=message.chat.id)
+        drive_service = await drive_account_credentials(chat_id=chat_id)
 
     if not drive_service:
         logger.info(f"**drive_service {drive_service} in Google Drive.**")
@@ -39,7 +40,7 @@ async def write_data_on_google_drive(message: types.Message):
     root_folder_id = await get_root_folder_id(drive_service, ROOT_REPORT_FOLDER_NAME)
 
     folder_id = await get_user_folder_id(drive_service,
-                                         root_folder_name=str(message.from_user.id),
+                                         root_folder_name=str(chat_id),
                                          parent_id=root_folder_id)
 
     violation_data["folder_id"] = folder_id

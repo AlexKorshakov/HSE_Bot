@@ -13,40 +13,48 @@ from utils.goolgedrive.googledrive_worker import ROOT_REPORT_FOLDER_NAME
 REPORT_FOLDER_NAME = "reports"
 
 
-async def set_user_report_data_on_google_drive(message: types.Message, full_report_path: str):
+async def set_user_report_data_on_google_drive(*, chat_id, full_report_path: str):
     """ Загрузка данных на Google Drive
-    :param message:
+    :param chat_id:
     :param full_report_path: данные для записи
     :return:
     """
-    drive_service = await drive_account_auth_with_oauth2client(message)
+
+    drive_service = await drive_account_auth_with_oauth2client(chat_id=chat_id)
 
     if not drive_service:
         logger.info(f"🔒 **drive_service {drive_service} in Google Drive.**")
         return
 
-    root_folder_id = await get_root_folder_id(drive_service,
+    root_folder_id = await get_root_folder_id(drive_service=drive_service,
                                               root_folder_name=ROOT_REPORT_FOLDER_NAME)
     if not root_folder_id:
         return
 
-    user_folder_id = await get_user_folder_id(drive_service,
-                                              root_folder_name=str(message.from_user.id),
+    user_folder_id = await get_user_folder_id(drive_service=drive_service,
+                                              root_folder_name=str(chat_id),
                                               parent_id=root_folder_id)
 
-    report_folder_id = await get_report_folder_id(drive_service,
+    report_folder_id = await get_report_folder_id(drive_service=drive_service,
                                                   report_folder_name=REPORT_FOLDER_NAME,
                                                   parent_id=user_folder_id)
 
     report_name = full_report_path.split('\\')[-1]
-    await del_by_name_old_data_google_drive(message, drive_service, parent=report_folder_id, name=report_name)
+    await del_by_name_old_data_google_drive(chat_id=chat_id,
+                                            drive_service=drive_service,
+                                            parent=report_folder_id,
+                                            name=report_name)
 
-    report_file_id = await upload_report_file_on_gdrave(message, drive_service,
+    report_file_id = await upload_report_file_on_gdrave(chat_id=chat_id,
+                                                        drive_service=drive_service,
                                                         parent=report_folder_id,
                                                         file_path=full_report_path)
 
-    await get_user_permissions(drive_service, file_id=report_file_id)
+    await get_user_permissions(drive_service=drive_service, file_id=report_file_id)
 
-    await move_file(drive_service, file_id=report_file_id, add_parents=report_folder_id, remove_parents=root_folder_id)
+    await move_file(service=drive_service,
+                    file_id=report_file_id,
+                    add_parents=report_folder_id,
+                    remove_parents=root_folder_id)
 
     return True

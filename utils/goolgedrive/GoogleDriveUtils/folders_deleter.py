@@ -47,17 +47,17 @@ async def delete_folders_for_id(drive_service, folder_id_list: list):
         logger.info(f'Item {item}: delete file/folder {f_id["name"]} id {f_id["id"]}')
 
 
-async def del_by_name_old_data_google_drive(message, drive_service, name=None, parent=None):
+async def del_by_name_old_data_google_drive(*, chat_id, drive_service, name=None, parent=None):
     """Удаление старых данных по имени file_name  из папки folder_id
     :param parent:
     :param name:
-    :param message:
+    :param chat_id:
     :param drive_service:
     :return:
     """
 
     if not name:
-        name = str(message.chat.id)
+        name = str(chat_id)
 
     found_files = await find_file_by_name(drive_service, name=name, parent=parent)
 
@@ -65,4 +65,3 @@ async def del_by_name_old_data_google_drive(message, drive_service, name=None, p
         return
 
     await delete_folders_for_id(drive_service, folder_id_list=found_files)
-
