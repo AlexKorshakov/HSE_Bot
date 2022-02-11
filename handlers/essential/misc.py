@@ -12,4 +12,4 @@ from utils.misc import rate_limit
 @dp.message_handler(Command('developer'))
 async def developer(message: types.Message):
     logger.debug(f'User @{message.from_user.username}:{message.from_user.id} looking for a developer')
-    await message.answer(f'Меня создал {hlink(title="Forzend", url=f"tg://user?id={ADMIN_ID}")}')
+    await message.answer(f'Меня создал https://t.me/AlexKor_MSK')

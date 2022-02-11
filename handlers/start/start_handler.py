@@ -21,7 +21,7 @@ from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 try:
     WORK_SHIFT = get_names_from_json("WORK_SHIFT")
     if WORK_SHIFT is None:
-        from data.category import WORK_SHIFT, get_names_from_json
+        from data.category import WORK_SHIFT
 except Exception as err:
     logger.error(f"{repr(err)}")
     from data.category import WORK_SHIFT
@@ -29,7 +29,7 @@ except Exception as err:
 try:
     METRO_STATION = get_names_from_json("METRO_STATION")
     if METRO_STATION is None:
-        from data.category import WORKMETRO_STATION_SHIFT, get_names_from_json
+        from data.category import WORKMETRO_STATION_SHIFT
 except Exception as err:
     logger.error(f"{repr(err)}")
     from data.category import METRO_STATION
@@ -135,7 +135,7 @@ async def enter_work_shift(message: types.Message, state: FSMContext):
 
 @dp.callback_query_handler(is_private, lambda call: call.data in WORK_SHIFT, state=RegisterState.work_shift)
 async def work_shift_answer(call: types.CallbackQuery):
-    """Обработка ответов содержащихся в GENERAL_CONTRACTORS
+    """Обработка ответов содержащихся в WORK_SHIFT
     """
     for i in WORK_SHIFT:
         try:
@@ -185,12 +185,3 @@ async def enter_location_answer(call: types.CallbackQuery, state: FSMContext):
     await state.finish()
     await registration_data(call.message, user_data)
 
-
-# @dp.message_handler(is_private, state=RegisterState.location)
-# async def enter_location(message: types.Message, state: FSMContext):
-#     """Обработка места работы
-#     """
-#     user_data["name_location"] = str(message.text)
-#     await state.finish()
-#
-#     await registration_data(message, user_data)
