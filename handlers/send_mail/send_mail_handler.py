@@ -39,7 +39,7 @@ except Exception as err:
     from data.category import SENT_TO_CC
 
 
-# @rate_limit(limit=360)
+@rate_limit(limit=360)
 @dp.message_handler(Command('send_mail'))
 async def send_mail(message: types.Message, file_list: list = None, registration_data: dict = None):
     """Отправка сообщения с отчетом
@@ -73,20 +73,19 @@ async def send_mail(message: types.Message, file_list: list = None, registration
     logger.info(Messages.Successfully.registration_data_received)
 
     location = registration_data.get("name_location", None)
-
     if not location:
         logger.warning(Messages.Error.location_name_not_found)
         await bot.send_message(message.from_user.id, Messages.Error.location_name_not_found)
         return
 
     sent_to = []
+    sent_to_cc = []
     if location in [list(item.keys())[0] for item in METRO_STATION]:
 
         for item in METRO_STATION:
             if list(item.keys())[0] == location:
-                dikt_sent_to: list = item.get(location)
 
-                for item_to in dikt_sent_to:
+                for item_to in item.get(location):
                     if list(item_to.keys())[0] == 'RS':
                         rs_list = item_to.get('RS')
                         if isinstance(rs_list, list):
@@ -98,7 +97,7 @@ async def send_mail(message: types.Message, file_list: list = None, registration
                     if list(item_to.keys())[0] == 'HSE':
                         hse_list = item_to.get('HSE')
                         for i in hse_list:
-                            sent_to.append(i)
+                            sent_to_cc.append(i)
 
                     if list(item_to.keys())[0] == 'SUB_HSE':
                         sub_hse_list = item_to.get('SUB_HSE')
@@ -107,26 +106,34 @@ async def send_mail(message: types.Message, file_list: list = None, registration
 
                 break
 
-        await bot.send_message(message.from_user.id, Messages.defined_recipient_list)
-
     if not sent_to:
         logger.error(f"SENT_TO is empty")
         await bot.send_message(message.from_user.id, Messages.Error.list_too_send_not_found)
         return
 
-    await bot.send_message(message.from_user.id, Messages.Successfully.list_tutors_received)
-    logger.info(Messages.Successfully.list_tutors_received)
+    # await bot.send_message(message.from_user.id, Messages.Successfully.list_tutors_received)
+    # logger.info(Messages.Successfully.list_tutors_received)
 
-    if not SENT_TO_CC:
+    sent_to_cc = sent_to_cc + SENT_TO_CC
+    if not sent_to_cc:
         logger.error(f"SENT_TO_CC is empty")
         return
+
+    text_send_to = ' \n'.join(sent_to)
+    text_send_to_cc = ' \n'.join(sent_to_cc)
+    text: str = f'{Messages.defined_recipient_list}: \n' \
+                f"Получатели: {text_send_to} \n" \
+                f"В копии: {text_send_to_cc} \n"
+
+    await bot.send_message(message.from_user.id, text=text)
+
     await bot.send_message(message.from_user.id, Messages.Successfully.list_tutors_received)
     logger.info(Messages.Successfully.list_tutors_received)
 
     email_message = MIMEMultipart('mixed')
     email_message['From'] = f"{SENDER} <{SENDER_ACCOUNT_GMAIL}>"
     email_message['To'] = ', '.join(sent_to)
-    email_message['Cc'] = ', '.join(SENT_TO_CC)
+    email_message['Cc'] = ', '.join(sent_to_cc)
 
     isreportfile = []
     for report_file in file_list or []:
@@ -235,7 +242,6 @@ if __name__ == '__main__':
                         sub_hse_list = item_to.get('SUB_HSE')
                         for i in sub_hse_list:
                             sent_to.append(i)
-
 
     sent_to = list(set(sent_to))
     print(sent_to)
