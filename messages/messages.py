@@ -38,9 +38,19 @@ class Messages:
     class Ask:
         name: str = f"Введите ваше ФИО полностью"
         function: str = f"Введите вашу должность полностью"
-        phone_number: str = f"Отправь мне свой номер телефона с кодом (пример +7xxxxxxxxxx)"
-        work_shift: str = f"В какую смену вы работаете? (пример дневная смена / ночная смена)"
+        phone_number: str = f"Введите свой номер телефона с кодом (в формате +7xxxxxxxxxx)"
+        work_shift: str = f"Выберите в  какую смену вы работаете? (пример дневная смена / ночная смена)"
         location: str = f"Выберите ваше местоположение (пример Аминьевское шоссе)"
+        construction_manager: str = f"Введите ФИО руководителя строительства полностью"
+        building_control_engineer: str = f"Введите полностью ФИО инженера строительного контроля"
+        contractor: str = f'Выберите подрядчика изи списка'
+        subcontractor: str = f"Введите полностью наименование субподрядчика "
+        linear_bypass: str = f"Введите наименование линейного обхода. Например Первичный"
+        date_linear_bypass: str = f"Введите дату проведения линейного обхода. Например 12.12.2021"
+        contractor_representative = f"Введите ФИО и должность представителя подрядчика полностью." \
+                                    f" Например Иванов Иван Иванович. Технический директор"
+        subcontractor_representative: str = f"Введите ФИО и должность представителя субподрядчика полностью." \
+                                            f" Например Иванов Иван Иванович. Технический директор"
 
     class Report:
         done: str = f"Отчет сформирован на сервере"
@@ -55,7 +65,8 @@ class Messages:
         bot_start: str = f"Бот успешно запущен..."
         save_data_on_g_drive: str = "Данные сохранены в Google Drive"
         registration_completed: str = "Регистрация прошла успешно"
-        correct_registration_completed: str = "Изменение данных прошло успешно"
+        correct_registration_completed: str = "Изменение данных регистрации прошло успешно"
+        correct_headlines_completed: str = "Изменение данных шапки отчета прошло успешно"
         registration_data_received: str = "Регистрационные данные получены"
         list_tutors_received: str = "Список получателей получен"
         mail_send: str = "Письмо с отчетами успешно отправлено"

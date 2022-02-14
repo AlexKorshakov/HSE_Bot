@@ -7,3 +7,4 @@ from . import act_required_answer
 from . import elimination_time_answer
 from . import query_post_vote
 from . import correct_registration_data_answer
+from . import correct_headlines_data_answer

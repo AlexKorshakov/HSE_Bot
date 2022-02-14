@@ -28,3 +28,4 @@ class Report(object):
 violation_data = Report().report_data
 user_data = Report().report_data
 global_reg_form = Report().report_data
+headlines_data = Report().report_data

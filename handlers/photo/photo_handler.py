@@ -18,10 +18,6 @@ WORK_ON_HEROKU = False
 WORK_ON_PC = True
 
 
-# WORK_ON_HEROKU = True
-# WORK_ON_PC = False
-
-
 @dp.message_handler(content_types=["photo"])
 async def photo_handler(message: types.Message):
     """Обработчик сообщений с фото
@@ -40,9 +36,9 @@ async def photo_handler(message: types.Message):
 
     violation_data["now"] = str(datetime.datetime.now())
 
-    violation_data["day"] = await get_day_message(message)
-    violation_data["month"] = await get_month_message(message)
-    violation_data["year"] = await get_year_message(message)
+    violation_data["day"] = await get_day_message()
+    violation_data["month"] = await get_month_message()
+    violation_data["year"] = await get_year_message()
 
     violation_data["data"] = violation_data["day"] + ":" + violation_data["month"] + ":" + violation_data["year"]
 

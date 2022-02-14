@@ -6,6 +6,10 @@ from loguru import logger
 from openpyxl.drawing.image import Image
 
 from data.category import CATEGORY_LIST, ELIMINATION_TIME
+from data.report_data import headlines_data, user_data
+from loader import bot
+from messages.messages import Messages
+from utils.generate_report.get_file_list import get_registration_json_file_list
 from utils.generate_report.mip_report_settings import CATEGORY_LIST_VALUES
 from utils.generate_report.sheet_formatting.set_alignment import set_mip_alignment
 from utils.generate_report.sheet_formatting.set_font import sets_report_font, set_report_font
@@ -15,7 +19,7 @@ from utils.json_worker.read_json_file import read_json_file
 
 not_found: str = 'не выявлено'
 not_tested: str = 'не проверялось'
-be_away: str = 'отсутствовал'
+
 check_mark_true: str = 'V'
 check_mark_false: str = '□'
 
@@ -25,6 +29,68 @@ description_column: int = 7
 photo_height: int = 400
 
 
+async def set_headlines_data_values(chat_id):
+    """ Формирование заголовков отчета
+    :return:
+    """
+
+    be_away: str = 'отсутствовал'
+
+    if not headlines_data:
+        # Руководитель строительства
+        headlines_data['construction_manager'] = be_away
+        # Инженер СК
+        headlines_data['building_control_engineer'] = be_away
+        # Подрядчик
+        headlines_data['general_contractor'] = ''
+        # Подрядчики
+        headlines_data['contractors'] = ''
+        # Субподрядчик
+        headlines_data['subcontractor'] = ''
+        # Проект
+        headlines_data['name_location'] = ''
+        # Вид обхода
+        headlines_data['linear_bypass'] = 'Первичный'
+        # Дата
+        headlines_data['date_linear_bypass'] = ''
+        # Представитель подрядчика
+        headlines_data['contractor_representative'] = be_away
+        # Представитель субподрядчика
+        headlines_data['subcontractor_representative'] = be_away
+
+    headlines_data["day"] = (datetime.datetime.now()).strftime("%d")
+    headlines_data["year"] = (datetime.datetime.now()).strftime("%Y")
+
+    # if not user_data:
+    registration_file_list = await get_registration_json_file_list(chat_id=chat_id)
+    if not registration_file_list:
+        logger.warning(Messages.Error.registration_file_list_not_found)
+        await bot.send_message(chat_id=chat_id, text=Messages.Error.file_list_not_found)
+        return
+
+    registration_data = await read_json_file(registration_file_list)
+
+    headlines_data['function'] = registration_data.get("function")
+    headlines_data['name'] = registration_data.get("name")
+    headlines_data['name_location'] = registration_data.get("name_location")
+    headlines_data['phone_number'] = registration_data.get("phone_number")
+    headlines_data['work_shift'] = registration_data.get("work_shift")
+
+    date_now = datetime.datetime.now().strftime("%d.%m.%Y")
+    date_then = datetime.datetime.now() - datetime.timedelta(days=1)
+    date_then = date_then.strftime("%d.%m.%Y")
+
+    if headlines_data.get("work_shift").lower() == "дневная смена":
+
+        headlines_data['work_shift'] = 'дневной смены'
+        headlines_data['custom_date'] = f"{date_now}"
+
+    else:
+
+        headlines_data['work_shift'] = 'о ночной смене'
+        headlines_data['custom_date'] = f"{date_then} - {date_now}"
+
+
 async def set_report_body_values(worksheet):
     """
     :param worksheet:
@@ -32,19 +98,19 @@ async def set_report_body_values(worksheet):
     """
     values = [
         {"coordinate": "C2", "value": "МОСИНЖПРОЕКТ", "row": "2", "column": "3"},
-        {"coordinate": "D2", "value": "Отчет о ночной смены", "row": "2", "column": "4"},
+        # {"coordinate": "D2", "value": "Отчет о ночной смены", "row": "2", "column": "4"},
         {"coordinate": "C3", "value": "ЛО-МИП-УОТиПБ--", "row": "3", "column": "3"},
         {"coordinate": "D3", "value": "Значение", "row": "3", "column": "4"},
         {"coordinate": "F3", "value": "Примечание", "row": "3", "column": "6"},
         {"coordinate": "C4", "value": "Общая информация", "row": "4", "column": "3"},
         {"coordinate": "C5", "value": "Обход", "row": "5", "column": "3"},
-        {"coordinate": "D5", "value": "Первичный", "row": "5", "column": "4"},
+        # {"coordinate": "D5", "value": "Первичный", "row": "5", "column": "4"},
         {"coordinate": "C6", "value": "Дата", "row": "6", "column": "3"},
         {"coordinate": "C7", "value": "Подрядчик", "row": "7", "column": "3"},
-        {"coordinate": "D7", "value": "стм.", "row": "7", "column": "4"},
+        # {"coordinate": "D7", "value": "стм.", "row": "7", "column": "4"},
         {"coordinate": "C8", "value": "Субподрядчик", "row": "8", "column": "3"},
         {"coordinate": "C9", "value": "Проект", "row": "9", "column": "3"},
-        {"coordinate": "D9", "value": "", "row": "9", "column": "4"},
+        # {"coordinate": "D9", "value": "", "row": "9", "column": "4"},
         {"coordinate": "C10", "value": "Комиссия", "row": "10", "column": "3"},
         {"coordinate": "D10", "value": "Функция", "row": "10", "column": "4"},
         {"coordinate": "F10", "value": "ФИО", "row": "10", "column": "6"},
@@ -52,15 +118,15 @@ async def set_report_body_values(worksheet):
         {"coordinate": "E11", "value": "Инспектирующие", "row": "11", "column": "5"},
         {"coordinate": "D12", "value": f"{check_mark_true}", "row": "12", "column": "4"},
         {"coordinate": "E12", "value": "Руководитель строительства", "row": "12", "column": "5"},
-        {"coordinate": "F12", "value": f"{be_away}", "row": "12", "column": "6"},
+        # {"coordinate": "F12", "value": f"{be_away}", "row": "12", "column": "6"},
         {"coordinate": "D13", "value": f"{check_mark_true}", "row": "13", "column": "4"},
         {"coordinate": "E13", "value": "Специалист отдела ПБ", "row": "13", "column": "5"},
         {"coordinate": "D14", "value": f"{check_mark_true}", "row": "14", "column": "4"},
         {"coordinate": "E14", "value": "Инженер СК", "row": "14", "column": "5"},
-        {"coordinate": "F14", "value": f"{be_away}", "row": "14", "column": "6"},
+        # {"coordinate": "F14", "value": f"{be_away}", "row": "14", "column": "6"},
         {"coordinate": "D15", "value": f"{check_mark_true}", "row": "15", "column": "4"},
         {"coordinate": "E15", "value": "Подрядчик", "row": "15", "column": "5"},
-        {"coordinate": "F15", "value": f"{be_away}", "row": "15", "column": "6"},
+        # {"coordinate": "F15", "value": f"{be_away}", "row": "15", "column": "6"},
         {"coordinate": "D16", "value": f"{check_mark_true}", "row": "16", "column": "4"},
         {"coordinate": "E16", "value": "Субподрядчик", "row": "16", "column": "5"},
         {"coordinate": "C17", "value": "Охрана труда, промышленная безопасность и охрана окружающей среды", "row": "17",
@@ -189,12 +255,12 @@ async def set_report_body_values(worksheet):
             return None
 
 
-async def set_report_header_values(worksheet, registration_data, dataframe):
+async def set_report_header_values(worksheet, dataframe):
     """Заполнение заголовка отчета
     :param worksheet:
-    :param registration_data:
     :return:
     """
+
     contractors = dataframe.general_contractor.tolist()
     contractors = list(set(list(contractors)))
     contractors_str = ''
@@ -203,42 +269,32 @@ async def set_report_header_values(worksheet, registration_data, dataframe):
             continue
         if item and item != 'Подрядная организация':
             contractors_str = contractors_str + item + ', '
-
-    date_now = datetime.datetime.now().strftime("%d.%m.%Y")
-    date_then = datetime.datetime.now() - datetime.timedelta(days=1)
-    date_then = date_then.strftime("%d.%m.%Y")
-
-    day = (datetime.datetime.now()).strftime("%d")
-    year = (datetime.datetime.now()).strftime("%Y")
-
-    function = registration_data.get("function")
-    name = registration_data.get("name")
-    name_location = registration_data.get("name_location")
-    phone_number = registration_data.get("phone_number")
-    work_shift = registration_data.get("work_shift")
-
-    if work_shift.lower() == "дневная смена":
-        work_shift = 'дневной смены'
-        custom_date = f"{date_now}"
-    else:
-        work_shift = 'о ночной смене'
-        custom_date = f"{date_then} - {date_now}"
+            headlines_data['contractors'] = contractors_str
 
     values = [
-        {"coordinate": "D2", "value": f"Отчет {work_shift} {custom_date}", "row": "2", "column": "4"},
-        {"coordinate": "C3", "value": f"ЛО-МИП-УОТиПБ-{year}-{day}", "row": "3", "column": "3"},
-        {"coordinate": "D6", "value": f"{custom_date}", "row": "6", "column": "4"},
-        {"coordinate": "D7", "value": f"{contractors_str}", "row": "7", "column": "4"},
+        {"coordinate": "D2", "value": f"Отчет {headlines_data.get('work_shift')} {headlines_data.get('custom_date')}",
+         "row": "2", "column": "4"},
+        {"coordinate": "C3", "value": f"ЛО-МИП-УОТиПБ-{headlines_data.get('year')}-{headlines_data.get('day')}",
+         "row": "3", "column": "3"},
+        {"coordinate": "D5", "value": f"{headlines_data.get('linear_bypass')}", "row": "5", "column": "4"},
+        {"coordinate": "D6", "value": f"{headlines_data.get('custom_date')}", "row": "6", "column": "4"},
+
+        {"coordinate": "D7", "value": f"{headlines_data.get('contractors')}", "row": "7", "column": "4"},
+
         {"coordinate": "D8", "value": "", "row": "8", "column": "4"},
-        {"coordinate": "D9", "value": f"{name_location}", "row": "9", "column": "4"},
-        {"coordinate": "F12", "value": f"{be_away}", "row": "12", "column": "6"},
+        {"coordinate": "D9", "value": f"{headlines_data.get('name_location')}", "row": "9", "column": "4"},
+        {"coordinate": "F12", "value": f"{headlines_data.get('construction_manager')}", "row": "12", "column": "6"},
 
-        {"coordinate": "E13", "value": f"{function}", "row": "13", "column": "5"},
-        {"coordinate": "E13", "value": f"{name} тел. +{phone_number}", "row": "13", "column": "6"},
+        {"coordinate": "E13", "value": f"{headlines_data.get('function')}", "row": "13", "column": "5"},
+        {"coordinate": "E13", "value": f"{headlines_data.get('name')} тел. +{headlines_data.get('phone_number')}",
+         "row": "13", "column": "6"},
 
-        {"coordinate": "F14", "value": f"{be_away}", "row": "14", "column": "6"},
-        {"coordinate": "F15", "value": f"{be_away}", "row": "15", "column": "6"},
-        {"coordinate": "F16", "value": f"{be_away}", "row": "16", "column": "6"},
+        {"coordinate": "F14", "value": f"{headlines_data.get('building_control_engineer')}", "row": "14",
+         "column": "6"},
+        {"coordinate": "F15", "value": f"{headlines_data.get('contractor_representative')}", "row": "15",
+         "column": "6"},
+        {"coordinate": "F16", "value": f"{headlines_data.get('subcontractor_representative')}", "row": "16",
+         "column": "6"},
     ]
 
     for val in values:
