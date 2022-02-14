@@ -47,8 +47,15 @@ except Exception as err:
     prepare_venv()
 
 
-async def download_files_for_google_drive(message: types.Message, file_path, photo_path):
-    drive_service = await drive_account_auth_with_oauth2client(message)
+async def download_files_for_google_drive(chat_id, file_path, photo_path):
+    """
+    :param chat_id:
+    :param file_path:
+    :param photo_path:
+    :return:
+    """
+
+    drive_service = await drive_account_auth_with_oauth2client(chat_id=chat_id)
 
     if not drive_service:
         logger.info(f"🔒 **drive_service {drive_service} in Google Drive.**")
@@ -60,7 +67,7 @@ async def download_files_for_google_drive(message: types.Message, file_path, pho
         return
 
     user_folder_id = await get_user_folder_id(drive_service,
-                                              root_folder_name=str(message.from_user.id),
+                                              root_folder_name=str(chat_id),
                                               parent_id=root_folder_id)
 
     json_folder_id = await get_json_folder_id(drive_service,
@@ -75,16 +82,16 @@ async def download_files_for_google_drive(message: types.Message, file_path, pho
 
     for file in json_files:
         current_date = file["name"].split(SEPARATOR)[1]
-        if str(current_date.split(".")[0]) == await get_day_message(message) and \
-                str(current_date.split(".")[1]) == await get_month_message(message):
+        if str(current_date.split(".")[0]) == await get_day_message() and \
+                str(current_date.split(".")[1]) == await get_month_message():
             await download_file(service=drive_service, file_id=file["id"], file_name=file_path + file["name"])
 
     photo_files = await get_files_by_folder_id(service=drive_service, folder_id=photo_folder_id)
 
     for file in photo_files:
         current_date = file["name"].split(SEPARATOR)[1]
-        if str(current_date.split(".")[0]) == await get_day_message(message) and \
-                str(current_date.split(".")[1]) == await get_month_message(message):
+        if str(current_date.split(".")[0]) == await get_day_message() and \
+                str(current_date.split(".")[1]) == await get_month_message():
             await download_file(service=drive_service, file_id=file["id"], file_name=photo_path + file["name"])
 
 

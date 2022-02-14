@@ -186,13 +186,13 @@ async def get_correct_data(*, chat_id, call, json_file_name) -> str:
     try:
         if isinstance(item_correct_data, dict):
             correct_data: str = \
-            [list(item.keys())[0] for item in correct_data_list if list(item.keys())[0] == call.data][0]
+                [list(item.keys())[0] for item in correct_data_list if list(item.keys())[0] == call.data][0]
 
         if isinstance(item_correct_data, str):
             correct_data: str = \
                 [item for item in correct_data_list if item == call.data][0]
     except Exception as callback_err:
-        logger.error(f"{repr(callback_err)}")
+        logger.error(f"{chat_id= } {repr(callback_err)}")
 
     if not correct_data:
         text = f'get_correct_data is None or error {json_file_name = }'
@@ -201,7 +201,7 @@ async def get_correct_data(*, chat_id, call, json_file_name) -> str:
         await dp.bot.send_message(chat_id=chat_id, text=text)
         return correct_data
 
-    logger.debug(f"Выбрано: {correct_data}")
+    logger.debug(f"chat_id {chat_id} Выбрано: {correct_data}")
     await call.message.answer(text=f"Выбрано: {correct_data}")
     await call.message.edit_reply_markup()
 
@@ -215,7 +215,7 @@ async def get_registration_text(registration_data) -> str:
     :return:
     """
     if registration_data:
-        registration_data_text: str = f"Данные регистрации: \n" \
+        registration_data_text: str = f"Данные регистрации: \n\n" \
                                       f"ФИО: {registration_data.get('name')} \n" \
                                       f"Должность: {registration_data.get('function')} \n" \
                                       f"Место работы: {registration_data.get('name_location')} \n" \

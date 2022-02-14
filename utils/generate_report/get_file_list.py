@@ -9,19 +9,20 @@ from utils.secondary_functions.get_json_files import get_files
 from utils.secondary_functions.get_month_message import get_month_message
 
 
-async def get_json_file_list(message: types.Message) -> list:
+async def get_json_file_list(chat_id) -> list:
     """Получение списка файлов из директории
     """
-    json_data_path = await get_json_full_filepath(str(message.chat.id))
+
+    json_data_path = await get_json_full_filepath(str(chat_id))
     files = await get_files(json_data_path)
     global_data = []
 
     for file in files:
         current_date = file.split(SEPARATOR)[1]
 
-        if str(current_date.split(".")[0]) == await get_day_message(message) and \
-                str(current_date.split(".")[1]) == await get_month_message(message) and \
-                str(file.split(SEPARATOR)[2]) == str(message.from_user.id):
+        if str(current_date.split(".")[0]) == await get_day_message() and \
+                str(current_date.split(".")[1]) == await get_month_message() and \
+                str(file.split(SEPARATOR)[2]) == str(chat_id):
             global_data.append(file)
 
     return global_data

@@ -10,9 +10,7 @@ from data.config import ADMIN_ID
 from loader import dp, bot
 from messages.messages import Messages
 from loguru import logger
-from data.report_data import violation_data
-from data.report_data import user_data
-from data.report_data import global_reg_form
+from data.report_data import violation_data, headlines_data, user_data, global_reg_form
 
 
 class NamedDict(dict):
@@ -41,7 +39,8 @@ async def cancel_handler(call: types.CallbackQuery, state: FSMContext):
 
     dict_list = [NamedDict.fromkeys('violation_data', violation_data),
                  NamedDict.fromkeys('user_data', user_data),
-                 NamedDict.fromkeys('global_reg_form', global_reg_form)]
+                 NamedDict.fromkeys('global_reg_form', global_reg_form),
+                 NamedDict.fromkeys('headlines_data', headlines_data)]
 
     for items_data in dict_list:
         items_data_name = [item for item in items_data.keys()]

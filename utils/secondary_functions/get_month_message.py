@@ -1,6 +1,10 @@
+from datetime import datetime
 
-async def get_month_message(message):
+
+async def get_month_message():
     """Обработчик сообщений с фото
-        Получение номер str месяца из сообщения в формате mm
+    Получение номер str месяца из сообщения в формате mm
     """
-    return str("0" + str(message.date.month) if message.date.month < 10 else str(message.date.month))
+
+    current_datetime = datetime.now()
+    return str("0" + str(current_datetime.month) if current_datetime.month < 10 else str(current_datetime.month))

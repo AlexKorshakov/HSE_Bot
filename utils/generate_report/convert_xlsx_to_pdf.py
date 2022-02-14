@@ -3,6 +3,7 @@ import time
 from aiogram import types
 from loguru import logger
 
+from loader import bot
 from messages.messages import Messages
 from win32com import client
 
@@ -60,16 +61,16 @@ async def convert_xlsx_to_pdf(*, path: str) -> bool:
         await close_excel_by_force(app)  # <--- YOU #@#$# DIEEEEE!! DIEEEE!!!
 
 
-async def convert_report_to_pdf(message: types.Message, path: str):
+async def convert_report_to_pdf(chat_id, path: str):
     """Конвертация отчета в pdf
-    :param message:
+    :param chat_id:
     :param path:
     :return:
     """
 
     if not await convert_xlsx_to_pdf(path=path):
-        await message.answer(f'{Messages.Report.error} \n')
-    await message.answer(f'{Messages.Report.convert_successfully} \n')
+        await bot.send_message(chat_id=chat_id, text=f'{Messages.Report.error} \n')
+    await bot.send_message(chat_id=chat_id, text=f'{Messages.Report.convert_successfully} \n')
 
 
 if __name__ == '__main__':

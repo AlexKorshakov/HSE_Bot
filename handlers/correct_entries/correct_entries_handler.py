@@ -30,14 +30,16 @@ async def correct_entries(message: types.Message):
     """Корректирование уже введённых значений на локальном pc и на google drive
     :return:
     """
+
+    chat_id = message.chat.id
     violation_description: list = []
     violation_files: list = []
 
-    file_list = await get_json_file_list(message)
+    file_list = await get_json_file_list(chat_id=chat_id)
 
     if not file_list:
         logger.warning(Messages.Error.file_list_not_found)
-        await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
+        await bot.send_message(chat_id=chat_id, text=Messages.Error.file_list_not_found)
 
     for file_path in file_list:
         file = await read_json_file(file_path)
@@ -76,7 +78,7 @@ async def correct_entries(message: types.Message):
     )
 
     commission_button = types.InlineKeyboardButton(
-        text='Состав комиссии',
+        text='Шапка отчета',
         callback_data=posts_cb.new(id='-', action='correct_commission_composition')
     )
 

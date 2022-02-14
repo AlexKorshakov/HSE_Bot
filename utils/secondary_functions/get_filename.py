@@ -9,9 +9,9 @@ from utils.secondary_functions.get_year_message import get_year_message
 async def get_filename_msg_with_photo(message):
     """Формирование индентфикатора записи
     """
-    day = await get_day_message(message)
-    month = await get_month_message(message)
-    year = await get_year_message(message)
+    day = await get_day_message()
+    month = await get_month_message()
+    year = await get_year_message()
 
     if len(message.photo) == 0:
         filename = '.'.join([day, month, year]) + \
@@ -32,16 +32,17 @@ async def get_filename_msg_with_photo(message):
     return filename
 
 
-async def get_filename(message):
+async def get_filename(chat_id):
     """Формирование индентфикатора записи
     """
-    day = await get_day_message(message)
-    month = await get_month_message(message)
-    year = await get_year_message(message)
+
+    day = await get_day_message()
+    month = await get_month_message()
+    year = await get_year_message()
 
     filename = '.'.join([day, month, year]) + \
                SEPARATOR + \
-               str(message.from_user.id)
+               str(chat_id)
 
     logger.info(f"filename {filename}")
     return filename

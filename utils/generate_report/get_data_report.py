@@ -13,28 +13,28 @@ from utils.secondary_functions.get_filepath import create_file_path, get_photo_f
     get_report_full_filepath
 
 
-async def get_data_report(message: types.Message, file_list=None):
+async def get_data_report(chat_id: int, file_list: list = None):
     """Подготовка путей сохранения путей файлов и скачивание файлов из google_drive
     :param file_list:
-    :param message:
+    :param chat_id:
     :return:
     """
+
     # await save_merged_file_on_pc(merge_file_list)
     if not file_list:
         logger.warning('error! file_list not found!')
-        await bot.send_message(message.from_user.id, Messages.Error.file_list_not_found)
+        await bot.send_message(chat_id=chat_id, text=Messages.Error.file_list_not_found)
 
-        photo_full_filepath: str = await get_photo_full_filepath(user_id=str(message.from_user.id))
-        json_full_filepath: str = await get_json_full_filepath(user_id=str(message.from_user.id))
-        report_full_filepath: str = await get_report_full_filepath(user_id=str(message.from_user.id))
+        photo_full_filepath: str = await get_photo_full_filepath(user_id=str(chat_id))
+        json_full_filepath: str = await get_json_full_filepath(user_id=str(chat_id))
+        report_full_filepath: str = await get_report_full_filepath(user_id=str(chat_id))
 
         await create_file_path(user_path=photo_full_filepath)
         await create_file_path(user_path=json_full_filepath)
         await create_file_path(user_path=report_full_filepath)
 
-        await download_files_for_google_drive(message, file_path=json_full_filepath, photo_path=photo_full_filepath)
-
-    # file_list = await get_json_file_list(message)
+        await download_files_for_google_drive(chat_id=chat_id, file_path=json_full_filepath,
+                                              photo_path=photo_full_filepath)
 
     dataframe = await create_dataframe(file_list=file_list)
 

@@ -1,6 +1,11 @@
+from datetime import datetime
 
-async def get_day_message(message):
+
+async def get_day_message():
     """Обработчик сообщений с фото
     Получение номер str дня из сообщения в формате dd
     """
-    return str("0" + str(message.date.day) if message.date.day < 10 else str(message.date.day))
+
+    current_datetime = datetime.now()
+
+    return str("0" + str(current_datetime.day) if current_datetime.day < 10 else str(current_datetime.day))
