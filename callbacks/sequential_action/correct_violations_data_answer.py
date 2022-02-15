@@ -5,18 +5,16 @@ from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from loguru import logger
 
 from data import board_config
-from data.category import get_names_from_json, VIOLATIONS_DATA_LIST, MAIN_CATEGORY
+from data.category import get_names_from_json, VIOLATIONS_DATA_LIST
 from data.config import ADMIN_ID, SEPARATOR
-# from data.report_data import headlines_data
 from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 from loader import dp, bot
 from messages.messages import Messages
 from states import CorrectViolationsState
 from utils.custom_filters import is_private
 from utils.generate_report.get_file_list import get_json_file_list
-from utils.goolgedrive.GoogleDriveUtils.download_file_for_google_drive import download_files_for_google_drive
 from utils.goolgedrive.GoogleDriveUtils.set_user_violation_data_on_google_drave import \
-    set_user_violation_data_on_google_drive
+    update_user_violation_data_on_google_drive
 from utils.json_worker.read_json_file import read_json_file
 from utils.json_worker.writer_json_file import write_json_file
 
@@ -309,7 +307,7 @@ async def all_states(*, chat_id, correct_data, state_name):
 
     await write_json_file(data=violation_data, name=violation_data["json_full_name"])
 
-    # await set_user_violation_data_on_google_drive(chat_id=chat_id, violation_data=violation_data)
+    await update_user_violation_data_on_google_drive(chat_id=chat_id, violation_data=violation_data)
 
     if violation_data:
         violation_text = await get_violations_text(violation_data)

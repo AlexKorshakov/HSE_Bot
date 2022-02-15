@@ -48,7 +48,7 @@ async def delete_folders_for_id(drive_service, folder_id_list: list):
 
 
 async def del_by_name_old_data_google_drive(*, chat_id, drive_service, name=None, parent=None):
-    """Удаление старых данных по имени file_name  из папки folder_id
+    """Удаление старых данных по имени name  из папки parent
     :param parent:
     :param name:
     :param chat_id:
