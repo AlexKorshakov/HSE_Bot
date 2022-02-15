@@ -3,6 +3,7 @@ import datetime
 from aiogram import types
 from loguru import logger
 
+import data.board_config
 from data import messege_config
 from data.report_data import violation_data
 from loader import dp
@@ -25,7 +26,7 @@ async def photo_handler(message: types.Message):
     # if await photo_processing(message):
     #     return
 
-    start_violation = messege_config.start_violation_mes_id = message.message_id
+    start_violation = data.board_config.start_violation_mes_id = message.message_id
     logger.info(f"start_violation message.from_user.id {start_violation}")
 
     violation_data["file_id"] = await get_filename_msg_with_photo(message)

@@ -12,27 +12,27 @@ from utils.json_worker.writer_json_file import write_json_file
 from messages.messages import Messages
 
 try:
-    MAIN_CATEGORY_LIST = get_names_from_json("MAIN_CATEGORY_LIST")
-    if MAIN_CATEGORY_LIST is None:
-        from data.category import MAIN_CATEGORY_LIST
+    MAIN_CATEGORY = get_names_from_json("MAIN_CATEGORY")
+    if MAIN_CATEGORY is None:
+        from data.category import MAIN_CATEGORY
 except Exception as err:
     logger.error(f"{repr(err)}")
-    from data.category import MAIN_CATEGORY_LIST
+    from data.category import MAIN_CATEGORY
 
 try:
-    CATEGORY_LIST = get_names_from_json("CATEGORY_LIST")
-    if CATEGORY_LIST is None:
-        from data.category import CATEGORY_LIST
+    CATEGORY = get_names_from_json("CATEGORY")
+    if CATEGORY is None:
+        from data.category import CATEGORY
 except Exception as err:
     logger.error(f"{repr(err)}")
-    from data.category import CATEGORY_LIST
+    from data.category import CATEGORY
 
 
-@dp.callback_query_handler(lambda call: call.data in MAIN_CATEGORY_LIST)
+@dp.callback_query_handler(lambda call: call.data in MAIN_CATEGORY)
 async def main_category_answer(call: types.CallbackQuery):
-    """Обработка ответов содержащихся в MAIN_CATEGORY_LIST
+    """Обработка ответов содержащихся в MAIN_CATEGORY
     """
-    for i in MAIN_CATEGORY_LIST:
+    for i in MAIN_CATEGORY:
         try:
             if call.data == i:
                 logger.debug(f"Выбрано: {i}")
@@ -42,7 +42,7 @@ async def main_category_answer(call: types.CallbackQuery):
 
                 await call.message.edit_reply_markup()
                 menu_level = board_config.menu_level = 1
-                menu_list = board_config.menu_list = CATEGORY_LIST
+                menu_list = board_config.menu_list = CATEGORY
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
                 await call.message.answer(text=Messages.Choose.category, reply_markup=reply_markup)

@@ -5,9 +5,10 @@ from aiogram import types
 from aiogram.utils.exceptions import (MessageToEditNotFound, MessageCantBeEdited, MessageCantBeDeleted,
                                       MessageToDeleteNotFound)
 
+import data.board_config
 from data import messege_config
 from data.config import BOT_DELETE_MESSAGE
-from data.messege_config import start_violation_mes_id, stop_violation_mes_id
+from data.board_config import start_violation_mes_id, stop_violation_mes_id
 from loader import bot
 
 
@@ -28,8 +29,8 @@ async def cyclical_deletion_message(chat_id):
     """
     :return:
     """
-    mes_id = messege_config.start_violation_mes_id + 1
+    mes_id = data.board_config.start_violation_mes_id + 1
 
-    while mes_id != messege_config.stop_violation_mes_id + 3:
+    while mes_id != data.board_config.stop_violation_mes_id + 3:
         await bot_delete_message(chat_id=chat_id, message_id=str(mes_id), sleep_time=5)
         mes_id += 1

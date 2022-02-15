@@ -16,7 +16,7 @@ async def set_report_data(chat_id, full_report_path):
 
     # await dp.bot.send_message(chat_id=chat_id, text=Messages.begin_registration_report)
 
-    await set_user_report_data(chat_id, full_report_path)
+    await set_user_report_data(chat_id=chat_id, full_report_path=full_report_path)
 
     await dp.bot.send_message(chat_id=chat_id, text=Messages.Successfully.registration_completed)
     # await dp.bot.send_message(chat_id=chat_id, text=Messages.help_message, reply_markup=ReplyKeyboardRemove())

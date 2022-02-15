@@ -18,7 +18,7 @@ async def bild_inlinekeyboar(message: types.Message, *, some_list, num_col=1) ->
 
     reply_markup = InlineKeyboardMarkup(resize_keyboard=True, inline_keyboard=menu)
     # отправка клавиатуры в чат
-    await message.answer(text=Messages.Choose.answer, reply_markup=reply_markup)
+    await message.answer(text=Messages.Choose.main_category, reply_markup=reply_markup)
 
 
 async def _build_menu(buttons, n_cols: int = 1, header_buttons: list = None, footer_buttons: list = None) -> list:

@@ -23,20 +23,20 @@ async def build_inlinekeyboard(*, some_list, num_col=1, level=1, step=None,
 
     if addition:
         button_list = [item for item in addition]
+
     if step:
         button_list = button_list + [InlineKeyboardButton(text=ss, callback_data=ss) for ss in some_list]
         menu = await _build_menu(buttons=button_list, n_cols=num_col)
+
         return InlineKeyboardMarkup(resize_keyboard=True, inline_keyboard=menu)
 
     if len(some_list) <= STEP_MENU:
         button_list = button_list + [InlineKeyboardButton(text=ss, callback_data=ss) for ss in some_list]
-
         menu = await _build_menu(buttons=button_list, n_cols=num_col)
 
         return InlineKeyboardMarkup(resize_keyboard=True, inline_keyboard=menu)
 
     if STEP_MENU < len(some_list):
-
         end_list = len(some_list)
         start_index, stop_index = await define_indices(level, end_list)
 
@@ -45,7 +45,6 @@ async def build_inlinekeyboard(*, some_list, num_col=1, level=1, step=None,
 
         menu = await _build_menu(buttons=button_list, n_cols=num_col)
         reply_markup = InlineKeyboardMarkup(resize_keyboard=True, inline_keyboard=menu)
-
         finally_reply_markup = await add_action_button(reply_markup=reply_markup, start_index=start_index,
                                                        stop_index=stop_index, end_list=end_list)
 
@@ -137,7 +136,6 @@ async def add_subtract_inline_keyboard_with_action(data: dict = None):
     :param data:
     :return:
     """
-
 
     markup = types.InlineKeyboardMarkup()
 

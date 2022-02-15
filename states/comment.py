@@ -22,6 +22,5 @@ async def process_comment(message: types.Message, state: FSMContext):
 
     if violation_data.get("comment"):
         keyboard = await registration_finish_keyboard()
-        await message.answer(text=Messages.Registration.confirm,
-                             reply_markup=keyboard)
+        await message.answer(text=Messages.Registration.confirm, reply_markup=keyboard)
 

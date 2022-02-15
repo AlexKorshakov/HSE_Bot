@@ -17,7 +17,7 @@ from utils.custom_filters import is_private
 
 @dp.callback_query_handler(lambda call: call.data in HEADLINES_DATA_LIST)
 async def correct_headlines_data_answer(call: types.CallbackQuery):
-    """Обработка ответов содержащихся в REGISTRATION_DATA_LIST
+    """Обработка ответов содержащихся в HEADLINES_DATA_LIST
 
     """
     chat_id = call.message.chat.id
@@ -78,12 +78,12 @@ async def correct_headlines_data_answer(call: types.CallbackQuery):
         await bot.send_message(chat_id, Messages.Ask.linear_bypass, reply_markup=reply_markup)
         return
 
-    if call.data == "Дата":
-        logger.debug(f"id {chat_id} Выбрано: {call.data}")
-        await CorrectHeadlinesState.date_linear_bypass.set()
-
-        await bot.send_message(chat_id, Messages.Ask.date_linear_bypass, reply_markup=reply_markup)
-        return
+    # if call.data == "Дата":
+    #     logger.debug(f"id {chat_id} Выбрано: {call.data}")
+    #     await CorrectHeadlinesState.date_linear_bypass.set()
+    #
+    #     await bot.send_message(chat_id, Messages.Ask.date_linear_bypass, reply_markup=reply_markup)
+    #     return
 
     if call.data == "Представитель подрядчика":
         logger.debug(f"id {chat_id} Выбрано: {call.data}")

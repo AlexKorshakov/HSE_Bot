@@ -5,7 +5,7 @@ from math import ceil
 from loguru import logger
 from openpyxl.drawing.image import Image
 
-from data.category import CATEGORY_LIST, ELIMINATION_TIME
+from data.category import CATEGORY, ELIMINATION_TIME
 from data.report_data import headlines_data, user_data
 from loader import bot
 from messages.messages import Messages
@@ -316,7 +316,7 @@ async def set_report_violation_values(worksheet, dataframe):
 
     serial_number = 0
     val = []
-    for category in CATEGORY_LIST:
+    for category in CATEGORY:
         for item in range(1, dataframe.category.size):
             if dataframe.loc[item]["category"] != category:
                 continue

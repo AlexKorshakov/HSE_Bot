@@ -2,6 +2,7 @@ from aiogram import types
 from aiogram.types import ReplyKeyboardRemove
 from loguru import logger
 
+import data.board_config
 from data import messege_config
 from data.report_data import violation_data
 from database.entry_in_db import entry_in_db
@@ -19,7 +20,7 @@ async def pre_set_violation_data(message: types.Message):
     chat_id = message.from_user.id
     await dp.bot.send_message(chat_id=chat_id, text=Messages.Report.begin)
 
-    stop_violation_id = messege_config.stop_violation_mes_id = message.message_id + 3
+    stop_violation_id = data.board_config.stop_violation_mes_id = message.message_id + 3
     logger.info(f"start_violation message.from_user.id {stop_violation_id}")
 
     await set_violation_data(chat_id=chat_id)

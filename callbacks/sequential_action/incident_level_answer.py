@@ -18,12 +18,12 @@ except Exception as err:
     from data.category import INCIDENT_LEVEL
 
 try:
-    ACT_REQUIRED_ACTION = get_names_from_json("ACT_REQUIRED_ACTION")
-    if ACT_REQUIRED_ACTION is None:
-        from data.category import ACT_REQUIRED_ACTION
+    ACT_REQUIRED = get_names_from_json("ACT_REQUIRED")
+    if ACT_REQUIRED is None:
+        from data.category import ACT_REQUIRED
 except Exception as err:
     logger.error(f"{repr(err)}")
-    from data.category import ACT_REQUIRED_ACTION
+    from data.category import ACT_REQUIRED
 
 
 @dp.callback_query_handler(lambda call: call.data in INCIDENT_LEVEL)
@@ -40,10 +40,10 @@ async def incident_level(call: types.CallbackQuery):
 
                 await call.message.edit_reply_markup()
                 menu_level = board_config.menu_level = 1
-                menu_list = board_config.menu_list = ACT_REQUIRED_ACTION
+                menu_list = board_config.menu_list = ACT_REQUIRED
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
-                await call.message.answer(text=Messages.Choose.issue_act_instructions, reply_markup=reply_markup)
+                await call.message.answer(text=Messages.Choose.act_required, reply_markup=reply_markup)
 
                 break
 

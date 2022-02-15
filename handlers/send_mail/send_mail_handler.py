@@ -122,8 +122,8 @@ async def send_mail(message: types.Message, file_list: list = None, registration
     text_send_to = ' \n'.join(sent_to)
     text_send_to_cc = ' \n'.join(sent_to_cc)
     text: str = f'{Messages.defined_recipient_list}: \n' \
-                f"Получатели: {text_send_to} \n" \
-                f"В копии: {text_send_to_cc} \n"
+                f"Получатели: \n{text_send_to} \n" \
+                f"В копии: \n{text_send_to_cc} \n"
 
     await bot.send_message(message.from_user.id, text=text)
 
@@ -154,8 +154,8 @@ async def send_mail(message: types.Message, file_list: list = None, registration
                 email_message.attach(p)
                 isreportfile.append(True)
                 break
-        except Exception as e:
-            print(str(e))
+        except Exception as err:
+            print(str(err))
             return
 
     if any([file for file in isreportfile]):

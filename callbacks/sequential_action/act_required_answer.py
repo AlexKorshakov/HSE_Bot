@@ -10,12 +10,12 @@ from utils.json_worker.writer_json_file import write_json_file
 from messages.messages import Messages
 
 try:
-    ACT_REQUIRED_ACTION = get_names_from_json("ACT_REQUIRED_ACTION")
-    if ACT_REQUIRED_ACTION is None:
-        from data.category import ACT_REQUIRED_ACTION, get_names_from_json
+    ACT_REQUIRED = get_names_from_json("ACT_REQUIRED")
+    if ACT_REQUIRED is None:
+        from data.category import ACT_REQUIRED, get_names_from_json
 except Exception as err:
     logger.error(f"{repr(err)}")
-    from data.category import ACT_REQUIRED_ACTION
+    from data.category import ACT_REQUIRED
 
 try:
     ELIMINATION_TIME = get_names_from_json("ELIMINATION_TIME")
@@ -26,11 +26,11 @@ except Exception as err:
     from data.category import ELIMINATION_TIME
 
 
-@dp.callback_query_handler(lambda call: call.data in ACT_REQUIRED_ACTION)
+@dp.callback_query_handler(lambda call: call.data in ACT_REQUIRED)
 async def act_required(call: types.CallbackQuery):
-    """Обработка ответов содержащихся в ACT_REQUIRED_ACTION
+    """Обработка ответов содержащихся в ACT_REQUIRED
     """
-    for i in ACT_REQUIRED_ACTION:
+    for i in ACT_REQUIRED:
         try:
             if call.data == i:
                 logger.debug(f"Выбрано: {i}")
@@ -42,7 +42,7 @@ async def act_required(call: types.CallbackQuery):
                 menu_list = board_config.menu_list = ELIMINATION_TIME
 
                 reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
-                await call.message.answer(text=Messages.Choose.days_to_fix, reply_markup=reply_markup)
+                await call.message.answer(text=Messages.Choose.elimination_time, reply_markup=reply_markup)
 
                 break
 

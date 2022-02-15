@@ -1,4 +1,3 @@
-
 import asyncio
 from pprint import pprint
 
@@ -21,8 +20,7 @@ ROOT_REPORT_FOLDER_ID: str = '1n4M_LHDG_QQ4EFuDYxQLe_MaK-k3wv96'
 
 async def write_data_on_google_drive(message: types.Message):
     await message.answer(text="Данный раздел находится в разработке\n"
-                              "\n"
-                              + Messages.help_message)
+                              "\n" + Messages.help_message)
 
     chat_id = message.chat.id
     drive_service = None

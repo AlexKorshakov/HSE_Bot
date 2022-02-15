@@ -107,10 +107,13 @@ async def violation_id_answer(call: types.CallbackQuery):
                     await call.message.answer(text=Messages.Error.file_not_found)
                     continue
 
-                logger.info(
-                    f"🔒 **Find  https://drive.google.com/drive/folders/{violation_file['json_folder_id']} in Google Drive.**")
-                logger.info(
-                    f"🔒 **Find  https://drive.google.com/drive/folders/{violation_file['photo_folder_id']} in Google Drive.**")
+                try:
+                    logger.info(
+                        f"🔒 **Find  https://drive.google.com/drive/folders/{violation_file['json_folder_id']} in Google Drive.**")
+                    logger.info(
+                        f"🔒 **Find  https://drive.google.com/drive/folders/{violation_file['photo_folder_id']} in Google Drive.**")
+                except KeyError as key_err:
+                    logger.error(f"key_err: {repr(key_err)}")
 
                 board_config.current_file = item
 
