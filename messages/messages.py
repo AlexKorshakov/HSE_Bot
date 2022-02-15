@@ -29,6 +29,9 @@ class Messages:
         canceled: str = f"OK! если хотите зарегистрироваться, отправьте /start заново"
         cancel: str = f"Отменить регистрацию"
 
+    class Violations:
+        canceled: str = f"Изменения отменены"
+
     class Removed:
         violation_data_pc: str = "Запись о нарушении удалена с сервера"
         violation_photo_pc: str = "Фотоматериалы нарушения удалены с сервера"
@@ -43,7 +46,7 @@ class Messages:
         location: str = f"Выберите ваше местоположение (пример Аминьевское шоссе)"
         construction_manager: str = f"Введите ФИО руководителя строительства полностью"
         building_control_engineer: str = f"Введите полностью ФИО инженера строительного контроля"
-        contractor: str = f'Выберите подрядчика изи списка'
+        contractor: str = f'Выберите подрядчика из списка'
         subcontractor: str = f"Введите полностью наименование субподрядчика "
         linear_bypass: str = f"Введите наименование линейного обхода. Например Первичный"
         date_linear_bypass: str = f"Введите дату проведения линейного обхода. Например 12.12.2021"
@@ -67,6 +70,7 @@ class Messages:
         registration_completed: str = "Регистрация прошла успешно"
         correct_registration_completed: str = "Изменение данных регистрации прошло успешно"
         correct_headlines_completed: str = "Изменение данных шапки отчета прошло успешно"
+        correct_violations_completed: str = "Изменение данных нарушения прошло успешно"
         registration_data_received: str = "Регистрационные данные получены"
         list_tutors_received: str = "Список получателей получен"
         mail_send: str = "Письмо с отчетами успешно отправлено"
@@ -80,12 +84,12 @@ class Messages:
         answer: str = f"Выберите действие"
 
     class Choose:
-        answer: str = f"Выберите ответ"
+        main_category: str = f"Выберите категорию"
         entry: str = f"Выберите запись или действие для корректировки"
-        days_to_fix: str = f"Выберите количество дней на устранение"
-        degree_danger_situation: str = f"Выберете степень опасности ситуации"
-        issue_act_instructions: str = f"Выберите требуется ли оформление акта - предписания"
-        constractor: str = f"Выберите подрядную организацию"
+        elimination_time: str = f"Выберите количество дней на устранение"
+        violation_category: str = f"Выберете степень опасности ситуации"
+        act_required: str = f"Выберите требуется ли оформление акта - предписания"
+        general_constractor: str = f"Выберите подрядную организацию"
         category: str = f"Выберите категорию нарушения"
         incident_level: str = f"Выберите уровень происшествия"
 
@@ -99,7 +103,8 @@ class Messages:
         dataframe_not_found: str = f'Не удалось получить массив данных для формирования отчета! \n' \
                                    'Обратитесь к разработчику! \n' \
                                    f'чтобы написать разработчику нажмите /developer'
-        file_list_not_found: str = f"Список файлов не найден! \n"  # \
+        file_list_not_found: str = f"Список файлов не найден! \n"
+        file_not_found: str = f"Файл не найден! \n"# \
         # f'попытка загрузить данные с сервера'
         workbook_not_create: str = f"Файл с отчетом не создан! Обратитесь к разработчику! \n" \
                                    f'чтобы написать разработчику нажмите /developer'
