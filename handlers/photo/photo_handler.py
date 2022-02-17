@@ -4,7 +4,7 @@ from aiogram import types
 from loguru import logger
 
 import data.board_config
-from data import messege_config
+
 from data.report_data import violation_data
 from loader import dp
 from utils.goolgedrive.googledrive_worker import write_data_on_google_drive

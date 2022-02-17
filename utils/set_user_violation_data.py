@@ -3,7 +3,6 @@ from aiogram.types import ReplyKeyboardRemove
 from loguru import logger
 
 import data.board_config
-from data import messege_config
 from data.report_data import violation_data
 from database.entry_in_db import entry_in_db
 from loader import dp

@@ -132,6 +132,11 @@ VIOLATIONS_DATA_LIST: list = [
     "Уровень происшествия"
 ]
 
+ADMIN_MENU_LIST: list = [
+    'Показать всех пользователей',
+    # 'Редактировать профиль'
+]
+
 
 def get_names_from_json(name=None) -> list:
     """ Функция получения настроек из файла json.

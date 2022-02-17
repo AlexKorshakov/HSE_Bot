@@ -6,7 +6,7 @@ from aiogram.utils.exceptions import (MessageToEditNotFound, MessageCantBeEdited
                                       MessageToDeleteNotFound)
 
 import data.board_config
-from data import messege_config
+
 from data.config import BOT_DELETE_MESSAGE
 from data.board_config import start_violation_mes_id, stop_violation_mes_id
 from loader import bot

@@ -1,10 +1,14 @@
+import os
+from pprint import pprint
+
 from aiogram import types
 from aiogram.dispatcher.filters import Command
 from loguru import logger
 
+from callbacks.sequential_action.correct_headlines_data_answer import get_correct_data
 from data import board_config
-from data.category import get_names_from_json
-from data.config import ADMIN_ID, DEVELOPER_ID
+from data.category import get_names_from_json, ADMIN_MENU_LIST
+from data.config import ADMIN_ID, DEVELOPER_ID, BOT_DATA_PATH
 from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
 from keyboards.inline.select_category import bild_inlinekeyboar
 from loader import dp
@@ -12,6 +16,9 @@ from loader import dp
 # @rate_limit(limit=20)
 # @dp.message_handler(user_id=ADMIN_ID, commands=Command('admin_func'))
 from messages.messages import Messages
+from utils.custom_filters import is_private
+from utils.json_worker.read_json_file import read_json_file
+from utils.secondary_functions.get_json_files import get_dirs_files
 
 
 @dp.message_handler(Command('admin_func'))
@@ -31,13 +38,12 @@ async def admin_func_handler(message: types.Message) -> None:
         await message.answer(f'у вас нет доступа')
 
     if message.from_user.id == int(ADMIN_ID) or message.from_user.id == str(DEVELOPER_ID):
-        text = f"йа печенько"
-        logger.info(f'User @{message.from_user.username}:{message.from_user.id} {text}')
-        await message.answer(f'{text}')
+        # text = f"йа печенько"
+        # logger.info(f'User @{message.from_user.username}:{message.from_user.id} {text}')
+        # await message.answer(f'{text}')
 
-        admin_menu_list = ['Показать всех пользователей', 'Редактировать профиль']
         menu_level = board_config.menu_level = 1
-        menu_list = board_config.menu_list = admin_menu_list
+        menu_list = board_config.menu_list = ADMIN_MENU_LIST
 
         reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
         await message.answer(text=Messages.Admin.answer, reply_markup=reply_markup)
@@ -45,3 +51,30 @@ async def admin_func_handler(message: types.Message) -> None:
         return
 
     await message.answer(f'у вас нет доступа к функциям администратора')
+
+
+@dp.callback_query_handler(is_private, lambda call: call.data in [item for item in ADMIN_MENU_LIST])
+# state=CorrectRegisterState.work_shift)
+async def correct_registration_data_work_shift_answer(call: types.CallbackQuery):
+    """Обработка ответов содержащихся в WORK_SHIFT
+    """
+    chat_id = call.message.chat.id
+    files: list = await get_dirs_files(BOT_DATA_PATH)
+
+    users_data: list = []
+    for file in files:
+        file_path = f'{BOT_DATA_PATH}\\{file}\\{file}.json'
+        if not os.path.isfile(file_path):
+            continue
+        file_dict = await read_json_file(file_path)
+        users_data.append(f"{file_dict['user_id']} {str(file_dict['name']).split(' ')[0]}")
+
+    menu_level = board_config.menu_level = 1
+    menu_list = board_config.menu_list = users_data
+
+    reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
+    await call.message.answer(text=Messages.Admin.answer, reply_markup=reply_markup)
+
+    # state_name = await get_state_storage_name(state, chat_id)
+    # await all_states(chat_id=chat_id, correct_data=correct_data, state_name=state_name)
+    # await state.finish()
