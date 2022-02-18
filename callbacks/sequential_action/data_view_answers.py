@@ -5,11 +5,13 @@ from aiogram.types import ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeybo
 from loguru import logger
 
 from data import board_config
+from data.config import BOT_DATA_PATH
 from loader import dp, bot
 from messages.messages import Messages
 from states import DataUserState
 from utils.custom_filters import is_private
-from utils.generate_report.get_file_list import get_registration_json_file_list
+from utils.generate_report.get_file_list import get_registration_json_file_list, get_report_file_list, \
+    get_json_file_list
 from utils.json_worker.read_json_file import read_json_file
 
 
@@ -61,6 +63,7 @@ async def view_user_data(*, chat_id: int, view_data, state_name: str):
     """
     user_chat_id = ''
     registration_file_list = []
+    params: dict = {}
 
     try:
         if isinstance(view_data, str):
@@ -80,7 +83,20 @@ async def view_user_data(*, chat_id: int, view_data, state_name: str):
         logger.error(f"registration_data is empty")
         return
 
+    params['all_files'] = True
+    params['file_path'] = f"{BOT_DATA_PATH}{user_chat_id}\\data_file"
+
     registration_text = await get_registration_text(registration_data)
+
+    report_file_list = await get_report_file_list(chat_id=user_chat_id, params=params)
+    if report_file_list:
+        report_file_text: str = f'Отчетов создано: {len(report_file_list)}'
+        registration_text = f'{registration_text}\n {report_file_text}'
+
+    json_file_list: list = await get_json_file_list(chat_id=user_chat_id, params=params)
+    if json_file_list:
+        json_file_list_text: str = f'Нарушений в базе: {len(json_file_list)}'
+        registration_text = f'{registration_text}\n {json_file_list_text}'
 
     reply_markup = InlineKeyboardMarkup()
     reply_markup.add(InlineKeyboardButton(text='Url', url=f"tg://user?id={registration_data.get('user_id')}"))
@@ -90,8 +106,6 @@ async def view_user_data(*, chat_id: int, view_data, state_name: str):
     await dp.bot.send_message(chat_id=chat_id,
                               text=Messages.Successfully.registration_data_received,
                               reply_markup=ReplyKeyboardRemove())
-
-
 
 
 async def get_registration_text(registration_data) -> str:
