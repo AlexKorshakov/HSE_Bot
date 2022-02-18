@@ -141,7 +141,7 @@ async def correct_headlines_data_name_location_answer(call: types.CallbackQuery,
 #         return
 #
 #     state_name = await get_state_storage_name(state, chat_id)
-#     await all_states(chat_id=chat_id, correct_data=correct_data, state_name=state_name)
+#     await view_user_data(chat_id=chat_id, correct_data=correct_data, state_name=state_name)
 #     await state.finish()
 
 

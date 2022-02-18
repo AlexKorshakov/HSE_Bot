@@ -32,6 +32,9 @@ class Messages:
     class Violations:
         canceled: str = f"Изменения отменены"
 
+    class Viewer:
+        canceled: str = f"Действия отменены"
+
     class Removed:
         violation_data_pc: str = "Запись о нарушении удалена с сервера"
         violation_photo_pc: str = "Фотоматериалы нарушения удалены с сервера"
@@ -104,7 +107,7 @@ class Messages:
                                    'Обратитесь к разработчику! \n' \
                                    f'чтобы написать разработчику нажмите /developer'
         file_list_not_found: str = f"Список файлов не найден! \n"
-        file_not_found: str = f"Файл не найден! \n"# \
+        file_not_found: str = f"Файл не найден! \n"  # \
         # f'попытка загрузить данные с сервера'
         workbook_not_create: str = f"Файл с отчетом не создан! Обратитесь к разработчику! \n" \
                                    f'чтобы написать разработчику нажмите /developer'

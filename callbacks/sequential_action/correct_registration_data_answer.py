@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
-from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove
+from aiogram.types import ReplyKeyboardMarkup, ReplyKeyboardRemove, CallbackQuery
 from loguru import logger
 
 from data import board_config
@@ -176,7 +176,7 @@ async def all_states(*, chat_id, correct_data, state_name):
                               reply_markup=ReplyKeyboardRemove())
 
 
-async def get_correct_data(*, chat_id, call, json_file_name) -> str:
+async def get_correct_data(*, chat_id: int, call: CallbackQuery, json_file_name: str) -> str:
     """Получение корректных данных из call: types.CallbackQuery и  state: FSMContext
     """
     correct_data: str = ''
