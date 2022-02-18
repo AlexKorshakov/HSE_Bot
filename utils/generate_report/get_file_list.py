@@ -9,9 +9,12 @@ from utils.secondary_functions.get_json_files import get_files
 from utils.secondary_functions.get_month_message import get_month_message
 
 
-async def get_json_file_list(chat_id, params: dict = None) -> list:
+async def get_json_file_list(chat_id, params=None) -> list:
     """Получение списка файлов из директории
     """
+    if params is None:
+        params = {}
+
     json_data_path = await get_json_full_filepath(str(chat_id))
 
     if params.get('file_path'):
@@ -52,9 +55,12 @@ async def get_registration_json_file_list(chat_id) -> list:
     return []
 
 
-async def get_report_file_list(chat_id, endswith=".xlsx", params: dict = None) -> list:
+async def get_report_file_list(chat_id, endswith=".xlsx", params=None) -> list:
     """Получение списка файлов из директории
     """
+    if params is None:
+        params = {}
+
     date_now = str(datetime.now().strftime("%d.%m.%Y"))
     report_path = await get_report_full_filepath(str(chat_id))
 
