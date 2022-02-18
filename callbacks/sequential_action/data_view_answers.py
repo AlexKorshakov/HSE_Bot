@@ -14,17 +14,20 @@ from utils.json_worker.read_json_file import read_json_file
 
 
 @dp.callback_query_handler(is_private,
-                           lambda call: call.data in [item for item in board_config.menu_list],
-                           state=DataUserState.user_data)
+                           lambda call: call.data in [item for item in board_config.menu_list])
+# ,state=DataUserState.user_data)
 async def view_user_data_states_answer(call: types.CallbackQuery, state: FSMContext):
     """Отмена регистрации
     :param call:
     :param state:
     :return:
     """
+    await DataUserState.user_data.set()
+
     chat_id: int = call.message.chat.id
     state_name = await get_state_storage_name(state=state, chat_id=chat_id)
     await view_user_data(chat_id=chat_id, view_data=call.data, state_name=state_name)
+
     await state.finish()
 
 
@@ -87,6 +90,8 @@ async def view_user_data(*, chat_id: int, view_data, state_name: str):
     await dp.bot.send_message(chat_id=chat_id,
                               text=Messages.Successfully.registration_data_received,
                               reply_markup=ReplyKeyboardRemove())
+
+
 
 
 async def get_registration_text(registration_data) -> str:

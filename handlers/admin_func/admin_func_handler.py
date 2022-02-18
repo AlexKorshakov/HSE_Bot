@@ -8,10 +8,8 @@ from data import board_config
 from data.category import get_names_from_json, ADMIN_MENU_LIST
 from data.config import ADMIN_ID, DEVELOPER_ID, BOT_DATA_PATH
 from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
-
 from loader import dp
 from messages.messages import Messages
-from states import DataUserState
 from utils.custom_filters import is_private
 from utils.json_worker.read_json_file import read_json_file
 from utils.secondary_functions.get_json_files import get_dirs_files
@@ -35,9 +33,9 @@ async def admin_func_handler(message: types.Message) -> None:
         await message.answer(f'у вас нет доступа')
 
     if chat_id == int(ADMIN_ID) or message.from_user.id == int(DEVELOPER_ID):
-        # text = f"йа печенько"
-        # logger.info(f'User @{message.from_user.username}:{message.from_user.id} {text}')
-        # await message.answer(f'{text}')
+        text = f"йа печенько"
+        logger.info(f'User @{message.from_user.username}:{message.from_user.id} {text}')
+        await message.answer(f'{text}')
 
         menu_level = board_config.menu_level = 1
         menu_list = board_config.menu_list = ADMIN_MENU_LIST
@@ -52,9 +50,8 @@ async def admin_func_handler(message: types.Message) -> None:
 
 @dp.callback_query_handler(is_private, lambda call: call.data in [item for item in ADMIN_MENU_LIST])
 async def correct_registration_data_work_shift_answer(call: types.CallbackQuery):
-    """Обработка ответов содержащихся в WORK_SHIFT
+    """Обработка ответов содержащихся в ADMIN_MENU_LIST
     """
-    # chat_id = call.message.chat.id
     files: list = await get_dirs_files(BOT_DATA_PATH)
 
     if call.data == 'Показать всех пользователей':
@@ -81,5 +78,3 @@ async def correct_registration_data_work_shift_answer(call: types.CallbackQuery)
 
         reply_markup = await build_inlinekeyboard(some_list=menu_list, num_col=1, level=menu_level)
         await call.message.answer(text=Messages.Admin.answer, reply_markup=reply_markup)
-
-        await DataUserState.user_data.set()
