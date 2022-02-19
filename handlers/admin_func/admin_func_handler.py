@@ -3,14 +3,14 @@ import time
 
 from aiogram import types
 from aiogram.dispatcher.filters import Command
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from loguru import logger
 
 from data import board_config
 from data.category import get_names_from_json, ADMIN_MENU_LIST
 from data.config import ADMIN_ID, DEVELOPER_ID, BOT_DATA_PATH
 from keyboards.inline.build_castom_inlinekeyboard import build_inlinekeyboard
-from loader import dp, bot
+from loader import dp
 from messages.messages import Messages
 from utils.custom_filters import is_private
 from utils.json_worker.read_json_file import read_json_file
@@ -50,9 +50,9 @@ async def admin_func_handler(message: types.Message) -> None:
 async def admin_function_answer(call: types.CallbackQuery):
     """Обработка ответов содержащихся в ADMIN_MENU_LIST
     """
-
     chat_id = call.message.chat.id
     black_list = get_names_from_json("black_list")
+
     if call.message.chat.id != ADMIN_ID:
         await dp.bot.send_message(chat_id=chat_id,
                                   text=f"у вас нет прав доступа \n {Messages.help_message}")
@@ -91,9 +91,9 @@ async def admin_function_answer(call: types.CallbackQuery):
 
     if call.data == 'Оповещение':
 
-        text = f"йа печенько"
-        logger.info(f'User @{call.message.from_user.username}:{call.message.from_user.id} {text}')
-        await call.message.answer(f'{text}')
+        # text = f"йа печенько"
+        # logger.info(f'User @{call.message.from_user.username}:{call.message.from_user.id} {text}')
+        # await call.message.answer(f'{text}')
 
         text: str = 'Приветствую! \n' \
                     'Бот MIP_HSE_BOT обновился!\n' \
@@ -147,13 +147,23 @@ async def admin_function_answer(call: types.CallbackQuery):
 
             reply_markup = InlineKeyboardMarkup()
             reply_markup.add(InlineKeyboardButton(text='написать разработчику', url=f"tg://user?id={ADMIN_ID}"))
-            await dp.bot.send_message(chat_id=user_id,
-                                      text=text,
-                                      reply_markup=reply_markup)
+
+            try:
+
+                await dp.bot.send_message(chat_id=user_id, text=text, reply_markup=reply_markup)
+
+            except Exception as err:
+                logger.error(f'bot.send_message error {repr(err)}')
+                dp.bot.send_message(chat_id=ADMIN_ID,
+                                    text=f'bot.send_message error {repr(err)}',
+                                    url=f"tg://user?id={user_id}")
+                continue
 
             reply_markup = InlineKeyboardMarkup()
-            reply_markup.add(InlineKeyboardButton(text=f'Оповещение отправлено {user_id}',
-                                                  url=f"tg://user?id={user_id}"))
+            reply_markup.add(
+                InlineKeyboardButton(text=f'Оповещение отправлено {user_id}', url=f"tg://user?id={user_id}"))
+
+            logger.info(f'Оповещение отправлено {user_id}')
             await dp.bot.send_message(chat_id=ADMIN_ID,
                                       text=f"{user_id}",
                                       reply_markup=reply_markup)
