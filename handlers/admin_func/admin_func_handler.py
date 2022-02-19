@@ -47,12 +47,25 @@ async def admin_func_handler(message: types.Message) -> None:
 
 
 @dp.callback_query_handler(is_private, lambda call: call.data in [item for item in ADMIN_MENU_LIST])
-async def correct_registration_data_work_shift_answer(call: types.CallbackQuery):
+async def admin_function_answer(call: types.CallbackQuery):
     """Обработка ответов содержащихся в ADMIN_MENU_LIST
     """
 
+    chat_id = call.message.chat.id
+    black_list = get_names_from_json("black_list")
+    if call.message.chat.id != ADMIN_ID:
+        await dp.bot.send_message(chat_id=chat_id,
+                                  text=f"у вас нет прав доступа \n {Messages.help_message}")
+
+    if chat_id in black_list:
+        logger.info(f'User @{call.message.from_user.username}:{chat_id} попытка доступа в админку!')
+        await dp.bot.send_message(chat_id=chat_id,
+                                  text=f"у вас нет прав доступа \n {Messages.help_message}")
+
+    files: list = await get_dirs_files(BOT_DATA_PATH)
+
     if call.data == 'Показать всех пользователей':
-        files: list = await get_dirs_files(BOT_DATA_PATH)
+
         users_data: list = []
         for file in files:
 
@@ -81,7 +94,6 @@ async def correct_registration_data_work_shift_answer(call: types.CallbackQuery)
         text = f"йа печенько"
         logger.info(f'User @{call.message.from_user.username}:{call.message.from_user.id} {text}')
         await call.message.answer(f'{text}')
-        files: list = await get_dirs_files(BOT_DATA_PATH)
 
         text: str = 'Приветствую! \n' \
                     'Бот MIP_HSE_BOT обновился!\n' \
