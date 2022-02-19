@@ -155,8 +155,7 @@ async def admin_function_answer(call: types.CallbackQuery):
             except Exception as err:
                 logger.error(f'bot.send_message error {repr(err)}')
                 dp.bot.send_message(chat_id=ADMIN_ID,
-                                    text=f'bot.send_message error {repr(err)}',
-                                    url=f"tg://user?id={user_id}")
+                                    text=f'bot.send_message error user_id')
                 continue
 
             reply_markup = InlineKeyboardMarkup()
