@@ -130,6 +130,9 @@ async def correct_registration_data_work_shift_answer(call: types.CallbackQuery)
                     f'{Messages.help_message}'
 
         for user_id in files:
+
+            if user_id == ADMIN_ID: continue
+
             reply_markup = InlineKeyboardMarkup()
             reply_markup.add(InlineKeyboardButton(text='написать разработчику', url=f"tg://user?id={ADMIN_ID}"))
             await dp.bot.send_message(chat_id=user_id,
