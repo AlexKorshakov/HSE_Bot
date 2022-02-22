@@ -21,6 +21,7 @@ from messages.messages import Messages
 from utils.generate_report.get_file_list import get_registration_json_file_list, get_report_file_list
 from utils.json_worker.read_json_file import read_json_file
 from utils.misc import rate_limit
+from utils.secondary_functions.check_user_registration import check_user_access
 
 try:
     SENT_TO = get_names_from_json("SENT_TO")
@@ -48,6 +49,10 @@ async def send_mail(message: types.Message, file_list: list = None, registration
     :param registration_data:
     :return:
     """
+
+    chat_id = message.chat.id
+    if not await check_user_access(chat_id=chat_id):
+        return
 
     registration_file_list = []
 
@@ -110,9 +115,6 @@ async def send_mail(message: types.Message, file_list: list = None, registration
         logger.error(f"SENT_TO is empty")
         await bot.send_message(message.from_user.id, Messages.Error.list_too_send_not_found)
         return
-
-    # await bot.send_message(message.from_user.id, Messages.Successfully.list_tutors_received)
-    # logger.info(Messages.Successfully.list_tutors_received)
 
     sent_to_cc = sent_to_cc + SENT_TO_CC
     if not sent_to_cc:

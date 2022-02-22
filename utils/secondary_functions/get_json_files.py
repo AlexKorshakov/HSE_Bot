@@ -18,7 +18,6 @@ async def get_files(main_path, endswith=".json") -> list:
 async def get_dirs_files(directory) -> list:
     """Получение списка json файлов из файловой системы
     """
-    assert os.path.isdir(directory)
 
     for subdir, dirs, files in os.walk(directory):
         return dirs

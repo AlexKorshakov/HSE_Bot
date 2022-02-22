@@ -4,8 +4,10 @@ from aiogram.utils.markdown import text
 
 from keyboards.inline.help_inlinekeyboard import help_inline_button
 from loader import dp
+from utils.misc import rate_limit
 
 
+@rate_limit(limit=5)
 @dp.message_handler(Command('help'))
 async def process_help_command(message: types.Message):
     """Обработка команды help

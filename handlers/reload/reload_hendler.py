@@ -8,10 +8,16 @@ from config import logger
 
 from data.config import WORK_PATH
 from loader import dp
+from utils.secondary_functions.check_user_registration import check_user_access
 
 
 @dp.message_handler(Command('reload'))
 async def reload_handler(message: types.Message):
+
+    chat_id = message.chat.id
+    if not await check_user_access(chat_id=chat_id):
+        return
+
     subfolders, files = run_fast_scandir(WORK_PATH, [".py"])
     modules_path = [file for file in files if not "venv" in file]
 

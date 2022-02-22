@@ -74,7 +74,7 @@ async def call_correct_registration_data(call: types.CallbackQuery, callback_dat
     :param callback_data:
     :return:
     """
-    chat_id = call.message.from_user.id
+    chat_id = call.message.chat.id
     action: str = callback_data['action']
     registration_text: str = ''
 
@@ -87,20 +87,20 @@ async def call_correct_registration_data(call: types.CallbackQuery, callback_dat
 
         if not registration_file_list:
             logger.warning(Messages.Error.registration_file_list_not_found)
-            await bot.send_message(call.message.from_user.id, Messages.Error.file_list_not_found)
+            await bot.send_message(chat_id, Messages.Error.file_list_not_found)
             return
 
         registration_data: dict = await read_json_file(registration_file_list)
 
         if not registration_data:
             logger.error(f"registration_data is empty")
-            await bot.send_message(chat_id=call.message.chat.id, text=Messages.Error.file_list_not_found)
+            await bot.send_message(chat_id=chat_id, text=Messages.Error.file_list_not_found)
             return
 
         if registration_data:
             registration_text = await get_registration_text(registration_data)
 
-        await bot.send_message(call.message.chat.id, text=registration_text)
+        await bot.send_message(chat_id, text=registration_text)
 
         menu_level = board_config.menu_level = 1
         menu_list = board_config.menu_list = REGISTRATION_DATA_LIST

@@ -8,6 +8,7 @@ from messages.messages import Messages
 from utils.misc import rate_limit
 from utils.report_worker import create_and_send_mip_report
 from utils.report_worker import create_and_send_report
+from utils.secondary_functions.check_user_registration import check_user_access
 
 
 @rate_limit(limit=10)
@@ -18,6 +19,9 @@ async def generate(message: types.Message) -> None:
     :return: None
     """
     chat_id = message.chat.id
+    if not await check_user_access(chat_id=chat_id):
+        return
+
     await message.answer(f'{Messages.Report.start} \n'
                          f'{Messages.wait}')
 

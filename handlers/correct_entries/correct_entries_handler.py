@@ -21,10 +21,12 @@ from utils.goolgedrive.GoogleDriveUtils.find_folder import q_request_constructor
     find_files_or_folders_list
 from utils.goolgedrive.GoogleDriveUtils.folders_deleter import delete_folder
 from utils.json_worker.read_json_file import read_json_file
+from utils.misc import rate_limit
+from utils.secondary_functions.check_user_registration import check_user_access
 
 len_description = 25
 
-
+@rate_limit(limit=10)
 @dp.message_handler(Command('correct_entries'))
 async def correct_entries(message: types.Message):
     """Корректирование уже введённых значений на локальном pc и на google drive
@@ -34,6 +36,9 @@ async def correct_entries(message: types.Message):
     chat_id = message.chat.id
     violation_description: list = []
     violation_files: list = []
+
+    if not await check_user_access(chat_id=chat_id):
+        return
 
     file_list = await get_json_file_list(chat_id=chat_id)
 

@@ -11,6 +11,8 @@ from loader import dp, bot
 from messages.messages import Messages
 from loguru import logger
 from data.report_data import violation_data, headlines_data, user_data, global_reg_form
+from utils.misc import rate_limit
+from utils.secondary_functions.check_user_registration import check_user_access
 
 
 class NamedDict(dict):
@@ -29,13 +31,17 @@ class NamedDict(dict):
     def name(self):
         return self._name
 
-
+@rate_limit(limit=5)
 @dp.message_handler(Command('cancel'), state='*')
 @dp.message_handler(Text(equals='cancel', ignore_case=True), state='*')
 async def cancel_handler(call: types.CallbackQuery, state: FSMContext):
     """Корректирование уже введённых значений на локальном pc и на google drive
     :return:
     """
+
+    chat_id = call.chat.id
+    if not await check_user_access(chat_id=chat_id):
+        return
 
     dict_list = [NamedDict.fromkeys('violation_data', violation_data),
                  NamedDict.fromkeys('user_data', user_data),
@@ -58,7 +64,7 @@ async def cancel_handler(call: types.CallbackQuery, state: FSMContext):
     board_config.current_file = None
 
     await call.answer(text=Messages.all_canceled)
-    await bot.send_message(chat_id=ADMIN_ID, text=f'cancel_all from {call.chat.id}')
+    await bot.send_message(chat_id=ADMIN_ID, text=f'cancel_all from {chat_id}')
     # await call.answer(text='Cancelled.')
 
     current_state = await state.get_state()
