@@ -20,9 +20,13 @@ async def on_startup(dispatcher: Dispatcher):
     logger.info("Установка обработчиков...")
     # Установка обработчиков производится посредством декораторов. Для этого достаточно просто импортировать модуль
 
-    import filters
-    import callbacks
-    import handlers
+    try:
+        import filters
+        import callbacks
+        import handlers
+    except ImportError:
+        logger.warning('Bye! ImportError in app.py')
+        return
 
     setup_middlewares(dispatcher)
 

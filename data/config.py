@@ -1,7 +1,7 @@
 import os
 import sys
 
-from environs import Env
+from environs import Env, EnvError
 from loguru import logger
 
 env = Env()
@@ -9,7 +9,7 @@ env.read_env()
 
 try:
     BOT_TOKEN: str = env("BOT_TOKEN")
-except Exception as env_err:
+except EnvError as env_err:
     BOT_TOKEN: str = os.getenv('BOT_TOKEN')
     if not BOT_TOKEN:
         logger.error('You have forgot to set BOT_TOKEN')
@@ -31,8 +31,9 @@ BOT_DELETE_MESSAGE = True
 NUM_BUTTONS = env.int("NUM_BUTTONS", 5)
 
 WORK_PATH = os.getcwd()
+logger.info(f'{WORK_PATH =}')
 ROOT_DIR = os.path.dirname(os.path.abspath(sys.modules['__main__'].__file__))
-logger.info(ROOT_DIR)
+logger.info(f'{ROOT_DIR =}')
 
 REPORT_NAME: str = "report_data___"
 BOT_DATA_PATH = WORK_PATH + "\\user_data\\"

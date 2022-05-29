@@ -1,6 +1,6 @@
 import typing
 
-from aiogram import types
+from aiogram import types  # type: ignore
 from loguru import logger
 
 from callbacks.sequential_action.correct_headlines_data_answer import get_headlines_text
@@ -80,7 +80,7 @@ async def call_correct_registration_data(call: types.CallbackQuery, callback_dat
 
     if action == 'correct_registration_data':
 
-        registration_file_list = await get_registration_json_file_list(chat_id=chat_id)
+        registration_file_list = await get_registrati+on_json_file_list(chat_id=chat_id)
 
         if not registration_file_list:
             registration_file_list = await get_registration_json_file_list(chat_id=chat_id)

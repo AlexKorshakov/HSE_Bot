@@ -1,7 +1,5 @@
 import os
 
-from data.config import BOT_DATA_PATH, ROOT_DIR
-
 
 async def get_files(main_path, endswith=".json") -> list:
     """Получение списка json файлов из файловой системы
